@@ -893,3 +893,7 @@ It is possible the underlying files have been updated. You can explicitly invali
 	at java.base/java.lang.Thread.run(Thread.java:829)
 
 2025-10-23 19:24:46.662 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 20:03:01.959 [pool-1-thread-1-ScalaTest-running-TextChunkerTest] WARN  com.cs441.hw2.TextChunker$ - Attempting to chunk empty text
+2025-10-23 20:03:01.972 [pool-1-thread-1-ScalaTest-running-TextChunkerTest] ERROR com.cs441.hw2.TextChunker$ - Invalid chunk size: 0
+2025-10-23 20:03:01.973 [pool-1-thread-1-ScalaTest-running-TextChunkerTest] ERROR com.cs441.hw2.TextChunker$ - Invalid chunk size: -10
+2025-10-23 20:03:01.973 [pool-1-thread-1-ScalaTest-running-TextChunkerTest] ERROR com.cs441.hw2.TextChunker$ - Invalid overlap: -5 (must be 0 <= overlap < chunkSize)
