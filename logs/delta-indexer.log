@@ -1,0 +1,895 @@
+2025-10-23 18:57:45.627 [main] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 18:57:45.679 [main] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 18:57:45.679 [main] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 18:57:45.806 [main] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 18:57:46.346 [main] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully
+2025-10-23 18:57:46.683 [main] INFO  com.cs441.hw2.StorageLayer - No existing documents table found - returning empty DataFrame
+2025-10-23 18:57:47.058 [main] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 18:57:47.059 [main] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN: Processing entire corpus
+2025-10-23 18:57:47.059 [main] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 18:57:47.059 [main] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning documents...
+2025-10-23 18:57:47.059 [main] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 18:57:47.060 [main] INFO  com.cs441.hw2.DocumentScanner - Found 3 PDF files
+2025-10-23 18:57:47.147 [main] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 18:58:09.633 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 18:58:09.706 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 18:58:09.706 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 18:58:09.828 [sbt-bg-threads-1] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 18:58:10.506 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully
+2025-10-23 18:58:10.866 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - No existing documents table found - returning empty DataFrame
+2025-10-23 18:58:11.330 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 18:58:11.331 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN: Processing entire corpus
+2025-10-23 18:58:11.331 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 18:58:11.331 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning documents...
+2025-10-23 18:58:11.331 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 18:58:11.332 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Found 3 PDF files
+2025-10-23 18:58:11.442 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 19:03:18.883 [sbt-bg-threads-3] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 19:03:18.923 [sbt-bg-threads-3] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 19:03:18.924 [sbt-bg-threads-3] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 19:03:19.044 [sbt-bg-threads-3] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 19:03:19.608 [sbt-bg-threads-3] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully
+2025-10-23 19:03:19.635 [sbt-bg-threads-3] WARN  o.a.spark.sql.internal.SharedState - URL.setURLStreamHandlerFactory failed to set FsUrlStreamHandlerFactory
+2025-10-23 19:03:19.961 [sbt-bg-threads-3] INFO  com.cs441.hw2.StorageLayer - No existing documents table found - returning empty DataFrame
+2025-10-23 19:03:20.370 [sbt-bg-threads-3] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:03:20.371 [sbt-bg-threads-3] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN: Processing entire corpus
+2025-10-23 19:03:20.371 [sbt-bg-threads-3] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:03:20.371 [sbt-bg-threads-3] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning documents...
+2025-10-23 19:03:20.371 [sbt-bg-threads-3] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 19:03:20.372 [sbt-bg-threads-3] INFO  com.cs441.hw2.DocumentScanner - Found 3 PDF files
+2025-10-23 19:03:21.539 [Executor task launch worker for task 5.0 in stage 0.0 (TID 5)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:03:21.814 [sbt-bg-threads-3] INFO  com.cs441.hw2.DocumentScanner - Successfully processed 3 documents
+2025-10-23 19:03:21.854 [Executor task launch worker for task 5.0 in stage 3.0 (TID 14)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:03:21.964 [sbt-bg-threads-3] INFO  com.cs441.hw2.SparkDeltaIndexer - Scanned 3 documents
+2025-10-23 19:03:21.964 [sbt-bg-threads-3] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 2: Chunking documents...
+2025-10-23 19:03:21.964 [sbt-bg-threads-3] INFO  com.cs441.hw2.IncrementalChunker - Chunking documents with chunk size 1000 and overlap 100
+2025-10-23 19:03:22.009 [Executor task launch worker for task 5.0 in stage 6.0 (TID 23)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:03:22.150 [sbt-bg-threads-3] INFO  com.cs441.hw2.IncrementalChunker - Chunking 3 documents
+2025-10-23 19:03:22.424 [sbt-bg-threads-3] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 19:08:00.148 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 19:08:00.194 [sbt-bg-threads-5] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 19:08:00.194 [sbt-bg-threads-5] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 19:08:00.331 [sbt-bg-threads-5] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 19:08:00.965 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully
+2025-10-23 19:08:00.995 [sbt-bg-threads-5] WARN  o.a.spark.sql.internal.SharedState - URL.setURLStreamHandlerFactory failed to set FsUrlStreamHandlerFactory
+2025-10-23 19:08:01.340 [sbt-bg-threads-5] INFO  com.cs441.hw2.StorageLayer - No existing documents table found - returning empty DataFrame
+2025-10-23 19:08:01.736 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:08:01.736 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN: Processing entire corpus
+2025-10-23 19:08:01.736 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:08:01.736 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning documents...
+2025-10-23 19:08:01.736 [sbt-bg-threads-5] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 19:08:01.737 [sbt-bg-threads-5] INFO  com.cs441.hw2.DocumentScanner - Found 3 PDF files
+2025-10-23 19:08:02.436 [Executor task launch worker for task 5.0 in stage 0.0 (TID 5)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:08:02.660 [sbt-bg-threads-5] INFO  com.cs441.hw2.DocumentScanner - Successfully processed 3 documents
+2025-10-23 19:08:02.697 [Executor task launch worker for task 5.0 in stage 3.0 (TID 14)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:08:02.780 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - Scanned 3 documents
+2025-10-23 19:08:02.780 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 2: Chunking documents...
+2025-10-23 19:08:02.780 [sbt-bg-threads-5] INFO  com.cs441.hw2.IncrementalChunker - Chunking documents with chunk size 1000 and overlap 100
+2025-10-23 19:08:02.852 [Executor task launch worker for task 5.0 in stage 6.0 (TID 23)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:08:02.948 [sbt-bg-threads-5] INFO  com.cs441.hw2.IncrementalChunker - Chunking 3 documents
+2025-10-23 19:08:03.218 [Executor task launch worker for task 5.0 in stage 9.0 (TID 32)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:08:03.343 [sbt-bg-threads-5] INFO  com.cs441.hw2.IncrementalChunker - Created 85 chunks from 3 documents
+2025-10-23 19:08:03.394 [Executor task launch worker for task 5.0 in stage 12.0 (TID 41)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:08:03.513 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - Created 85 chunks
+2025-10-23 19:08:03.513 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 3: Generating embeddings...
+2025-10-23 19:08:03.513 [sbt-bg-threads-5] INFO  com.cs441.hw2.IncrementalEmbedder - Starting incremental embedding generation
+2025-10-23 19:08:03.515 [sbt-bg-threads-5] INFO  com.cs441.hw2.IncrementalEmbedder - No existing embeddings - generating for all chunks
+2025-10-23 19:08:03.555 [Executor task launch worker for task 5.0 in stage 15.0 (TID 50)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:08:03.662 [sbt-bg-threads-5] INFO  com.cs441.hw2.IncrementalEmbedder - Generating embeddings for 85 new chunks
+2025-10-23 19:08:03.752 [Executor task launch worker for task 5.0 in stage 18.0 (TID 59)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:08:03.910 [sbt-bg-threads-5] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 19:09:24.007 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 19:09:24.044 [sbt-bg-threads-7] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 19:09:24.044 [sbt-bg-threads-7] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 19:09:24.156 [sbt-bg-threads-7] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 19:09:24.832 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully
+2025-10-23 19:09:24.863 [sbt-bg-threads-7] WARN  o.a.spark.sql.internal.SharedState - URL.setURLStreamHandlerFactory failed to set FsUrlStreamHandlerFactory
+2025-10-23 19:09:25.231 [sbt-bg-threads-7] INFO  com.cs441.hw2.StorageLayer - No existing documents table found - returning empty DataFrame
+2025-10-23 19:09:25.634 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:09:25.634 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN: Processing entire corpus
+2025-10-23 19:09:25.634 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:09:25.634 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning documents...
+2025-10-23 19:09:25.634 [sbt-bg-threads-7] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 19:09:25.636 [sbt-bg-threads-7] INFO  com.cs441.hw2.DocumentScanner - Found 3 PDF files
+2025-10-23 19:09:26.265 [Executor task launch worker for task 5.0 in stage 0.0 (TID 5)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:09:26.487 [sbt-bg-threads-7] INFO  com.cs441.hw2.DocumentScanner - Successfully processed 3 documents
+2025-10-23 19:09:26.521 [Executor task launch worker for task 5.0 in stage 3.0 (TID 14)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:09:26.609 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Scanned 3 documents
+2025-10-23 19:09:26.609 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 2: Chunking documents...
+2025-10-23 19:09:26.609 [sbt-bg-threads-7] INFO  com.cs441.hw2.IncrementalChunker - Chunking documents with chunk size 1000 and overlap 100
+2025-10-23 19:09:26.653 [Executor task launch worker for task 5.0 in stage 6.0 (TID 23)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:09:26.755 [sbt-bg-threads-7] INFO  com.cs441.hw2.IncrementalChunker - Chunking 3 documents
+2025-10-23 19:09:26.973 [Executor task launch worker for task 5.0 in stage 9.0 (TID 32)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:09:27.100 [sbt-bg-threads-7] INFO  com.cs441.hw2.IncrementalChunker - Created 85 chunks from 3 documents
+2025-10-23 19:09:27.147 [Executor task launch worker for task 5.0 in stage 12.0 (TID 41)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:09:27.252 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Created 85 chunks
+2025-10-23 19:09:27.252 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 3: Generating embeddings...
+2025-10-23 19:09:27.252 [sbt-bg-threads-7] INFO  com.cs441.hw2.IncrementalEmbedder - Starting incremental embedding generation
+2025-10-23 19:09:27.254 [sbt-bg-threads-7] INFO  com.cs441.hw2.IncrementalEmbedder - No existing embeddings - generating for all chunks
+2025-10-23 19:09:27.288 [Executor task launch worker for task 5.0 in stage 15.0 (TID 50)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:09:27.404 [sbt-bg-threads-7] INFO  com.cs441.hw2.IncrementalEmbedder - Generating embeddings for 85 new chunks
+2025-10-23 19:09:27.494 [Executor task launch worker for task 5.0 in stage 18.0 (TID 59)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:09:27.803 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:30.237 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:31.788 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:33.289 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:34.923 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:36.496 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 5 chunks
+2025-10-23 19:09:37.019 [sbt-bg-threads-7] INFO  com.cs441.hw2.IncrementalEmbedder - Successfully generated 85 embeddings out of 85 chunks
+2025-10-23 19:09:37.058 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:38.569 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:40.090 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:41.840 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:43.464 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:09:44.993 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 5 chunks
+2025-10-23 19:09:45.629 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Generated 85 embeddings
+2025-10-23 19:09:45.630 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 4: Saving to storage...
+2025-10-23 19:09:45.705 [Executor task launch worker for task 5.0 in stage 29.0 (TID 71)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:09:45.813 [sbt-bg-threads-7] INFO  com.cs441.hw2.StorageLayer - Saving 3 documents to delta-output/documents
+2025-10-23 19:09:46.231 [sbt-bg-threads-7] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 19:17:45.156 [sbt-bg-threads-10] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 19:17:45.198 [sbt-bg-threads-10] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 19:17:45.198 [sbt-bg-threads-10] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 19:17:45.331 [sbt-bg-threads-10] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 19:17:45.974 [sbt-bg-threads-10] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully
+2025-10-23 19:17:45.974 [sbt-bg-threads-10] INFO  com.cs441.hw2.StorageLayer - Loading documents from delta-output/documents
+2025-10-23 19:17:46.006 [sbt-bg-threads-10] WARN  o.a.spark.sql.internal.SharedState - URL.setURLStreamHandlerFactory failed to set FsUrlStreamHandlerFactory
+2025-10-23 19:17:46.862 [sbt-bg-threads-10] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 19:20:05.018 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 19:20:05.057 [sbt-bg-threads-12] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 19:20:05.057 [sbt-bg-threads-12] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 19:20:05.187 [sbt-bg-threads-12] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 19:20:05.804 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully
+2025-10-23 19:20:05.805 [sbt-bg-threads-12] INFO  com.cs441.hw2.StorageLayer - No existing documents table found - returning empty DataFrame
+2025-10-23 19:20:05.851 [sbt-bg-threads-12] WARN  o.a.spark.sql.internal.SharedState - URL.setURLStreamHandlerFactory failed to set FsUrlStreamHandlerFactory
+2025-10-23 19:20:06.618 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:20:06.618 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN: Processing entire corpus
+2025-10-23 19:20:06.618 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:20:06.618 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning documents...
+2025-10-23 19:20:06.618 [sbt-bg-threads-12] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 19:20:06.619 [sbt-bg-threads-12] INFO  com.cs441.hw2.DocumentScanner - Found 3 PDF files
+2025-10-23 19:20:07.271 [Executor task launch worker for task 5.0 in stage 0.0 (TID 5)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:07.517 [sbt-bg-threads-12] INFO  com.cs441.hw2.DocumentScanner - Successfully processed 3 documents
+2025-10-23 19:20:07.559 [Executor task launch worker for task 5.0 in stage 3.0 (TID 14)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:07.702 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Scanned 3 documents
+2025-10-23 19:20:07.702 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 2: Chunking documents...
+2025-10-23 19:20:07.702 [sbt-bg-threads-12] INFO  com.cs441.hw2.IncrementalChunker - Chunking documents with chunk size 1000 and overlap 100
+2025-10-23 19:20:07.748 [Executor task launch worker for task 5.0 in stage 6.0 (TID 23)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:07.855 [sbt-bg-threads-12] INFO  com.cs441.hw2.IncrementalChunker - Chunking 3 documents
+2025-10-23 19:20:08.094 [Executor task launch worker for task 5.0 in stage 9.0 (TID 32)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:08.190 [sbt-bg-threads-12] INFO  com.cs441.hw2.IncrementalChunker - Created 85 chunks from 3 documents
+2025-10-23 19:20:08.247 [Executor task launch worker for task 5.0 in stage 12.0 (TID 41)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:08.332 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Created 85 chunks
+2025-10-23 19:20:08.333 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 3: Generating embeddings...
+2025-10-23 19:20:08.333 [sbt-bg-threads-12] INFO  com.cs441.hw2.IncrementalEmbedder - Starting incremental embedding generation
+2025-10-23 19:20:08.335 [sbt-bg-threads-12] INFO  com.cs441.hw2.IncrementalEmbedder - No existing embeddings - generating for all chunks
+2025-10-23 19:20:08.368 [Executor task launch worker for task 5.0 in stage 15.0 (TID 50)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:08.446 [sbt-bg-threads-12] INFO  com.cs441.hw2.IncrementalEmbedder - Generating embeddings for 85 new chunks
+2025-10-23 19:20:08.524 [Executor task launch worker for task 5.0 in stage 18.0 (TID 59)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:08.812 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:11.273 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:12.792 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:14.280 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:15.915 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:17.452 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 5 chunks
+2025-10-23 19:20:17.979 [sbt-bg-threads-12] INFO  com.cs441.hw2.IncrementalEmbedder - Successfully generated 85 embeddings out of 85 chunks
+2025-10-23 19:20:18.007 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:19.578 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:21.071 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:22.547 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:24.150 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:25.659 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 5 chunks
+2025-10-23 19:20:26.180 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Generated 85 embeddings
+2025-10-23 19:20:26.181 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 4: Saving to storage...
+2025-10-23 19:20:26.217 [Executor task launch worker for task 5.0 in stage 29.0 (TID 71)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:26.308 [sbt-bg-threads-12] INFO  com.cs441.hw2.StorageLayer - Saving 3 documents to delta-output/documents
+2025-10-23 19:20:26.556 [Executor task launch worker for task 5.0 in stage 32.0 (TID 80)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:27.033 [sbt-bg-threads-12] INFO  com.cs441.hw2.StorageLayer - Documents saved successfully
+2025-10-23 19:20:27.082 [Executor task launch worker for task 5.0 in stage 33.0 (TID 88)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:27.288 [sbt-bg-threads-12] INFO  com.cs441.hw2.StorageLayer - Saving 85 chunks to delta-output/chunks
+2025-10-23 19:20:27.352 [Executor task launch worker for task 5.0 in stage 36.0 (TID 97)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:20:27.603 [sbt-bg-threads-12] INFO  com.cs441.hw2.StorageLayer - Chunks saved successfully
+2025-10-23 19:20:27.639 [Executor task launch worker for task 0.0 in stage 40.0 (TID 101)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:29.267 [Executor task launch worker for task 0.0 in stage 40.0 (TID 101)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:30.754 [Executor task launch worker for task 0.0 in stage 40.0 (TID 101)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:32.221 [Executor task launch worker for task 0.0 in stage 40.0 (TID 101)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:33.830 [Executor task launch worker for task 0.0 in stage 40.0 (TID 101)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:35.391 [Executor task launch worker for task 0.0 in stage 40.0 (TID 101)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 5 chunks
+2025-10-23 19:20:35.930 [sbt-bg-threads-12] INFO  com.cs441.hw2.StorageLayer - Saving 85 embeddings to delta-output/embeddings
+2025-10-23 19:20:36.147 [Executor task launch worker for task 0.0 in stage 45.0 (TID 103)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:37.696 [Executor task launch worker for task 0.0 in stage 45.0 (TID 103)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:39.250 [Executor task launch worker for task 0.0 in stage 45.0 (TID 103)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:40.836 [Executor task launch worker for task 0.0 in stage 45.0 (TID 103)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:42.547 [Executor task launch worker for task 0.0 in stage 45.0 (TID 103)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:20:44.288 [Executor task launch worker for task 0.0 in stage 45.0 (TID 103)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 5 chunks
+2025-10-23 19:20:44.857 [sbt-bg-threads-12] INFO  com.cs441.hw2.StorageLayer - Embeddings saved successfully
+2025-10-23 19:20:44.857 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:20:44.858 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN COMPLETE
+2025-10-23 19:20:44.858 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Documents: 3 | Chunks: 85 | Embeddings: 85
+2025-10-23 19:20:44.858 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:20:44.858 [sbt-bg-threads-12] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 19:24:10.463 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 19:24:10.511 [sbt-bg-threads-14] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 19:24:10.511 [sbt-bg-threads-14] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 19:24:10.628 [sbt-bg-threads-14] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 19:24:11.290 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully
+2025-10-23 19:24:11.290 [sbt-bg-threads-14] INFO  com.cs441.hw2.StorageLayer - Loading documents from delta-output/documents
+2025-10-23 19:24:11.329 [sbt-bg-threads-14] WARN  o.a.spark.sql.internal.SharedState - URL.setURLStreamHandlerFactory failed to set FsUrlStreamHandlerFactory
+2025-10-23 19:24:13.486 [sbt-bg-threads-14] INFO  com.cs441.hw2.StorageLayer - Loaded 3 documents
+2025-10-23 19:24:13.533 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:24:13.533 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - INCREMENTAL RUN: Processing changes only
+2025-10-23 19:24:13.533 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 19:24:13.533 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning current documents...
+2025-10-23 19:24:13.533 [sbt-bg-threads-14] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 19:24:13.533 [sbt-bg-threads-14] INFO  com.cs441.hw2.DocumentScanner - Found 4 PDF files
+2025-10-23 19:24:13.828 [Executor task launch worker for task 3.0 in stage 5.0 (TID 10)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:13.852 [Executor task launch worker for task 7.0 in stage 5.0 (TID 14)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:13.916 [Executor task launch worker for task 7.0 in stage 5.0 (TID 14)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:13.984 [Executor task launch worker for task 7.0 in stage 5.0 (TID 14)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:14.070 [sbt-bg-threads-14] INFO  com.cs441.hw2.DocumentScanner - Successfully processed 4 documents
+2025-10-23 19:24:14.165 [Executor task launch worker for task 7.0 in stage 8.0 (TID 23)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:14.165 [Executor task launch worker for task 3.0 in stage 8.0 (TID 19)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:14.224 [Executor task launch worker for task 7.0 in stage 8.0 (TID 23)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:14.264 [Executor task launch worker for task 7.0 in stage 8.0 (TID 23)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:14.361 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Current corpus: 4 documents
+2025-10-23 19:24:14.361 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 2: Loading previous state...
+2025-10-23 19:24:14.362 [sbt-bg-threads-14] INFO  com.cs441.hw2.StorageLayer - Loading documents from delta-output/documents
+2025-10-23 19:24:14.510 [sbt-bg-threads-14] INFO  com.cs441.hw2.StorageLayer - Loaded 3 documents
+2025-10-23 19:24:14.601 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Previous state: 3 documents
+2025-10-23 19:24:14.601 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 3: Detecting changes...
+2025-10-23 19:24:14.601 [sbt-bg-threads-14] INFO  com.cs441.hw2.DeltaDetector - Detecting document changes...
+2025-10-23 19:24:15.094 [Executor task launch worker for task 7.0 in stage 20.0 (TID 48)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:15.096 [Executor task launch worker for task 3.0 in stage 20.0 (TID 44)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:15.142 [Executor task launch worker for task 7.0 in stage 20.0 (TID 48)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:15.218 [Executor task launch worker for task 7.0 in stage 20.0 (TID 48)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:15.286 [sbt-bg-threads-14] INFO  com.cs441.hw2.DeltaDetector - Found 1 new documents
+2025-10-23 19:24:15.394 [Executor task launch worker for task 7.0 in stage 24.0 (TID 61)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:15.397 [Executor task launch worker for task 3.0 in stage 24.0 (TID 57)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:15.433 [Executor task launch worker for task 7.0 in stage 24.0 (TID 61)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:15.460 [Executor task launch worker for task 7.0 in stage 24.0 (TID 61)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:15.510 [sbt-bg-threads-14] INFO  com.cs441.hw2.DeltaDetector - Found 0 changed documents
+2025-10-23 19:24:15.655 [Executor task launch worker for task 3.0 in stage 28.0 (TID 70)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:15.660 [Executor task launch worker for task 7.0 in stage 28.0 (TID 74)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:15.714 [Executor task launch worker for task 7.0 in stage 28.0 (TID 74)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:15.735 [Executor task launch worker for task 7.0 in stage 28.0 (TID 74)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:15.783 [sbt-bg-threads-14] INFO  com.cs441.hw2.DeltaDetector - Found 3 unchanged documents
+2025-10-23 19:24:15.934 [Executor task launch worker for task 3.0 in stage 32.0 (TID 83)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:15.943 [Executor task launch worker for task 7.0 in stage 32.0 (TID 87)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:15.983 [Executor task launch worker for task 7.0 in stage 32.0 (TID 87)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:16.001 [Executor task launch worker for task 7.0 in stage 32.0 (TID 87)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:16.149 [sbt-bg-threads-14] INFO  com.cs441.hw2.DeltaDetector - Found 0 deleted documents
+2025-10-23 19:24:16.181 [Executor task launch worker for task 3.0 in stage 40.0 (TID 94)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:16.185 [Executor task launch worker for task 7.0 in stage 40.0 (TID 98)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:16.207 [Executor task launch worker for task 7.0 in stage 40.0 (TID 98)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:16.227 [Executor task launch worker for task 7.0 in stage 40.0 (TID 98)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:16.304 [sbt-bg-threads-14] INFO  com.cs441.hw2.DeltaDetector - Delta summary: 3 previous docs, 4 current docs
+2025-10-23 19:24:16.304 [sbt-bg-threads-14] INFO  com.cs441.hw2.DeltaDetector -   New: 1, Changed: 0, Unchanged: 3, Deleted: 0
+2025-10-23 19:24:16.381 [Executor task launch worker for task 7.0 in stage 47.0 (TID 116)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:16.389 [Executor task launch worker for task 3.0 in stage 47.0 (TID 112)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:16.413 [Executor task launch worker for task 7.0 in stage 47.0 (TID 116)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:16.431 [Executor task launch worker for task 7.0 in stage 47.0 (TID 116)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:16.631 [Executor task launch worker for task 3.0 in stage 51.0 (TID 125)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:16.642 [Executor task launch worker for task 7.0 in stage 51.0 (TID 129)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:16.669 [Executor task launch worker for task 7.0 in stage 51.0 (TID 129)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:16.702 [Executor task launch worker for task 7.0 in stage 51.0 (TID 129)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:16.841 [Executor task launch worker for task 7.0 in stage 55.0 (TID 142)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:16.844 [Executor task launch worker for task 3.0 in stage 55.0 (TID 138)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:16.872 [Executor task launch worker for task 7.0 in stage 55.0 (TID 142)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:16.898 [Executor task launch worker for task 7.0 in stage 55.0 (TID 142)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:17.047 [Executor task launch worker for task 7.0 in stage 59.0 (TID 155)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.048 [Executor task launch worker for task 3.0 in stage 59.0 (TID 151)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.069 [Executor task launch worker for task 7.0 in stage 59.0 (TID 155)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:17.084 [Executor task launch worker for task 7.0 in stage 59.0 (TID 155)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:17.146 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Delta stats: new -> 1, changed -> 0, unchanged -> 3, deleted -> 0
+2025-10-23 19:24:17.187 [Executor task launch worker for task 3.0 in stage 68.0 (TID 166)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.191 [Executor task launch worker for task 7.0 in stage 68.0 (TID 170)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.211 [Executor task launch worker for task 7.0 in stage 68.0 (TID 170)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:17.228 [Executor task launch worker for task 7.0 in stage 68.0 (TID 170)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:17.352 [Executor task launch worker for task 3.0 in stage 72.0 (TID 179)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.360 [Executor task launch worker for task 7.0 in stage 72.0 (TID 183)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.384 [Executor task launch worker for task 7.0 in stage 72.0 (TID 183)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:17.400 [Executor task launch worker for task 7.0 in stage 72.0 (TID 183)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:17.477 [Executor task launch worker for task 3.0 in stage 76.0 (TID 192)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.480 [Executor task launch worker for task 7.0 in stage 76.0 (TID 196)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.508 [Executor task launch worker for task 7.0 in stage 76.0 (TID 196)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:17.521 [Executor task launch worker for task 7.0 in stage 76.0 (TID 196)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:17.619 [Executor task launch worker for task 3.0 in stage 80.0 (TID 205)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.632 [Executor task launch worker for task 7.0 in stage 80.0 (TID 209)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.654 [Executor task launch worker for task 7.0 in stage 80.0 (TID 209)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:17.665 [Executor task launch worker for task 7.0 in stage 80.0 (TID 209)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:17.717 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Deduplication ratio: 75.00%
+2025-10-23 19:24:17.782 [Executor task launch worker for task 2.0 in stage 90.0 (TID 220)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.848 [Executor task launch worker for task 2.0 in stage 91.0 (TID 224)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:17.869 [Executor task launch worker for task 2.0 in stage 91.0 (TID 224)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:17.884 [Executor task launch worker for task 2.0 in stage 91.0 (TID 224)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:17.911 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 4: Processing changed documents...
+2025-10-23 19:24:18.055 [Executor task launch worker for task 7.0 in stage 94.0 (TID 240)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.058 [Executor task launch worker for task 3.0 in stage 94.0 (TID 236)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.092 [Executor task launch worker for task 7.0 in stage 94.0 (TID 240)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:18.105 [Executor task launch worker for task 11.0 in stage 94.0 (TID 244)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.110 [Executor task launch worker for task 15.0 in stage 94.0 (TID 248)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.115 [Executor task launch worker for task 7.0 in stage 94.0 (TID 240)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:18.139 [Executor task launch worker for task 15.0 in stage 94.0 (TID 248)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:18.151 [Executor task launch worker for task 15.0 in stage 94.0 (TID 248)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:18.192 [sbt-bg-threads-14] INFO  com.cs441.hw2.DeltaDetector - Documents to process: 1
+2025-10-23 19:24:18.324 [Executor task launch worker for task 3.0 in stage 99.0 (TID 261)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.329 [Executor task launch worker for task 7.0 in stage 99.0 (TID 265)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.333 [Executor task launch worker for task 11.0 in stage 99.0 (TID 269)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.347 [Executor task launch worker for task 15.0 in stage 99.0 (TID 273)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.348 [Executor task launch worker for task 7.0 in stage 99.0 (TID 265)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:18.379 [Executor task launch worker for task 15.0 in stage 99.0 (TID 273)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:18.384 [Executor task launch worker for task 7.0 in stage 99.0 (TID 265)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:18.395 [Executor task launch worker for task 15.0 in stage 99.0 (TID 273)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:18.432 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Processing 1 changed documents
+2025-10-23 19:24:18.432 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 5: Chunking changed documents...
+2025-10-23 19:24:18.432 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalChunker - Chunking documents with chunk size 1000 and overlap 100
+2025-10-23 19:24:18.514 [Executor task launch worker for task 3.0 in stage 104.0 (TID 286)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.525 [Executor task launch worker for task 7.0 in stage 104.0 (TID 290)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.541 [Executor task launch worker for task 11.0 in stage 104.0 (TID 294)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.550 [Executor task launch worker for task 15.0 in stage 104.0 (TID 298)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.562 [Executor task launch worker for task 7.0 in stage 104.0 (TID 290)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:18.576 [Executor task launch worker for task 15.0 in stage 104.0 (TID 298)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:18.588 [Executor task launch worker for task 7.0 in stage 104.0 (TID 290)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:18.592 [Executor task launch worker for task 15.0 in stage 104.0 (TID 298)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:18.649 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalChunker - Chunking 1 documents
+2025-10-23 19:24:18.925 [Executor task launch worker for task 7.0 in stage 109.0 (TID 315)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.929 [Executor task launch worker for task 3.0 in stage 109.0 (TID 311)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.958 [Executor task launch worker for task 11.0 in stage 109.0 (TID 319)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:18.958 [Executor task launch worker for task 7.0 in stage 109.0 (TID 315)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:18.984 [Executor task launch worker for task 7.0 in stage 109.0 (TID 315)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:19.006 [Executor task launch worker for task 15.0 in stage 109.0 (TID 323)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.026 [Executor task launch worker for task 15.0 in stage 109.0 (TID 323)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:19.038 [Executor task launch worker for task 15.0 in stage 109.0 (TID 323)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:19.161 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalChunker - Created 60 chunks from 1 documents
+2025-10-23 19:24:19.248 [Executor task launch worker for task 3.0 in stage 114.0 (TID 336)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.251 [Executor task launch worker for task 7.0 in stage 114.0 (TID 340)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.260 [Executor task launch worker for task 11.0 in stage 114.0 (TID 344)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.281 [Executor task launch worker for task 15.0 in stage 114.0 (TID 348)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.290 [Executor task launch worker for task 7.0 in stage 114.0 (TID 340)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:19.300 [Executor task launch worker for task 15.0 in stage 114.0 (TID 348)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:19.303 [Executor task launch worker for task 7.0 in stage 114.0 (TID 340)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:19.325 [Executor task launch worker for task 15.0 in stage 114.0 (TID 348)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:19.370 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Created 60 new chunks
+2025-10-23 19:24:19.370 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 6: Merging chunks...
+2025-10-23 19:24:19.371 [sbt-bg-threads-14] INFO  com.cs441.hw2.StorageLayer - No existing chunks table found - returning empty DataFrame
+2025-10-23 19:24:19.537 [Executor task launch worker for task 7.0 in stage 119.0 (TID 365)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.543 [Executor task launch worker for task 3.0 in stage 119.0 (TID 361)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.550 [Executor task launch worker for task 7.0 in stage 119.0 (TID 365)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:19.553 [Executor task launch worker for task 11.0 in stage 119.0 (TID 369)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.589 [Executor task launch worker for task 7.0 in stage 119.0 (TID 365)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:19.592 [Executor task launch worker for task 15.0 in stage 119.0 (TID 373)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.613 [Executor task launch worker for task 15.0 in stage 119.0 (TID 373)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:19.628 [Executor task launch worker for task 15.0 in stage 119.0 (TID 373)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:19.654 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalChunker - Merging new chunks with existing chunks
+2025-10-23 19:24:19.657 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalChunker - No existing chunks - returning new chunks only
+2025-10-23 19:24:19.789 [Executor task launch worker for task 7.0 in stage 122.0 (TID 389)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.796 [Executor task launch worker for task 3.0 in stage 122.0 (TID 385)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.800 [Executor task launch worker for task 11.0 in stage 122.0 (TID 393)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.808 [Executor task launch worker for task 7.0 in stage 122.0 (TID 389)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:19.816 [Executor task launch worker for task 15.0 in stage 122.0 (TID 397)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:19.831 [Executor task launch worker for task 7.0 in stage 122.0 (TID 389)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:19.839 [Executor task launch worker for task 15.0 in stage 122.0 (TID 397)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:19.851 [Executor task launch worker for task 15.0 in stage 122.0 (TID 397)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:19.887 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Total chunks after merge: 60
+2025-10-23 19:24:19.887 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 7: Generating embeddings for new chunks...
+2025-10-23 19:24:19.887 [sbt-bg-threads-14] INFO  com.cs441.hw2.StorageLayer - Loading embeddings from delta-output/embeddings
+2025-10-23 19:24:20.019 [sbt-bg-threads-14] INFO  com.cs441.hw2.StorageLayer - Loaded 85 embeddings
+2025-10-23 19:24:20.019 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalEmbedder - Starting incremental embedding generation
+2025-10-23 19:24:20.037 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalEmbedder - Finding chunks that need embeddings
+2025-10-23 19:24:20.199 [Executor task launch worker for task 7.0 in stage 133.0 (TID 419)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:20.203 [Executor task launch worker for task 3.0 in stage 133.0 (TID 415)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:20.220 [Executor task launch worker for task 7.0 in stage 133.0 (TID 419)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:20.226 [Executor task launch worker for task 11.0 in stage 133.0 (TID 423)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:20.242 [Executor task launch worker for task 7.0 in stage 133.0 (TID 419)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:20.247 [Executor task launch worker for task 15.0 in stage 133.0 (TID 427)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:20.272 [Executor task launch worker for task 15.0 in stage 133.0 (TID 427)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:20.286 [Executor task launch worker for task 15.0 in stage 133.0 (TID 427)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:20.435 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalEmbedder - Generating embeddings for 60 new chunks
+2025-10-23 19:24:20.527 [Executor task launch worker for task 7.0 in stage 142.0 (TID 446)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:20.531 [Executor task launch worker for task 3.0 in stage 142.0 (TID 442)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:20.544 [Executor task launch worker for task 11.0 in stage 142.0 (TID 450)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:20.554 [Executor task launch worker for task 7.0 in stage 142.0 (TID 446)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:20.564 [Executor task launch worker for task 15.0 in stage 142.0 (TID 454)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:20.579 [Executor task launch worker for task 7.0 in stage 142.0 (TID 446)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:20.592 [Executor task launch worker for task 15.0 in stage 142.0 (TID 454)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:20.625 [Executor task launch worker for task 15.0 in stage 142.0 (TID 454)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:20.744 [Executor task launch worker for task 0.0 in stage 144.0 (TID 455)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:22.664 [Executor task launch worker for task 0.0 in stage 144.0 (TID 455)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:24.207 [Executor task launch worker for task 0.0 in stage 144.0 (TID 455)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:26.000 [Executor task launch worker for task 0.0 in stage 144.0 (TID 455)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 12 chunks
+2025-10-23 19:24:27.320 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalEmbedder - Successfully generated 60 embeddings out of 60 chunks
+2025-10-23 19:24:27.359 [Executor task launch worker for task 0.0 in stage 149.0 (TID 457)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:29.027 [Executor task launch worker for task 0.0 in stage 149.0 (TID 457)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:30.487 [Executor task launch worker for task 0.0 in stage 149.0 (TID 457)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:32.216 [Executor task launch worker for task 0.0 in stage 149.0 (TID 457)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 12 chunks
+2025-10-23 19:24:33.517 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Generated 60 new embeddings
+2025-10-23 19:24:33.517 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 8: Merging embeddings...
+2025-10-23 19:24:33.548 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalEmbedder - Merging new embeddings with existing embeddings
+2025-10-23 19:24:33.602 [Executor task launch worker for task 0.0 in stage 158.0 (TID 462)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:35.318 [Executor task launch worker for task 0.0 in stage 158.0 (TID 462)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:36.779 [Executor task launch worker for task 0.0 in stage 158.0 (TID 462)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:38.512 [Executor task launch worker for task 0.0 in stage 158.0 (TID 462)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 12 chunks
+2025-10-23 19:24:39.823 [sbt-bg-threads-14] INFO  com.cs441.hw2.IncrementalEmbedder - Merged embeddings: 145 total
+2025-10-23 19:24:39.870 [Executor task launch worker for task 1.0 in stage 163.0 (TID 464)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:41.283 [Executor task launch worker for task 1.0 in stage 163.0 (TID 464)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:42.741 [Executor task launch worker for task 1.0 in stage 163.0 (TID 464)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 19:24:44.538 [Executor task launch worker for task 1.0 in stage 163.0 (TID 464)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 12 chunks
+2025-10-23 19:24:45.889 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Total embeddings after merge: 145
+2025-10-23 19:24:45.890 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 9: Saving updated state...
+2025-10-23 19:24:45.925 [Executor task launch worker for task 3.0 in stage 167.0 (TID 470)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:45.929 [Executor task launch worker for task 7.0 in stage 167.0 (TID 474)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:45.947 [Executor task launch worker for task 7.0 in stage 167.0 (TID 474)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:45.970 [Executor task launch worker for task 7.0 in stage 167.0 (TID 474)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:46.024 [sbt-bg-threads-14] INFO  com.cs441.hw2.StorageLayer - Saving 4 documents to delta-output/documents
+2025-10-23 19:24:46.385 [Executor task launch worker for task 7.0 in stage 170.0 (TID 483)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:46.385 [Executor task launch worker for task 3.0 in stage 170.0 (TID 479)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 19:24:46.404 [Executor task launch worker for task 7.0 in stage 170.0 (TID 483)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 19:24:46.425 [Executor task launch worker for task 7.0 in stage 170.0 (TID 483)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 19:24:46.491 [sbt-bg-threads-14] INFO  com.cs441.hw2.StorageLayer - Documents saved successfully
+2025-10-23 19:24:46.587 [Executor task launch worker for task 2.0 in stage 172.0 (TID 490)] ERROR org.apache.spark.executor.Executor - Exception in task 2.0 in stage 172.0 (TID 490)
+org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00005-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2025-10-23 19:24:46.588 [Executor task launch worker for task 0.0 in stage 172.0 (TID 488)] ERROR org.apache.spark.executor.Executor - Exception in task 0.0 in stage 172.0 (TID 488)
+org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00002-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2025-10-23 19:24:46.589 [Executor task launch worker for task 3.0 in stage 172.0 (TID 491)] ERROR org.apache.spark.executor.Executor - Exception in task 3.0 in stage 172.0 (TID 491)
+org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00000-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2025-10-23 19:24:46.589 [Executor task launch worker for task 1.0 in stage 171.0 (TID 485)] ERROR org.apache.spark.executor.Executor - Exception in task 1.0 in stage 171.0 (TID 485)
+org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00007-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2025-10-23 19:24:46.587 [Executor task launch worker for task 2.0 in stage 171.0 (TID 486)] ERROR org.apache.spark.executor.Executor - Exception in task 2.0 in stage 171.0 (TID 486)
+org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00005-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2025-10-23 19:24:46.587 [Executor task launch worker for task 1.0 in stage 172.0 (TID 489)] ERROR org.apache.spark.executor.Executor - Exception in task 1.0 in stage 172.0 (TID 489)
+org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00007-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2025-10-23 19:24:46.589 [Executor task launch worker for task 0.0 in stage 171.0 (TID 484)] ERROR org.apache.spark.executor.Executor - Exception in task 0.0 in stage 171.0 (TID 484)
+org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00002-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2025-10-23 19:24:46.587 [Executor task launch worker for task 3.0 in stage 171.0 (TID 487)] ERROR org.apache.spark.executor.Executor - Exception in task 3.0 in stage 171.0 (TID 487)
+org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00000-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2025-10-23 19:24:46.631 [task-result-getter-1] WARN  o.a.spark.scheduler.TaskSetManager - Lost task 0.0 in stage 171.0 (TID 484) (10.0.0.38 executor driver): org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00002-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+2025-10-23 19:24:46.635 [task-result-getter-1] ERROR o.a.spark.scheduler.TaskSetManager - Task 0 in stage 171.0 failed 1 times; aborting job
+2025-10-23 19:24:46.639 [task-result-getter-2] WARN  o.a.spark.scheduler.TaskSetManager - Lost task 1.0 in stage 171.0 (TID 485) (10.0.0.38 executor driver): org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00007-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+2025-10-23 19:24:46.652 [task-result-getter-3] WARN  o.a.spark.scheduler.TaskSetManager - Lost task 1.0 in stage 172.0 (TID 489) (10.0.0.38 executor driver): org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00007-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+2025-10-23 19:24:46.654 [task-result-getter-3] ERROR o.a.spark.scheduler.TaskSetManager - Task 1 in stage 172.0 failed 1 times; aborting job
+2025-10-23 19:24:46.655 [task-result-getter-0] WARN  o.a.spark.scheduler.TaskSetManager - Lost task 2.0 in stage 171.0 (TID 486) (10.0.0.38 executor driver): org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00005-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+2025-10-23 19:24:46.655 [task-result-getter-3] WARN  o.a.spark.scheduler.TaskSetManager - Lost task 0.0 in stage 172.0 (TID 488) (10.0.0.38 executor driver): org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00002-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+2025-10-23 19:24:46.656 [task-result-getter-2] WARN  o.a.spark.scheduler.TaskSetManager - Lost task 3.0 in stage 172.0 (TID 491) (10.0.0.38 executor driver): org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00000-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+2025-10-23 19:24:46.658 [task-result-getter-1] WARN  o.a.spark.scheduler.TaskSetManager - Lost task 3.0 in stage 171.0 (TID 487) (10.0.0.38 executor driver): org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00000-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+2025-10-23 19:24:46.659 [task-result-getter-0] WARN  o.a.spark.scheduler.TaskSetManager - Lost task 2.0 in stage 172.0 (TID 490) (10.0.0.38 executor driver): org.apache.spark.SparkFileNotFoundException: File file:/Users/nihal/IdeaProjects/hw2-delta-indexer/delta-output/documents/part-00005-1ef7837f-f925-4180-b944-a08331ab0d2f-c000.snappy.parquet does not exist
+It is possible the underlying files have been updated. You can explicitly invalidate the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by recreating the Dataset/DataFrame involved.
+	at org.apache.spark.sql.errors.QueryExecutionErrors$.readCurrentFileNotFoundError(QueryExecutionErrors.scala:780)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.org$apache$spark$sql$execution$datasources$FileScanRDD$$anon$$readCurrentFile(FileScanRDD.scala:220)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.nextIterator(FileScanRDD.scala:279)
+	at org.apache.spark.sql.execution.datasources.FileScanRDD$$anon$1.hasNext(FileScanRDD.scala:129)
+	at org.apache.spark.sql.execution.FileSourceScanExec$$anon$1.hasNext(DataSourceScanExec.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.columnartorow_nextBatch_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:43)
+	at org.apache.spark.sql.execution.SparkPlan.$anonfun$getByteArrayRdd$1(SparkPlan.scala:388)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2(RDD.scala:890)
+	at org.apache.spark.rdd.RDD.$anonfun$mapPartitionsInternal$2$adapted(RDD.scala:890)
+	at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:52)
+	at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:364)
+	at org.apache.spark.rdd.RDD.iterator(RDD.scala:328)
+	at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
+	at org.apache.spark.scheduler.Task.run(Task.scala:141)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+2025-10-23 19:24:46.662 [sbt-bg-threads-14] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
