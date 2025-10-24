@@ -897,3 +897,585 @@ It is possible the underlying files have been updated. You can explicitly invali
 2025-10-23 20:03:01.972 [pool-1-thread-1-ScalaTest-running-TextChunkerTest] ERROR com.cs441.hw2.TextChunker$ - Invalid chunk size: 0
 2025-10-23 20:03:01.973 [pool-1-thread-1-ScalaTest-running-TextChunkerTest] ERROR com.cs441.hw2.TextChunker$ - Invalid chunk size: -10
 2025-10-23 20:03:01.973 [pool-1-thread-1-ScalaTest-running-TextChunkerTest] ERROR com.cs441.hw2.TextChunker$ - Invalid overlap: -5 (must be 0 <= overlap < chunkSize)
+2025-10-23 20:22:51.137 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 20:22:51.192 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 20:22:51.192 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 20:22:51.317 [sbt-bg-threads-1] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 20:22:51.963 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully with Delta Lake
+2025-10-23 20:22:52.299 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - No existing documents table found - returning empty DataFrame
+2025-10-23 20:22:53.026 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 20:22:53.026 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN: Processing entire corpus
+2025-10-23 20:22:53.026 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 20:22:53.026 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning documents...
+2025-10-23 20:22:53.026 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 20:22:53.027 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Found 4 PDF files
+2025-10-23 20:22:53.896 [Executor task launch worker for task 3.0 in stage 0.0 (TID 3)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:53.911 [Executor task launch worker for task 7.0 in stage 0.0 (TID 7)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:53.988 [Executor task launch worker for task 7.0 in stage 0.0 (TID 7)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:22:54.027 [Executor task launch worker for task 7.0 in stage 0.0 (TID 7)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:22:54.163 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Successfully processed 4 documents
+2025-10-23 20:22:54.218 [Executor task launch worker for task 3.0 in stage 3.0 (TID 12)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:54.252 [Executor task launch worker for task 7.0 in stage 3.0 (TID 16)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:54.289 [Executor task launch worker for task 7.0 in stage 3.0 (TID 16)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:22:54.321 [Executor task launch worker for task 7.0 in stage 3.0 (TID 16)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:22:54.382 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Scanned 4 documents
+2025-10-23 20:22:54.382 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 2: Chunking documents...
+2025-10-23 20:22:54.382 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalChunker - Chunking documents with chunk size 1000 and overlap 100
+2025-10-23 20:22:54.418 [Executor task launch worker for task 3.0 in stage 6.0 (TID 21)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:54.455 [Executor task launch worker for task 7.0 in stage 6.0 (TID 25)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:54.505 [Executor task launch worker for task 7.0 in stage 6.0 (TID 25)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:22:54.530 [Executor task launch worker for task 7.0 in stage 6.0 (TID 25)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:22:54.585 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalChunker - Chunking 4 documents
+2025-10-23 20:22:54.838 [Executor task launch worker for task 3.0 in stage 9.0 (TID 30)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:54.840 [Executor task launch worker for task 7.0 in stage 9.0 (TID 34)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:54.878 [Executor task launch worker for task 7.0 in stage 9.0 (TID 34)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:22:54.898 [Executor task launch worker for task 7.0 in stage 9.0 (TID 34)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:22:54.951 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalChunker - Created 145 chunks from 4 documents
+2025-10-23 20:22:55.004 [Executor task launch worker for task 3.0 in stage 12.0 (TID 39)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:55.007 [Executor task launch worker for task 7.0 in stage 12.0 (TID 43)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:55.042 [Executor task launch worker for task 7.0 in stage 12.0 (TID 43)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:22:55.065 [Executor task launch worker for task 7.0 in stage 12.0 (TID 43)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:22:55.118 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Created 145 chunks
+2025-10-23 20:22:55.118 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 3: Generating embeddings...
+2025-10-23 20:22:55.118 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalEmbedder - Starting incremental embedding generation
+2025-10-23 20:22:55.120 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalEmbedder - No existing embeddings - generating for all chunks
+2025-10-23 20:22:55.162 [Executor task launch worker for task 7.0 in stage 15.0 (TID 52)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:55.163 [Executor task launch worker for task 3.0 in stage 15.0 (TID 48)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:55.195 [Executor task launch worker for task 7.0 in stage 15.0 (TID 52)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:22:55.215 [Executor task launch worker for task 7.0 in stage 15.0 (TID 52)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:22:55.263 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalEmbedder - Generating embeddings for 145 new chunks
+2025-10-23 20:22:55.340 [Executor task launch worker for task 7.0 in stage 18.0 (TID 61)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:55.344 [Executor task launch worker for task 3.0 in stage 18.0 (TID 57)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:22:55.386 [Executor task launch worker for task 7.0 in stage 18.0 (TID 61)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:22:55.405 [Executor task launch worker for task 7.0 in stage 18.0 (TID 61)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:22:55.656 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:22:58.636 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:00.169 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:01.654 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:03.275 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:04.803 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:06.225 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:07.677 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:09.145 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:11.046 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 1 chunks
+2025-10-23 20:23:11.186 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalEmbedder - Successfully generated 145 embeddings out of 145 chunks
+2025-10-23 20:23:11.224 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:12.929 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:14.419 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:15.939 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:17.621 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:19.204 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:20.676 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:22.180 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:23.725 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:25.735 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 1 chunks
+2025-10-23 20:23:25.866 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Generated 145 embeddings
+2025-10-23 20:23:25.866 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 4: Saving to storage...
+2025-10-23 20:23:25.934 [Executor task launch worker for task 3.0 in stage 29.0 (TID 69)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:23:25.947 [Executor task launch worker for task 7.0 in stage 29.0 (TID 73)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:23:26.012 [Executor task launch worker for task 7.0 in stage 29.0 (TID 73)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:23:26.056 [Executor task launch worker for task 7.0 in stage 29.0 (TID 73)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:23:26.140 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Saving 4 documents to Delta table: delta-output/documents
+2025-10-23 20:23:26.731 [Executor task launch worker for task 7.0 in stage 32.0 (TID 82)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:23:26.740 [Executor task launch worker for task 3.0 in stage 32.0 (TID 78)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:23:26.772 [Executor task launch worker for task 7.0 in stage 32.0 (TID 82)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:23:26.823 [Executor task launch worker for task 7.0 in stage 32.0 (TID 82)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:23:27.899 [sbt-bg-threads-1] WARN  o.a.spark.sql.catalyst.util.package - Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+2025-10-23 20:23:28.722 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Documents saved successfully to Delta Lake
+2025-10-23 20:23:28.755 [Executor task launch worker for task 7.0 in stage 40.0 (TID 143)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:23:28.756 [Executor task launch worker for task 3.0 in stage 40.0 (TID 139)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:23:28.801 [Executor task launch worker for task 7.0 in stage 40.0 (TID 143)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:23:28.822 [Executor task launch worker for task 7.0 in stage 40.0 (TID 143)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:23:28.869 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Saving 145 chunks to Delta table: delta-output/chunks
+2025-10-23 20:23:28.957 [Executor task launch worker for task 3.0 in stage 43.0 (TID 148)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:23:28.958 [Executor task launch worker for task 7.0 in stage 43.0 (TID 152)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 20:23:28.993 [Executor task launch worker for task 7.0 in stage 43.0 (TID 152)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 20:23:29.011 [Executor task launch worker for task 7.0 in stage 43.0 (TID 152)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 20:23:29.747 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Chunks saved successfully to Delta Lake
+2025-10-23 20:23:29.763 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:31.374 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:32.925 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:34.476 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:36.241 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:37.878 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:39.374 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:40.927 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:42.503 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:44.570 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 1 chunks
+2025-10-23 20:23:44.703 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Saving 145 embeddings to Delta table: delta-output/embeddings
+2025-10-23 20:23:44.849 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:46.550 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:48.179 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:49.803 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:51.576 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:53.246 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:54.805 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:56.400 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:23:58.005 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 20:24:00.107 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 1 chunks
+2025-10-23 20:24:00.874 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Embeddings saved successfully to Delta Lake
+2025-10-23 20:24:00.875 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 20:24:00.875 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN COMPLETE
+2025-10-23 20:24:00.875 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Documents: 4 | Chunks: 145 | Embeddings: 145
+2025-10-23 20:24:00.875 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 20:24:00.875 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 20:24:01.138 [Thread-1] ERROR o.apache.hadoop.conf.Configuration - error parsing conf core-default.xml
+java.nio.file.NoSuchFileException: /Users/nihal/IdeaProjects/hw2-delta-indexer/target/bg-jobs/sbt_6ae2d07e/target/4a15681b/359669fc/hadoop-client-api-3.3.4.jar
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:92)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:116)
+	at java.base/sun.nio.fs.UnixFileAttributeViews$Basic.readAttributes(UnixFileAttributeViews.java:55)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.readAttributes(UnixFileSystemProvider.java:149)
+	at java.base/java.nio.file.Files.readAttributes(Files.java:1764)
+	at java.base/java.util.zip.ZipFile$Source.get(ZipFile.java:1420)
+	at java.base/java.util.zip.ZipFile$CleanableResource.<init>(ZipFile.java:841)
+	at java.base/java.util.zip.ZipFile$CleanableResource$FinalizableResource.<init>(ZipFile.java:867)
+	at java.base/java.util.zip.ZipFile$CleanableResource.get(ZipFile.java:856)
+	at java.base/java.util.zip.ZipFile.<init>(ZipFile.java:258)
+	at java.base/java.util.zip.ZipFile.<init>(ZipFile.java:187)
+	at java.base/java.util.jar.JarFile.<init>(JarFile.java:348)
+	at java.base/sun.net.www.protocol.jar.URLJarFile.<init>(URLJarFile.java:103)
+	at java.base/sun.net.www.protocol.jar.URLJarFile.getJarFile(URLJarFile.java:72)
+	at java.base/sun.net.www.protocol.jar.JarFileFactory.get(JarFileFactory.java:99)
+	at java.base/sun.net.www.protocol.jar.JarURLConnection.connect(JarURLConnection.java:125)
+	at java.base/sun.net.www.protocol.jar.JarURLConnection.getInputStream(JarURLConnection.java:155)
+	at org.apache.hadoop.conf.Configuration.parse(Configuration.java:3009)
+	at org.apache.hadoop.conf.Configuration.getStreamReader(Configuration.java:3105)
+	at org.apache.hadoop.conf.Configuration.loadResource(Configuration.java:3063)
+	at org.apache.hadoop.conf.Configuration.loadResources(Configuration.java:3036)
+	at org.apache.hadoop.conf.Configuration.loadProps(Configuration.java:2914)
+	at org.apache.hadoop.conf.Configuration.getProps(Configuration.java:2896)
+	at org.apache.hadoop.conf.Configuration.get(Configuration.java:1246)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1863)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1840)
+	at org.apache.hadoop.util.ShutdownHookManager.getShutdownTimeout(ShutdownHookManager.java:183)
+	at org.apache.hadoop.util.ShutdownHookManager.shutdownExecutor(ShutdownHookManager.java:145)
+	at org.apache.hadoop.util.ShutdownHookManager.access$300(ShutdownHookManager.java:65)
+	at org.apache.hadoop.util.ShutdownHookManager$1.run(ShutdownHookManager.java:102)
+2025-10-23 22:22:35.872 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 22:22:35.931 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 22:22:35.932 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 22:22:36.125 [sbt-bg-threads-1] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 22:22:36.775 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully with Delta Lake
+2025-10-23 22:22:38.986 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Loading documents from Delta table: delta-output/documents
+2025-10-23 22:22:39.280 [sbt-bg-threads-1] WARN  o.a.spark.sql.catalyst.util.package - Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+2025-10-23 22:22:40.663 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Loaded 4 documents from Delta Lake
+2025-10-23 22:22:41.461 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 22:22:41.461 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - INCREMENTAL RUN: Processing changes only
+2025-10-23 22:22:41.461 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 22:22:41.462 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning current documents...
+2025-10-23 22:22:41.462 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 22:22:41.463 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Found 4 PDF files
+2025-10-23 22:22:41.691 [Executor task launch worker for task 3.0 in stage 15.0 (TID 158)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:41.707 [Executor task launch worker for task 7.0 in stage 15.0 (TID 162)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:41.777 [Executor task launch worker for task 7.0 in stage 15.0 (TID 162)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:41.816 [Executor task launch worker for task 7.0 in stage 15.0 (TID 162)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:41.886 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Successfully processed 4 documents
+2025-10-23 22:22:41.924 [Executor task launch worker for task 3.0 in stage 18.0 (TID 167)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:41.933 [Executor task launch worker for task 7.0 in stage 18.0 (TID 171)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:41.984 [Executor task launch worker for task 7.0 in stage 18.0 (TID 171)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:42.013 [Executor task launch worker for task 7.0 in stage 18.0 (TID 171)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:42.077 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Current corpus: 4 documents
+2025-10-23 22:22:42.078 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 2: Loading previous state...
+2025-10-23 22:22:42.078 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Loading documents from Delta table: delta-output/documents
+2025-10-23 22:22:42.175 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Loaded 4 documents from Delta Lake
+2025-10-23 22:22:42.277 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Previous state: 4 documents
+2025-10-23 22:22:42.277 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 3: Detecting changes...
+2025-10-23 22:22:42.278 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Detecting document changes...
+2025-10-23 22:22:42.906 [Executor task launch worker for task 7.0 in stage 37.0 (TID 387)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:42.912 [Executor task launch worker for task 3.0 in stage 37.0 (TID 383)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:42.941 [Executor task launch worker for task 7.0 in stage 37.0 (TID 387)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:42.962 [Executor task launch worker for task 7.0 in stage 37.0 (TID 387)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:43.009 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Found 0 new documents
+2025-10-23 22:22:43.227 [Executor task launch worker for task 3.0 in stage 43.0 (TID 446)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:43.234 [Executor task launch worker for task 7.0 in stage 43.0 (TID 450)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:43.263 [Executor task launch worker for task 7.0 in stage 43.0 (TID 450)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:43.283 [Executor task launch worker for task 7.0 in stage 43.0 (TID 450)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:43.328 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Found 0 changed documents
+2025-10-23 22:22:43.542 [Executor task launch worker for task 3.0 in stage 49.0 (TID 509)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:43.549 [Executor task launch worker for task 7.0 in stage 49.0 (TID 513)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:43.578 [Executor task launch worker for task 7.0 in stage 49.0 (TID 513)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:43.596 [Executor task launch worker for task 7.0 in stage 49.0 (TID 513)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:43.636 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Found 4 unchanged documents
+2025-10-23 22:22:43.787 [Executor task launch worker for task 3.0 in stage 55.0 (TID 572)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:43.800 [Executor task launch worker for task 7.0 in stage 55.0 (TID 576)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:43.826 [Executor task launch worker for task 7.0 in stage 55.0 (TID 576)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:43.846 [Executor task launch worker for task 7.0 in stage 55.0 (TID 576)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:43.924 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Found 0 deleted documents
+2025-10-23 22:22:43.947 [Executor task launch worker for task 3.0 in stage 63.0 (TID 583)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:43.953 [Executor task launch worker for task 7.0 in stage 63.0 (TID 587)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:44.019 [Executor task launch worker for task 7.0 in stage 63.0 (TID 587)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:44.043 [Executor task launch worker for task 7.0 in stage 63.0 (TID 587)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:44.162 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Delta summary: 4 previous docs, 4 current docs
+2025-10-23 22:22:44.162 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector -   New: 0, Changed: 0, Unchanged: 4, Deleted: 0
+2025-10-23 22:22:44.288 [Executor task launch worker for task 3.0 in stage 74.0 (TID 697)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:44.292 [Executor task launch worker for task 7.0 in stage 74.0 (TID 701)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:44.318 [Executor task launch worker for task 7.0 in stage 74.0 (TID 701)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:44.337 [Executor task launch worker for task 7.0 in stage 74.0 (TID 701)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:44.567 [Executor task launch worker for task 3.0 in stage 80.0 (TID 760)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:44.571 [Executor task launch worker for task 7.0 in stage 80.0 (TID 764)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:44.608 [Executor task launch worker for task 7.0 in stage 80.0 (TID 764)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:44.627 [Executor task launch worker for task 7.0 in stage 80.0 (TID 764)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:44.795 [Executor task launch worker for task 7.0 in stage 86.0 (TID 827)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:44.796 [Executor task launch worker for task 3.0 in stage 86.0 (TID 823)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:44.830 [Executor task launch worker for task 7.0 in stage 86.0 (TID 827)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:44.848 [Executor task launch worker for task 7.0 in stage 86.0 (TID 827)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:45.021 [Executor task launch worker for task 3.0 in stage 92.0 (TID 886)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:45.033 [Executor task launch worker for task 7.0 in stage 92.0 (TID 890)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:45.110 [Executor task launch worker for task 7.0 in stage 92.0 (TID 890)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:45.128 [Executor task launch worker for task 7.0 in stage 92.0 (TID 890)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:45.182 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Delta stats: new -> 0, changed -> 0, unchanged -> 4, deleted -> 0
+2025-10-23 22:22:45.297 [Executor task launch worker for task 3.0 in stage 103.0 (TID 951)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:45.297 [Executor task launch worker for task 7.0 in stage 103.0 (TID 955)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:45.325 [Executor task launch worker for task 7.0 in stage 103.0 (TID 955)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:45.342 [Executor task launch worker for task 7.0 in stage 103.0 (TID 955)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:45.535 [Executor task launch worker for task 7.0 in stage 109.0 (TID 1018)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:45.537 [Executor task launch worker for task 3.0 in stage 109.0 (TID 1014)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:45.567 [Executor task launch worker for task 7.0 in stage 109.0 (TID 1018)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:45.584 [Executor task launch worker for task 7.0 in stage 109.0 (TID 1018)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:45.740 [Executor task launch worker for task 7.0 in stage 115.0 (TID 1081)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:45.740 [Executor task launch worker for task 3.0 in stage 115.0 (TID 1077)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:45.769 [Executor task launch worker for task 7.0 in stage 115.0 (TID 1081)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:45.789 [Executor task launch worker for task 7.0 in stage 115.0 (TID 1081)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:45.973 [Executor task launch worker for task 7.0 in stage 121.0 (TID 1144)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:45.976 [Executor task launch worker for task 3.0 in stage 121.0 (TID 1140)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:46.008 [Executor task launch worker for task 7.0 in stage 121.0 (TID 1144)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:46.026 [Executor task launch worker for task 7.0 in stage 121.0 (TID 1144)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:46.085 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Deduplication ratio: 100.00%
+2025-10-23 22:22:46.188 [Executor task launch worker for task 2.0 in stage 133.0 (TID 1205)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:46.232 [Executor task launch worker for task 2.0 in stage 134.0 (TID 1209)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:46.247 [Executor task launch worker for task 2.0 in stage 134.0 (TID 1209)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:46.259 [Executor task launch worker for task 2.0 in stage 134.0 (TID 1209)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:46.414 [Executor task launch worker for task 2.0 in stage 139.0 (TID 1267)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:46.458 [Executor task launch worker for task 2.0 in stage 140.0 (TID 1271)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:22:46.471 [Executor task launch worker for task 2.0 in stage 140.0 (TID 1271)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:22:46.483 [Executor task launch worker for task 2.0 in stage 140.0 (TID 1271)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:22:46.506 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - No changes detected. Nothing to process.
+2025-10-23 22:22:46.506 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 22:22:46.506 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 22:22:46.740 [Thread-1] ERROR o.apache.hadoop.conf.Configuration - error parsing conf core-default.xml
+java.nio.file.NoSuchFileException: /Users/nihal/IdeaProjects/hw2-delta-indexer/target/bg-jobs/sbt_7a7a35b4/target/4a15681b/359669fc/hadoop-client-api-3.3.4.jar
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:92)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:116)
+	at java.base/sun.nio.fs.UnixFileAttributeViews$Basic.readAttributes(UnixFileAttributeViews.java:55)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.readAttributes(UnixFileSystemProvider.java:149)
+	at java.base/java.nio.file.Files.readAttributes(Files.java:1764)
+	at java.base/java.util.zip.ZipFile$Source.get(ZipFile.java:1420)
+	at java.base/java.util.zip.ZipFile$CleanableResource.<init>(ZipFile.java:841)
+	at java.base/java.util.zip.ZipFile$CleanableResource$FinalizableResource.<init>(ZipFile.java:867)
+	at java.base/java.util.zip.ZipFile$CleanableResource.get(ZipFile.java:856)
+	at java.base/java.util.zip.ZipFile.<init>(ZipFile.java:258)
+	at java.base/java.util.zip.ZipFile.<init>(ZipFile.java:187)
+	at java.base/java.util.jar.JarFile.<init>(JarFile.java:348)
+	at java.base/sun.net.www.protocol.jar.URLJarFile.<init>(URLJarFile.java:103)
+	at java.base/sun.net.www.protocol.jar.URLJarFile.getJarFile(URLJarFile.java:72)
+	at java.base/sun.net.www.protocol.jar.JarFileFactory.get(JarFileFactory.java:99)
+	at java.base/sun.net.www.protocol.jar.JarURLConnection.connect(JarURLConnection.java:125)
+	at java.base/sun.net.www.protocol.jar.JarURLConnection.getInputStream(JarURLConnection.java:155)
+	at org.apache.hadoop.conf.Configuration.parse(Configuration.java:3009)
+	at org.apache.hadoop.conf.Configuration.getStreamReader(Configuration.java:3105)
+	at org.apache.hadoop.conf.Configuration.loadResource(Configuration.java:3063)
+	at org.apache.hadoop.conf.Configuration.loadResources(Configuration.java:3036)
+	at org.apache.hadoop.conf.Configuration.loadProps(Configuration.java:2914)
+	at org.apache.hadoop.conf.Configuration.getProps(Configuration.java:2896)
+	at org.apache.hadoop.conf.Configuration.get(Configuration.java:1246)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1863)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1840)
+	at org.apache.hadoop.util.ShutdownHookManager.getShutdownTimeout(ShutdownHookManager.java:183)
+	at org.apache.hadoop.util.ShutdownHookManager.shutdownExecutor(ShutdownHookManager.java:145)
+	at org.apache.hadoop.util.ShutdownHookManager.access$300(ShutdownHookManager.java:65)
+	at org.apache.hadoop.util.ShutdownHookManager$1.run(ShutdownHookManager.java:102)
+2025-10-23 22:24:38.557 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 22:24:38.616 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 22:24:38.617 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 22:24:38.741 [sbt-bg-threads-1] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 22:24:39.370 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully with Delta Lake
+2025-10-23 22:24:41.491 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Loading documents from Delta table: delta-output/documents
+2025-10-23 22:24:41.781 [sbt-bg-threads-1] WARN  o.a.spark.sql.catalyst.util.package - Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+2025-10-23 22:24:43.082 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Loaded 4 documents from Delta Lake
+2025-10-23 22:24:43.984 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 22:24:43.984 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - INCREMENTAL RUN: Processing changes only
+2025-10-23 22:24:43.984 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 22:24:43.984 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning current documents...
+2025-10-23 22:24:43.984 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 22:24:43.985 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Found 4 PDF files
+2025-10-23 22:24:44.180 [Executor task launch worker for task 3.0 in stage 15.0 (TID 158)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:44.193 [Executor task launch worker for task 7.0 in stage 15.0 (TID 162)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:44.274 [Executor task launch worker for task 7.0 in stage 15.0 (TID 162)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:44.308 [Executor task launch worker for task 7.0 in stage 15.0 (TID 162)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:44.429 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Successfully processed 4 documents
+2025-10-23 22:24:44.473 [Executor task launch worker for task 3.0 in stage 18.0 (TID 167)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:44.476 [Executor task launch worker for task 7.0 in stage 18.0 (TID 171)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:44.518 [Executor task launch worker for task 7.0 in stage 18.0 (TID 171)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:44.559 [Executor task launch worker for task 7.0 in stage 18.0 (TID 171)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:44.621 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Current corpus: 4 documents
+2025-10-23 22:24:44.621 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 2: Loading previous state...
+2025-10-23 22:24:44.621 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Loading documents from Delta table: delta-output/documents
+2025-10-23 22:24:44.720 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Loaded 4 documents from Delta Lake
+2025-10-23 22:24:44.827 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Previous state: 4 documents
+2025-10-23 22:24:44.827 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 3: Detecting changes...
+2025-10-23 22:24:44.827 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Detecting document changes...
+2025-10-23 22:24:45.503 [Executor task launch worker for task 7.0 in stage 37.0 (TID 387)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:45.503 [Executor task launch worker for task 3.0 in stage 37.0 (TID 383)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:45.542 [Executor task launch worker for task 7.0 in stage 37.0 (TID 387)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:45.564 [Executor task launch worker for task 7.0 in stage 37.0 (TID 387)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:45.624 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Found 0 new documents
+2025-10-23 22:24:45.824 [Executor task launch worker for task 7.0 in stage 43.0 (TID 450)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:45.825 [Executor task launch worker for task 3.0 in stage 43.0 (TID 446)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:45.857 [Executor task launch worker for task 7.0 in stage 43.0 (TID 450)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:45.875 [Executor task launch worker for task 7.0 in stage 43.0 (TID 450)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:45.915 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Found 0 changed documents
+2025-10-23 22:24:46.131 [Executor task launch worker for task 7.0 in stage 49.0 (TID 513)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:46.131 [Executor task launch worker for task 3.0 in stage 49.0 (TID 509)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:46.164 [Executor task launch worker for task 7.0 in stage 49.0 (TID 513)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:46.181 [Executor task launch worker for task 7.0 in stage 49.0 (TID 513)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:46.223 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Found 4 unchanged documents
+2025-10-23 22:24:46.393 [Executor task launch worker for task 3.0 in stage 55.0 (TID 572)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:46.396 [Executor task launch worker for task 7.0 in stage 55.0 (TID 576)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:46.422 [Executor task launch worker for task 7.0 in stage 55.0 (TID 576)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:46.441 [Executor task launch worker for task 7.0 in stage 55.0 (TID 576)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:46.512 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Found 0 deleted documents
+2025-10-23 22:24:46.530 [Executor task launch worker for task 7.0 in stage 63.0 (TID 587)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:46.531 [Executor task launch worker for task 3.0 in stage 63.0 (TID 583)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:46.563 [Executor task launch worker for task 7.0 in stage 63.0 (TID 587)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:46.598 [Executor task launch worker for task 7.0 in stage 63.0 (TID 587)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:46.752 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector - Delta summary: 4 previous docs, 4 current docs
+2025-10-23 22:24:46.753 [sbt-bg-threads-1] INFO  com.cs441.hw2.DeltaDetector -   New: 0, Changed: 0, Unchanged: 4, Deleted: 0
+2025-10-23 22:24:46.906 [Executor task launch worker for task 7.0 in stage 74.0 (TID 701)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:46.907 [Executor task launch worker for task 3.0 in stage 74.0 (TID 697)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:46.933 [Executor task launch worker for task 7.0 in stage 74.0 (TID 701)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:46.951 [Executor task launch worker for task 7.0 in stage 74.0 (TID 701)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:47.155 [Executor task launch worker for task 3.0 in stage 80.0 (TID 760)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.160 [Executor task launch worker for task 7.0 in stage 80.0 (TID 764)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.187 [Executor task launch worker for task 7.0 in stage 80.0 (TID 764)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:47.206 [Executor task launch worker for task 7.0 in stage 80.0 (TID 764)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:47.362 [Executor task launch worker for task 7.0 in stage 86.0 (TID 827)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.365 [Executor task launch worker for task 3.0 in stage 86.0 (TID 823)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.388 [Executor task launch worker for task 7.0 in stage 86.0 (TID 827)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:47.406 [Executor task launch worker for task 7.0 in stage 86.0 (TID 827)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:47.572 [Executor task launch worker for task 3.0 in stage 92.0 (TID 886)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.575 [Executor task launch worker for task 7.0 in stage 92.0 (TID 890)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.603 [Executor task launch worker for task 7.0 in stage 92.0 (TID 890)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:47.617 [Executor task launch worker for task 7.0 in stage 92.0 (TID 890)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:47.673 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Delta stats: new -> 0, changed -> 0, unchanged -> 4, deleted -> 0
+2025-10-23 22:24:47.774 [Executor task launch worker for task 7.0 in stage 103.0 (TID 955)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.777 [Executor task launch worker for task 3.0 in stage 103.0 (TID 951)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.793 [Executor task launch worker for task 7.0 in stage 103.0 (TID 955)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:47.806 [Executor task launch worker for task 7.0 in stage 103.0 (TID 955)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:47.951 [Executor task launch worker for task 3.0 in stage 109.0 (TID 1014)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.958 [Executor task launch worker for task 7.0 in stage 109.0 (TID 1018)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:47.973 [Executor task launch worker for task 7.0 in stage 109.0 (TID 1018)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:47.987 [Executor task launch worker for task 7.0 in stage 109.0 (TID 1018)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:48.157 [Executor task launch worker for task 7.0 in stage 115.0 (TID 1081)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:48.159 [Executor task launch worker for task 3.0 in stage 115.0 (TID 1077)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:48.175 [Executor task launch worker for task 7.0 in stage 115.0 (TID 1081)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:48.188 [Executor task launch worker for task 7.0 in stage 115.0 (TID 1081)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:48.322 [Executor task launch worker for task 3.0 in stage 121.0 (TID 1140)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:48.330 [Executor task launch worker for task 7.0 in stage 121.0 (TID 1144)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:48.343 [Executor task launch worker for task 7.0 in stage 121.0 (TID 1144)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:48.355 [Executor task launch worker for task 7.0 in stage 121.0 (TID 1144)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:48.400 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Deduplication ratio: 100.00%
+2025-10-23 22:24:48.526 [Executor task launch worker for task 2.0 in stage 133.0 (TID 1205)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:48.572 [Executor task launch worker for task 2.0 in stage 134.0 (TID 1209)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:48.585 [Executor task launch worker for task 2.0 in stage 134.0 (TID 1209)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:48.597 [Executor task launch worker for task 2.0 in stage 134.0 (TID 1209)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:48.719 [Executor task launch worker for task 2.0 in stage 139.0 (TID 1267)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:48.760 [Executor task launch worker for task 2.0 in stage 140.0 (TID 1271)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 22:24:48.773 [Executor task launch worker for task 2.0 in stage 140.0 (TID 1271)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 22:24:48.785 [Executor task launch worker for task 2.0 in stage 140.0 (TID 1271)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 22:24:48.807 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - No changes detected. Nothing to process.
+2025-10-23 22:24:48.807 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 22:24:48.807 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 22:24:50.086 [Thread-2] ERROR o.apache.hadoop.conf.Configuration - error parsing conf core-default.xml
+java.nio.file.NoSuchFileException: /Users/nihal/IdeaProjects/hw2-delta-indexer/target/bg-jobs/sbt_ae9a104c/target/4a15681b/359669fc/hadoop-client-api-3.3.4.jar
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:92)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:116)
+	at java.base/sun.nio.fs.UnixFileAttributeViews$Basic.readAttributes(UnixFileAttributeViews.java:55)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.readAttributes(UnixFileSystemProvider.java:149)
+	at java.base/java.nio.file.Files.readAttributes(Files.java:1764)
+	at java.base/java.util.zip.ZipFile$Source.get(ZipFile.java:1420)
+	at java.base/java.util.zip.ZipFile$CleanableResource.<init>(ZipFile.java:841)
+	at java.base/java.util.zip.ZipFile$CleanableResource$FinalizableResource.<init>(ZipFile.java:867)
+	at java.base/java.util.zip.ZipFile$CleanableResource.get(ZipFile.java:856)
+	at java.base/java.util.zip.ZipFile.<init>(ZipFile.java:258)
+	at java.base/java.util.zip.ZipFile.<init>(ZipFile.java:187)
+	at java.base/java.util.jar.JarFile.<init>(JarFile.java:348)
+	at java.base/sun.net.www.protocol.jar.URLJarFile.<init>(URLJarFile.java:103)
+	at java.base/sun.net.www.protocol.jar.URLJarFile.getJarFile(URLJarFile.java:72)
+	at java.base/sun.net.www.protocol.jar.JarFileFactory.get(JarFileFactory.java:99)
+	at java.base/sun.net.www.protocol.jar.JarURLConnection.connect(JarURLConnection.java:125)
+	at java.base/sun.net.www.protocol.jar.JarURLConnection.getInputStream(JarURLConnection.java:155)
+	at org.apache.hadoop.conf.Configuration.parse(Configuration.java:3009)
+	at org.apache.hadoop.conf.Configuration.getStreamReader(Configuration.java:3105)
+	at org.apache.hadoop.conf.Configuration.loadResource(Configuration.java:3063)
+	at org.apache.hadoop.conf.Configuration.loadResources(Configuration.java:3036)
+	at org.apache.hadoop.conf.Configuration.loadProps(Configuration.java:2914)
+	at org.apache.hadoop.conf.Configuration.getProps(Configuration.java:2896)
+	at org.apache.hadoop.conf.Configuration.get(Configuration.java:1246)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1863)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1840)
+	at org.apache.hadoop.util.ShutdownHookManager.getShutdownTimeout(ShutdownHookManager.java:183)
+	at org.apache.hadoop.util.ShutdownHookManager.shutdownExecutor(ShutdownHookManager.java:145)
+	at org.apache.hadoop.util.ShutdownHookManager.access$300(ShutdownHookManager.java:65)
+	at org.apache.hadoop.util.ShutdownHookManager$1.run(ShutdownHookManager.java:102)
+2025-10-23 23:26:09.630 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 23:26:09.814 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 23:26:09.814 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 23:26:09.924 [sbt-bg-threads-1] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 23:34:02.961 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Initializing Spark Delta Indexer
+2025-10-23 23:34:03.170 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Your hostname, Nihals-MacBook-Air.local resolves to a loopback address: 127.0.0.1; using 10.0.0.38 instead (on interface en0)
+2025-10-23 23:34:03.170 [sbt-bg-threads-1] WARN  org.apache.spark.util.Utils - Set SPARK_LOCAL_IP if you need to bind to another address
+2025-10-23 23:34:03.289 [sbt-bg-threads-1] WARN  o.a.hadoop.util.NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2025-10-23 23:34:03.798 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Spark Delta Indexer initialized successfully with Delta Lake
+2025-10-23 23:34:04.118 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - No existing documents table found - returning empty DataFrame
+2025-10-23 23:34:04.842 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 23:34:04.842 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN: Processing entire corpus
+2025-10-23 23:34:04.842 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 23:34:04.842 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 1: Scanning documents...
+2025-10-23 23:34:04.842 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Scanning directory for PDFs: test-corpus
+2025-10-23 23:34:04.844 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Found 4 PDF files
+2025-10-23 23:34:05.586 [Executor task launch worker for task 3.0 in stage 0.0 (TID 3)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:05.598 [Executor task launch worker for task 7.0 in stage 0.0 (TID 7)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:05.685 [Executor task launch worker for task 7.0 in stage 0.0 (TID 7)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:05.731 [Executor task launch worker for task 7.0 in stage 0.0 (TID 7)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:05.857 [sbt-bg-threads-1] INFO  com.cs441.hw2.DocumentScanner - Successfully processed 4 documents
+2025-10-23 23:34:05.897 [Executor task launch worker for task 3.0 in stage 3.0 (TID 12)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:05.907 [Executor task launch worker for task 7.0 in stage 3.0 (TID 16)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:05.952 [Executor task launch worker for task 7.0 in stage 3.0 (TID 16)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:05.979 [Executor task launch worker for task 7.0 in stage 3.0 (TID 16)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:06.052 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Scanned 4 documents
+2025-10-23 23:34:06.052 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 2: Chunking documents...
+2025-10-23 23:34:06.052 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalChunker - Chunking documents with chunk size 1000 and overlap 100
+2025-10-23 23:34:06.086 [Executor task launch worker for task 3.0 in stage 6.0 (TID 21)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:06.103 [Executor task launch worker for task 7.0 in stage 6.0 (TID 25)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:06.140 [Executor task launch worker for task 7.0 in stage 6.0 (TID 25)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:06.162 [Executor task launch worker for task 7.0 in stage 6.0 (TID 25)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:06.215 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalChunker - Chunking 4 documents
+2025-10-23 23:34:06.466 [Executor task launch worker for task 3.0 in stage 9.0 (TID 30)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:06.469 [Executor task launch worker for task 7.0 in stage 9.0 (TID 34)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:06.512 [Executor task launch worker for task 7.0 in stage 9.0 (TID 34)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:06.534 [Executor task launch worker for task 7.0 in stage 9.0 (TID 34)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:06.596 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalChunker - Created 145 chunks from 4 documents
+2025-10-23 23:34:06.638 [Executor task launch worker for task 3.0 in stage 12.0 (TID 39)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:06.647 [Executor task launch worker for task 7.0 in stage 12.0 (TID 43)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:06.688 [Executor task launch worker for task 7.0 in stage 12.0 (TID 43)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:06.714 [Executor task launch worker for task 7.0 in stage 12.0 (TID 43)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:06.770 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Created 145 chunks
+2025-10-23 23:34:06.770 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 3: Generating embeddings...
+2025-10-23 23:34:06.770 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalEmbedder - Starting incremental embedding generation
+2025-10-23 23:34:06.773 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalEmbedder - No existing embeddings - generating for all chunks
+2025-10-23 23:34:06.820 [Executor task launch worker for task 3.0 in stage 15.0 (TID 48)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:06.821 [Executor task launch worker for task 7.0 in stage 15.0 (TID 52)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:06.858 [Executor task launch worker for task 7.0 in stage 15.0 (TID 52)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:06.881 [Executor task launch worker for task 7.0 in stage 15.0 (TID 52)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:06.939 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalEmbedder - Generating embeddings for 145 new chunks
+2025-10-23 23:34:07.040 [Executor task launch worker for task 3.0 in stage 18.0 (TID 57)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:07.042 [Executor task launch worker for task 7.0 in stage 18.0 (TID 61)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:07.080 [Executor task launch worker for task 7.0 in stage 18.0 (TID 61)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:07.098 [Executor task launch worker for task 7.0 in stage 18.0 (TID 61)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:07.310 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:09.873 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:11.409 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:12.909 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:14.539 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:16.081 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:17.501 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:18.983 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:20.488 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:22.479 [Executor task launch worker for task 0.0 in stage 20.0 (TID 62)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 1 chunks
+2025-10-23 23:34:22.617 [sbt-bg-threads-1] INFO  com.cs441.hw2.IncrementalEmbedder - Successfully generated 145 embeddings out of 145 chunks
+2025-10-23 23:34:22.652 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:24.270 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:25.866 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:27.443 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:29.222 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:30.925 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:32.460 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:34.070 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:35.772 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:38.265 [Executor task launch worker for task 0.0 in stage 25.0 (TID 64)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 1 chunks
+2025-10-23 23:34:38.494 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Generated 145 embeddings
+2025-10-23 23:34:38.496 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Step 4: Saving to storage...
+2025-10-23 23:34:38.578 [Executor task launch worker for task 7.0 in stage 29.0 (TID 73)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:38.578 [Executor task launch worker for task 3.0 in stage 29.0 (TID 69)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:38.652 [Executor task launch worker for task 7.0 in stage 29.0 (TID 73)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:38.707 [Executor task launch worker for task 7.0 in stage 29.0 (TID 73)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:38.800 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Saving 4 documents to Delta table: delta-output/documents
+2025-10-23 23:34:39.453 [Executor task launch worker for task 7.0 in stage 32.0 (TID 82)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:39.454 [Executor task launch worker for task 3.0 in stage 32.0 (TID 78)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:39.596 [Executor task launch worker for task 7.0 in stage 32.0 (TID 82)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:39.646 [Executor task launch worker for task 7.0 in stage 32.0 (TID 82)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:40.991 [sbt-bg-threads-1] WARN  o.a.spark.sql.catalyst.util.package - Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+2025-10-23 23:34:41.833 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Documents saved successfully to Delta Lake
+2025-10-23 23:34:41.868 [Executor task launch worker for task 7.0 in stage 40.0 (TID 143)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:41.877 [Executor task launch worker for task 3.0 in stage 40.0 (TID 139)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:41.911 [Executor task launch worker for task 7.0 in stage 40.0 (TID 143)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:41.934 [Executor task launch worker for task 7.0 in stage 40.0 (TID 143)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:41.984 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Saving 145 chunks to Delta table: delta-output/chunks
+2025-10-23 23:34:42.070 [Executor task launch worker for task 3.0 in stage 43.0 (TID 148)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:42.073 [Executor task launch worker for task 7.0 in stage 43.0 (TID 152)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for circlecopyrt (13) in font WEIJUK+CMSY9
+2025-10-23 23:34:42.107 [Executor task launch worker for task 7.0 in stage 43.0 (TID 152)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for epsilon1 (15) in font IREJYE+CMMI10
+2025-10-23 23:34:42.128 [Executor task launch worker for task 7.0 in stage 43.0 (TID 152)] WARN  o.a.pdfbox.pdmodel.font.PDSimpleFont - No Unicode mapping for summationtext (80) in font LBWBDW+CMEX10
+2025-10-23 23:34:42.868 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Chunks saved successfully to Delta Lake
+2025-10-23 23:34:42.885 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:44.436 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:46.056 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:47.816 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:49.929 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:51.789 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:53.370 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:55.007 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:57.094 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:34:59.281 [Executor task launch worker for task 0.0 in stage 54.0 (TID 207)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 1 chunks
+2025-10-23 23:34:59.423 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Saving 145 embeddings to Delta table: delta-output/embeddings
+2025-10-23 23:34:59.625 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:35:01.304 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:35:02.994 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:35:04.662 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:35:06.558 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:35:08.359 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:35:09.949 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:35:11.592 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:35:13.312 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 16 chunks
+2025-10-23 23:35:15.495 [Executor task launch worker for task 0.0 in stage 59.0 (TID 209)] INFO  com.cs441.hw2.IncrementalEmbedder$ - Processing batch of 1 chunks
+2025-10-23 23:35:16.430 [sbt-bg-threads-1] INFO  com.cs441.hw2.StorageLayer - Embeddings saved successfully to Delta Lake
+2025-10-23 23:35:16.430 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 23:35:16.430 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - FIRST RUN COMPLETE
+2025-10-23 23:35:16.430 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Documents: 4 | Chunks: 145 | Embeddings: 145
+2025-10-23 23:35:16.431 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - ================================================================================
+2025-10-23 23:35:16.431 [sbt-bg-threads-1] INFO  com.cs441.hw2.SparkDeltaIndexer - Stopping Spark session
+2025-10-23 23:35:16.717 [Thread-1] ERROR o.apache.hadoop.conf.Configuration - error parsing conf core-default.xml
+java.nio.file.NoSuchFileException: /Users/nihal/IdeaProjects/hw2-delta-indexer/target/bg-jobs/sbt_5c9d06dc/target/3d9c8f1c/dbc63e3b/hadoop-client-api-3.3.2.jar
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:92)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:116)
+	at java.base/sun.nio.fs.UnixFileAttributeViews$Basic.readAttributes(UnixFileAttributeViews.java:55)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.readAttributes(UnixFileSystemProvider.java:149)
+	at java.base/java.nio.file.Files.readAttributes(Files.java:1764)
+	at java.base/java.util.zip.ZipFile$Source.get(ZipFile.java:1420)
+	at java.base/java.util.zip.ZipFile$CleanableResource.<init>(ZipFile.java:841)
+	at java.base/java.util.zip.ZipFile$CleanableResource$FinalizableResource.<init>(ZipFile.java:867)
+	at java.base/java.util.zip.ZipFile$CleanableResource.get(ZipFile.java:856)
+	at java.base/java.util.zip.ZipFile.<init>(ZipFile.java:258)
+	at java.base/java.util.zip.ZipFile.<init>(ZipFile.java:187)
+	at java.base/java.util.jar.JarFile.<init>(JarFile.java:348)
+	at java.base/sun.net.www.protocol.jar.URLJarFile.<init>(URLJarFile.java:103)
+	at java.base/sun.net.www.protocol.jar.URLJarFile.getJarFile(URLJarFile.java:72)
+	at java.base/sun.net.www.protocol.jar.JarFileFactory.get(JarFileFactory.java:99)
+	at java.base/sun.net.www.protocol.jar.JarURLConnection.connect(JarURLConnection.java:125)
+	at java.base/sun.net.www.protocol.jar.JarURLConnection.getInputStream(JarURLConnection.java:155)
+	at org.apache.hadoop.conf.Configuration.parse(Configuration.java:3009)
+	at org.apache.hadoop.conf.Configuration.getStreamReader(Configuration.java:3105)
+	at org.apache.hadoop.conf.Configuration.loadResource(Configuration.java:3063)
+	at org.apache.hadoop.conf.Configuration.loadResources(Configuration.java:3036)
+	at org.apache.hadoop.conf.Configuration.loadProps(Configuration.java:2914)
+	at org.apache.hadoop.conf.Configuration.getProps(Configuration.java:2896)
+	at org.apache.hadoop.conf.Configuration.get(Configuration.java:1246)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1863)
+	at org.apache.hadoop.conf.Configuration.getTimeDuration(Configuration.java:1840)
+	at org.apache.hadoop.util.ShutdownHookManager.getShutdownTimeout(ShutdownHookManager.java:183)
+	at org.apache.hadoop.util.ShutdownHookManager.shutdownExecutor(ShutdownHookManager.java:145)
+	at org.apache.hadoop.util.ShutdownHookManager.access$300(ShutdownHookManager.java:65)
+	at org.apache.hadoop.util.ShutdownHookManager$1.run(ShutdownHookManager.java:102)

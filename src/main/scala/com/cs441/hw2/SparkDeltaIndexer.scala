@@ -19,13 +19,20 @@ class SparkDeltaIndexer(config: Configuration.DeltaIndexerConfig) extends LazyLo
   def initialize(): Unit = {
     logger.info("Initializing Spark Delta Indexer")
 
-    // Create Spark session (without Delta Lake extensions for now)
+    // Create Spark session with Delta Lake extensions
     spark = SparkSession.builder()
       .appName(config.spark.appName)
       .master(config.spark.master)
+      .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+      .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
       .config("spark.sql.adaptive.enabled", "true")
       .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
+      // Disable Hadoop shutdown hook to prevent harmless cleanup errors
+      .config("spark.hadoop.fs.hdfs.impl.disable.cache", "true")
       .getOrCreate()
+
+    // Also disable the shutdown hook after session creation
+    spark.sparkContext.getConf.set("spark.hadoop.util.ShutdownHookManager.enable", "false")
 
     spark.sparkContext.setLogLevel("WARN")
 
@@ -36,7 +43,7 @@ class SparkDeltaIndexer(config: Configuration.DeltaIndexerConfig) extends LazyLo
     embedder = new IncrementalEmbedder(spark, config.embedding)
     storage = new StorageLayer(spark, config.outputDir)
 
-    logger.info("Spark Delta Indexer initialized successfully")
+    logger.info("Spark Delta Indexer initialized successfully with Delta Lake")
   }
 
   def runFirstTime(): Unit = {
