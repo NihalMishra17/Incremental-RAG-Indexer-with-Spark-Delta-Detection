@@ -1,9 +1,21 @@
+cat > .gitignore << 'EOF'
+# SBT/Scala
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+project/target/
+project/project/
+.bsp/
+.scala_dependencies
+.cache
+.history
+.lib/
+dist/*
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
 
-### IntelliJ IDEA ###
+# IDE - IntelliJ IDEA
+.idea/
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
@@ -15,7 +27,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### Eclipse ###
+# IDE - Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -27,7 +39,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### NetBeans ###
+# IDE - NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -37,11 +49,42 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+# IDE - VS Code
 .vscode/
+.metals/
+.bloop/
 
-### Mac OS ###
+# OS
 .DS_Store
+.AppleDouble
+.LSOverride
+*~
+*.swp
+*.swo
 
-### Scala ###
-.bsp/
+# Logs
+*.log
+logs/
+
+# Application Output Directories (IMPORTANT!)
+delta-output/
+test-corpus/
+MSRCorpus/
+
+# Compiled
+*.class
+*.jar
+!project/plugins/sbt-assembly-*.jar
+
+# Package Files
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+EOF
