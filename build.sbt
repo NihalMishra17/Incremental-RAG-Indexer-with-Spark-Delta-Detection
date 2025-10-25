@@ -87,3 +87,7 @@ scalacOptions ++= Seq(
 
 Test / parallelExecution := false
 Test / fork := true
+
+// Add at the end of build.sbt
+run / fork := true
+run / connectInput := true

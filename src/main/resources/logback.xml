@@ -5,25 +5,18 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/delta-indexer.log</file>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
+    <!-- Set root level to INFO to see all messages -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
 
-    <!-- Reduce Spark logging -->
+    <!-- Suppress noisy Spark internal logs -->
     <logger name="org.apache.spark" level="WARN"/>
     <logger name="org.apache.hadoop" level="WARN"/>
     <logger name="org.sparkproject" level="WARN"/>
     <logger name="org.apache.parquet" level="WARN"/>
-    <logger name="parquet" level="WARN"/>
+    <logger name="org.apache.pdfbox.pdmodel.font" level="ERROR"/>
 
-    <!-- Our application logs at INFO level -->
+    <!-- Keep our application logs at INFO -->
     <logger name="com.cs441.hw2" level="INFO"/>
-
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE"/>
-    </root>
 </configuration>
