@@ -1,131 +1,119 @@
 package com.cs441.hw2
 
 import com.typesafe.scalalogging.LazyLogging
-import org.apache.spark.sql.{DataFrame, SparkSession}
-import org.apache.spark.sql.functions._
-
+import org.apache.spark.sql.{Dataset, SparkSession}
 import java.io.File
-import java.sql.Timestamp
-import java.time.Instant
-
-// Define Document once at package level
-case class Document(
-                     documentId: String,
-                     filePath: String,
-                     contentHash: String,
-                     rawText: String,
-                     ingestionTimestamp: Timestamp,
-                     version: Int,
-                     status: String
-                   )
+import java.security.MessageDigest
+import scala.util.{Try, Success, Failure}
 
 /**
- * Scans directories for PDF files and creates a DataFrame of documents.
+ * Scans directory for PDF documents and extracts metadata
  */
 class DocumentScanner(spark: SparkSession) extends LazyLogging {
-  import spark.implicits._
 
-  def scanDirectory(inputDir: String): DataFrame = {
-    logger.info(s"Scanning directory for PDFs: $inputDir")
+  /**
+   * Scans a directory for PDF files and processes them
+   * @param directoryPath Path to directory containing PDFs
+   * @return Dataset of Document objects
+   */
+  def scanDirectory(directoryPath: String): Dataset[Document] = {
+    import spark.implicits._
 
-    val pdfFiles = findPdfFiles(inputDir)
-    logger.info(s"Found ${pdfFiles.size} PDF files")
+    logger.info(s"Scanning directory for PDFs: $directoryPath")
+
+    val directory = new File(directoryPath)
+
+    if (!directory.exists()) {
+      logger.error(s"Directory does not exist: $directoryPath")
+      return spark.emptyDataset[Document]
+    }
+
+    if (!directory.isDirectory) {
+      logger.error(s"Path is not a directory: $directoryPath")
+      return spark.emptyDataset[Document]
+    }
+
+    val pdfFiles = directory.listFiles().filter { file =>
+      file.isFile && file.getName.toLowerCase.endsWith(".pdf")
+    }
 
     if (pdfFiles.isEmpty) {
-      logger.warn(s"No PDF files found in $inputDir")
-      return spark.emptyDataFrame
+      logger.warn(s"No PDF files found in directory: $directoryPath")
+      return spark.emptyDataset[Document]
     }
 
-    val documentsRDD = spark.sparkContext.parallelize(pdfFiles)
-      .map(DocumentScanner.processDocument)
-      .filter(_.isDefined)
-      .map(_.get)
+    logger.info(s"Found ${pdfFiles.length} PDF files")
 
-    val documentsDF = documentsRDD.toDF()
-    logger.info(s"Successfully processed ${documentsDF.count()} documents")
+    // Process PDFs
+    val documents = pdfFiles.flatMap(processDocument).toSeq
 
-    documentsDF
+    logger.info(s"Successfully processed ${documents.length} documents")
+
+    spark.createDataset(documents)
   }
 
-  private def findPdfFiles(dirPath: String): List[String] = {
-    val dir = new File(dirPath)
+  /**
+   * Process a single PDF file
+   * @param file PDF file to process
+   * @return Option[Document]
+   */
+  private def processDocument(file: File): Option[Document] = {
+    logger.debug(s"Processing document: ${file.getName}")
 
-    if (!dir.exists()) {
-      logger.error(s"Directory does not exist: $dirPath")
-      return List.empty
-    }
+    PdfProcessor.extractText(file.getAbsolutePath) match {
+      case Success(rawText) =>
+        val cleanedText = cleanText(rawText)
+        val contentHash = computeHash(cleanedText)
 
-    if (!dir.isDirectory) {
-      logger.error(s"Path is not a directory: $dirPath")
-      return List.empty
-    }
+        Some(Document(
+          documentId = file.getName,
+          filePath = file.getAbsolutePath,
+          fileName = file.getName,
+          content = cleanedText,
+          contentHash = contentHash,
+          processedAt = System.currentTimeMillis(),
+          version = "v1"
+        ))
 
-    def recursiveListFiles(file: File): List[File] = {
-      if (file.isDirectory) {
-        file.listFiles().toList.flatMap(recursiveListFiles)
-      } else if (file.getName.toLowerCase.endsWith(".pdf")) {
-        List(file)
-      } else {
-        List.empty
-      }
-    }
-
-    recursiveListFiles(dir).map(_.getAbsolutePath)
-  }
-
-  def loadDocuments(filePaths: List[String]): DataFrame = {
-    logger.info(s"Loading ${filePaths.size} documents")
-
-    val documentsRDD = spark.sparkContext.parallelize(filePaths)
-      .map(DocumentScanner.processDocument)
-      .filter(_.isDefined)
-      .map(_.get)
-
-    documentsRDD.toDF()
-  }
-}
-
-object DocumentScanner extends LazyLogging {
-
-  def processDocument(filePath: String): Option[Document] = {
-    try {
-      logger.debug(s"Processing document: $filePath")
-
-      val textResult = PdfProcessor.extractText(filePath)
-
-      textResult match {
-        case Right(rawText) =>
-          val cleanedText = PdfProcessor.cleanText(rawText)
-
-          if (cleanedText.isEmpty) {
-            logger.warn(s"Empty text extracted from $filePath")
-            return None
-          }
-
-          val documentId = HashUtils.generateDocumentId(filePath)
-          val contentHash = HashUtils.sha256(cleanedText)
-
-          val document = Document(
-            documentId = documentId,
-            filePath = filePath,
-            contentHash = contentHash,
-            rawText = cleanedText,
-            ingestionTimestamp = Timestamp.from(Instant.now()),
-            version = 1,
-            status = "active"
-          )
-
-          logger.debug(s"Successfully processed document: $documentId")
-          Some(document)
-
-        case Left(error) =>
-          logger.warn(s"Failed to extract text from $filePath: $error")
-          None
-      }
-    } catch {
-      case e: Exception =>
-        logger.error(s"Exception processing document $filePath: ${e.getMessage}", e)
+      case Failure(error) =>
+        logger.error(s"Failed to extract text from ${file.getAbsolutePath}: ${error.getMessage}")
         None
     }
   }
+
+  /**
+   * Clean extracted text
+   * @param text Raw text from PDF
+   * @return Cleaned text
+   */
+  private def cleanText(text: String): String = {
+    text
+      .replaceAll("\\s+", " ")  // Normalize whitespace
+      .replaceAll("[\\x00-\\x1F\\x7F]", "")  // Remove control characters
+      .trim
+  }
+
+  /**
+   * Compute SHA-256 hash of content
+   * @param content Content to hash
+   * @return Hex string of hash
+   */
+  def computeHash(content: String): String = {
+    val digest = MessageDigest.getInstance("SHA-256")
+    val hashBytes = digest.digest(content.getBytes("UTF-8"))
+    hashBytes.map("%02x".format(_)).mkString
+  }
 }
+
+/**
+ * Document case class representing a processed PDF
+ */
+case class Document(
+                     documentId: String,
+                     filePath: String,
+                     fileName: String,
+                     content: String,
+                     contentHash: String,
+                     processedAt: Long,
+                     version: String
+                   )

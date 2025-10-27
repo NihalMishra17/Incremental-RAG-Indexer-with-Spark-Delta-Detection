@@ -2,7 +2,7 @@ name := "hw2-delta-indexer"
 
 version := "0.1.0"
 
-scalaVersion := "2.13.8"
+scalaVersion := "2.12.18"
 
 // Explicit dependency management
 lazy val catsVersion = "2.9.0"

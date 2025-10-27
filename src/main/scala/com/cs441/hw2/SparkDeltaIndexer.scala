@@ -1,7 +1,8 @@
 package com.cs441.hw2
 
 import com.typesafe.scalalogging.LazyLogging
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SparkSession, Encoder}
+import org.apache.spark.sql.Encoders
 
 /**
  * Main orchestrator for the incremental delta indexer.
@@ -9,7 +10,7 @@ import org.apache.spark.sql.SparkSession
  */
 class SparkDeltaIndexer(config: Configuration.DeltaIndexerConfig) extends LazyLogging {
 
-  private var spark: SparkSession = _
+  @transient private[hw2] var spark: SparkSession = _
   private var scanner: DocumentScanner = _
   private var detector: DeltaDetector = _
   private var chunker: IncrementalChunker = _
@@ -47,6 +48,13 @@ class SparkDeltaIndexer(config: Configuration.DeltaIndexerConfig) extends LazyLo
   }
 
   def runFirstTime(): Unit = {
+    val sparkSession = spark
+    import sparkSession.implicits._
+
+    // Define implicit encoders
+    implicit val chunkEncoder: Encoder[Chunk] = Encoders.product[Chunk]
+    implicit val embeddingEncoder: Encoder[Embedding] = Encoders.product[Embedding]
+
     logger.info("=" * 80)
     logger.info("FIRST RUN: Processing entire corpus")
     logger.info("=" * 80)
@@ -64,21 +72,21 @@ class SparkDeltaIndexer(config: Configuration.DeltaIndexerConfig) extends LazyLo
 
     // Step 2: Chunk all documents
     logger.info("Step 2: Chunking documents...")
-    val chunks = chunker.chunkDocuments(currentDocs)
+    val chunks = chunker.chunkDocuments(currentDocs.toDF())
     val chunkCount = chunks.count()
     logger.info(s"Created $chunkCount chunks")
 
     // Step 3: Generate embeddings
     logger.info("Step 3: Generating embeddings...")
-    val embeddings = embedder.generateEmbeddings(chunks, spark.emptyDataFrame)
+    val embeddings = embedder.generateEmbeddings(chunks.as[Chunk], spark.emptyDataset[Embedding])
     val embeddingCount = embeddings.count()
     logger.info(s"Generated $embeddingCount embeddings")
 
     // Step 4: Save everything
     logger.info("Step 4: Saving to storage...")
-    storage.saveDocuments(currentDocs)
+    storage.saveDocuments(currentDocs.toDF())
     storage.saveChunks(chunks)
-    storage.saveEmbeddings(embeddings)
+    storage.saveEmbeddings(embeddings.toDF())
 
     logger.info("=" * 80)
     logger.info("FIRST RUN COMPLETE")
@@ -87,6 +95,14 @@ class SparkDeltaIndexer(config: Configuration.DeltaIndexerConfig) extends LazyLo
   }
 
   def runIncremental(): Unit = {
+    val sparkSession = spark
+    import sparkSession.implicits._
+    import scala.collection.JavaConverters._
+
+    // Define implicit encoders
+    implicit val chunkEncoder: Encoder[Chunk] = Encoders.product[Chunk]
+    implicit val embeddingEncoder: Encoder[Embedding] = Encoders.product[Embedding]
+
     logger.info("=" * 80)
     logger.info("INCREMENTAL RUN: Processing changes only")
     logger.info("=" * 80)
@@ -105,7 +121,7 @@ class SparkDeltaIndexer(config: Configuration.DeltaIndexerConfig) extends LazyLo
 
     // Step 3: Detect changes
     logger.info("Step 3: Detecting changes...")
-    val deltaResult = detector.detectChanges(currentDocs, previousDocs)
+    val deltaResult = detector.detectChanges(currentDocs.toDF(), previousDocs)
     val stats = detector.calculateStats(deltaResult)
 
     logger.info(s"Delta stats: ${stats.mkString(", ")}")
@@ -141,21 +157,21 @@ class SparkDeltaIndexer(config: Configuration.DeltaIndexerConfig) extends LazyLo
     // Step 7: Generate embeddings for new chunks
     logger.info("Step 7: Generating embeddings for new chunks...")
     val existingEmbeddings = storage.loadEmbeddings()
-    val newEmbeddings = embedder.generateEmbeddings(newChunks, existingEmbeddings)
+    val newEmbeddings = embedder.generateEmbeddings(newChunks.as[Chunk], existingEmbeddings.as[Embedding])
     val newEmbeddingCount = newEmbeddings.count()
     logger.info(s"Generated $newEmbeddingCount new embeddings")
 
-    // Step 8: Merge embeddings
+    // Step 8: Merge embeddings (union is already done in generateEmbeddings)
     logger.info("Step 8: Merging embeddings...")
-    val allEmbeddings = embedder.mergeEmbeddings(newEmbeddings, existingEmbeddings)
+    val allEmbeddings = newEmbeddings  // generateEmbeddings already returns merged result
     val totalEmbeddings = allEmbeddings.count()
     logger.info(s"Total embeddings after merge: $totalEmbeddings")
 
     // Step 9: Save updated state
     logger.info("Step 9: Saving updated state...")
-    storage.saveDocuments(currentDocs)
+    storage.saveDocuments(currentDocs.toDF())
     storage.saveChunks(allChunks)
-    storage.saveEmbeddings(allEmbeddings)
+    storage.saveEmbeddings(allEmbeddings.toDF())
 
     logger.info("=" * 80)
     logger.info("INCREMENTAL RUN COMPLETE")

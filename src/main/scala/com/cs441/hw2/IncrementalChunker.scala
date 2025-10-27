@@ -45,7 +45,7 @@ class IncrementalChunker(spark: SparkSession, config: Configuration.ChunkingConf
     val chunkTextUDF = udf((text: String) => TextChunker.chunk(text, chunkSize, overlap))
 
     val chunksDF = documents
-      .withColumn("chunks", chunkTextUDF(col("rawText")))
+      .withColumn("chunks", chunkTextUDF(col("content")))  // Use "content" column
       .withColumn("chunk", explode(col("chunks")))
       .select(
         col("documentId"),
