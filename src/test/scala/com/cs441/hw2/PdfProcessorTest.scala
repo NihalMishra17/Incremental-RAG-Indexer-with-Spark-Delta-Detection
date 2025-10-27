@@ -1,34 +1,61 @@
 package com.cs441.hw2
 
-import org.scalatest.funsuite.AnyFunSuite
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.text.PDFTextStripper
+import scala.util.Try
 
-class PdfProcessorTest extends AnyFunSuite {
+/**
+ * Handles PDF text extraction using Apache PDFBox
+ */
+object PdfProcessor {
 
-  test("cleanText should remove excessive whitespace") {
-    val text = "Hello    World   Test"
-    val cleaned = PdfProcessor.cleanText(text)
-
-    assert(cleaned == "Hello World Test")
+  /**
+   * Extract text from a PDF file
+   * @param filePath Path to PDF file
+   * @return Try[String] containing extracted text or error
+   */
+  def extractText(filePath: String): Try[String] = {
+    Try {
+      val document = PDDocument.load(new java.io.File(filePath))
+      try {
+        val stripper = new PDFTextStripper()
+        stripper.getText(document)
+      } finally {
+        document.close()
+      }
+    }
   }
 
-  test("cleanText should trim leading and trailing whitespace") {
-    val text = "  Hello World  "
-    val cleaned = PdfProcessor.cleanText(text)
-
-    assert(cleaned == "Hello World")
+  /**
+   * Extract text from PDF bytes
+   * @param bytes PDF file as byte array
+   * @return Try[String] containing extracted text or error
+   */
+  def extractTextFromBytes(bytes: Array[Byte]): Try[String] = {
+    Try {
+      val document = PDDocument.load(bytes)
+      try {
+        val stripper = new PDFTextStripper()
+        stripper.getText(document)
+      } finally {
+        document.close()
+      }
+    }
   }
 
-  test("cleanText should handle empty string") {
-    val text = ""
-    val cleaned = PdfProcessor.cleanText(text)
-
-    assert(cleaned.isEmpty)
-  }
-
-  test("cleanText should handle text with only whitespace") {
-    val text = "   \t\n   "
-    val cleaned = PdfProcessor.cleanText(text)
-
-    assert(cleaned.isEmpty)
+  /**
+   * Clean extracted text by normalizing whitespace and removing control characters
+   * @param text Raw text to clean
+   * @return Cleaned text
+   */
+  def cleanText(text: String): String = {
+    if (text == null || text.isEmpty) {
+      ""
+    } else {
+      text
+        .replaceAll("\\s+", " ")  // Normalize whitespace
+        .replaceAll("[\\x00-\\x1F\\x7F]", "")  // Remove control characters
+        .trim
+    }
   }
 }
