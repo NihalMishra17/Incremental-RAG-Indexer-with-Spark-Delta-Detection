@@ -1,212 +1,224 @@
 package com.cs441.hw2
 
 import com.typesafe.scalalogging.LazyLogging
-import org.apache.spark.sql.{SparkSession, Encoder}
-import org.apache.spark.sql.Encoders
+import org.apache.spark.sql.SparkSession
 
-/**
- * Main orchestrator for the incremental delta indexer.
- * Coordinates all components to build and maintain the RAG index.
- */
-class SparkDeltaIndexer(config: Configuration.DeltaIndexerConfig) extends LazyLogging {
+object SparkDeltaIndexer extends LazyLogging {
 
-  @transient private[hw2] var spark: SparkSession = _
-  private var scanner: DocumentScanner = _
-  private var detector: DeltaDetector = _
+  private var sparkSession: SparkSession = _
   private var chunker: IncrementalChunker = _
   private var embedder: IncrementalEmbedder = _
   private var storage: StorageLayer = _
+  private var config: Configuration.DeltaIndexerConfig = _
 
   def initialize(): Unit = {
     logger.info("Initializing Spark Delta Indexer")
 
-    // Create Spark session with Delta Lake extensions
-    spark = SparkSession.builder()
+    config = Configuration.loadOrThrow()
+
+    sparkSession = SparkSession.builder()
       .appName(config.spark.appName)
       .master(config.spark.master)
       .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
       .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
-      .config("spark.sql.adaptive.enabled", "true")
-      .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
-      // Disable Hadoop shutdown hook to prevent harmless cleanup errors
-      .config("spark.hadoop.fs.hdfs.impl.disable.cache", "true")
       .getOrCreate()
 
-    // Also disable the shutdown hook after session creation
-    spark.sparkContext.getConf.set("spark.hadoop.util.ShutdownHookManager.enable", "false")
+    // Set checkpoint directory
+    sparkSession.sparkContext.setCheckpointDir("checkpoints")
 
-    spark.sparkContext.setLogLevel("WARN")
-
-    // Initialize components
-    scanner = new DocumentScanner(spark)
-    detector = new DeltaDetector(spark)
-    chunker = new IncrementalChunker(spark, config.chunking)
-    embedder = new IncrementalEmbedder(spark, config.embedding)
-    storage = new StorageLayer(spark, config.outputDir)
+    chunker = new IncrementalChunker(sparkSession, config.chunking)
+    embedder = new IncrementalEmbedder(sparkSession, config.embedding)
+    storage = new StorageLayer(sparkSession, config.outputDir)
 
     logger.info("Spark Delta Indexer initialized successfully with Delta Lake")
   }
 
-  def runFirstTime(): Unit = {
-    val sparkSession = spark
-    import sparkSession.implicits._
+  def run(): Unit = {
+    try {
+      val existingDocs = storage.loadDocuments()
 
-    // Define implicit encoders
-    implicit val chunkEncoder: Encoder[Chunk] = Encoders.product[Chunk]
-    implicit val embeddingEncoder: Encoder[Embedding] = Encoders.product[Embedding]
+      if (existingDocs.isEmpty) {
+        logger.info("No previous state found. Running first-time indexing...")
+        runFirstTimeIndexing()
+      } else {
+        logger.info("Previous state found. Running incremental update...")
+        runIncrementalUpdate(existingDocs)
+      }
 
-    logger.info("=" * 80)
+    } catch {
+      case e: Exception =>
+        logger.error(s"Error during indexing: ${e.getMessage}", e)
+        throw e
+    }
+  }
+
+  private def runFirstTimeIndexing(): Unit = {
+    val spark = sparkSession
+    import spark.implicits._
+
+    logger.info("================================================================================")
     logger.info("FIRST RUN: Processing entire corpus")
-    logger.info("=" * 80)
+    logger.info("================================================================================")
 
-    // Step 1: Scan all documents
     logger.info("Step 1: Scanning documents...")
-    val currentDocs = scanner.scanDirectory(config.inputDir)
-    val docCount = currentDocs.count()
-    logger.info(s"Scanned $docCount documents")
+    val currentDocs = DocumentScanner.scanDocuments(spark, config.inputDir)
 
+    val docCount = currentDocs.count()
     if (docCount == 0) {
       logger.warn("No documents found. Exiting.")
       return
     }
 
-    // Step 2: Chunk all documents
+    logger.info(s"Scanned $docCount documents")
+
     logger.info("Step 2: Chunking documents...")
-    val chunks = chunker.chunkDocuments(currentDocs.toDF())
+    val chunks = chunker.chunkDocuments(currentDocs)
     val chunkCount = chunks.count()
     logger.info(s"Created $chunkCount chunks")
 
-    // Step 3: Generate embeddings
     logger.info("Step 3: Generating embeddings...")
-    val embeddings = embedder.generateEmbeddings(chunks.as[Chunk], spark.emptyDataset[Embedding])
+    val existingEmbeddingsDF = storage.loadEmbeddings()
+    val existingEmbeddings = if (existingEmbeddingsDF.isEmpty) {
+      logger.info("No existing embeddings - creating empty dataset")
+      spark.emptyDataset[Embedding]
+    } else {
+      existingEmbeddingsDF.as[Embedding]
+    }
+    val embeddings = embedder.generateEmbeddings(
+      chunks.as[Chunk],
+      existingEmbeddings
+    )
     val embeddingCount = embeddings.count()
     logger.info(s"Generated $embeddingCount embeddings")
 
-    // Step 4: Save everything
     logger.info("Step 4: Saving to storage...")
-    storage.saveDocuments(currentDocs.toDF())
+    storage.saveDocuments(currentDocs)
     storage.saveChunks(chunks)
     storage.saveEmbeddings(embeddings.toDF())
 
-    logger.info("=" * 80)
+    logger.info("================================================================================")
     logger.info("FIRST RUN COMPLETE")
     logger.info(s"Documents: $docCount | Chunks: $chunkCount | Embeddings: $embeddingCount")
-    logger.info("=" * 80)
+    logger.info("================================================================================")
   }
 
-  def runIncremental(): Unit = {
-    val sparkSession = spark
-    import sparkSession.implicits._
-    import scala.collection.JavaConverters._
+  private def runIncrementalUpdate(existingDocs: org.apache.spark.sql.DataFrame): Unit = {
+    val spark = sparkSession
+    import spark.implicits._
 
-    // Define implicit encoders
-    implicit val chunkEncoder: Encoder[Chunk] = Encoders.product[Chunk]
-    implicit val embeddingEncoder: Encoder[Embedding] = Encoders.product[Embedding]
+    logger.info("================================================================================")
+    logger.info("INCREMENTAL UPDATE: Detecting changes")
+    logger.info("================================================================================")
 
-    logger.info("=" * 80)
-    logger.info("INCREMENTAL RUN: Processing changes only")
-    logger.info("=" * 80)
+    logger.info("Step 1: Scanning documents...")
+    val currentDocs = DocumentScanner.scanDocuments(spark, config.inputDir)
 
-    // Step 1: Scan current documents
-    logger.info("Step 1: Scanning current documents...")
-    val currentDocs = scanner.scanDirectory(config.inputDir)
-    val currentCount = currentDocs.count()
-    logger.info(s"Current corpus: $currentCount documents")
+    logger.info("Step 2: Detecting changes...")
+    val detector = new DeltaDetector(spark)
+    val delta = detector.detectChanges(currentDocs, existingDocs)
 
-    // Step 2: Load previous state
-    logger.info("Step 2: Loading previous state...")
-    val previousDocs = storage.loadDocuments()
-    val previousCount = previousDocs.count()
-    logger.info(s"Previous state: $previousCount documents")
+    logger.info(s"Delta stats: new -> ${delta.newDocuments.count()}, " +
+      s"changed -> ${delta.changedDocuments.count()}, " +
+      s"unchanged -> ${delta.unchangedDocuments.count()}, " +
+      s"deleted -> ${delta.deletedDocuments.count()}")
 
-    // Step 3: Detect changes
-    logger.info("Step 3: Detecting changes...")
-    val deltaResult = detector.detectChanges(currentDocs.toDF(), previousDocs)
-    val stats = detector.calculateStats(deltaResult)
+    val deduplicationRatio = if (currentDocs.count() > 0) {
+      (delta.unchangedDocuments.count().toDouble / currentDocs.count()) * 100
+    } else 0.0
 
-    logger.info(s"Delta stats: ${stats.mkString(", ")}")
-    val dedup = detector.deduplicationRatio(deltaResult)
-    logger.info(f"Deduplication ratio: ${dedup * 100}%.2f%%")
+    logger.info(f"Deduplication ratio: $deduplicationRatio%.2f%%")
 
-    if (!detector.hasChanges(deltaResult)) {
+    val hasChanges = delta.newDocuments.count() > 0 ||
+      delta.changedDocuments.count() > 0 ||
+      delta.deletedDocuments.count() > 0
+
+    if (!hasChanges) {
       logger.info("No changes detected. Nothing to process.")
-      logger.info("=" * 80)
       return
     }
 
-    // Step 4: Process changed documents
-    logger.info("Step 4: Processing changed documents...")
-    val docsToProcess = detector.getDocumentsToProcess(deltaResult)
-    val processCount = docsToProcess.count()
-    logger.info(s"Processing $processCount changed documents")
+    val docsToProcess = delta.newDocuments.union(delta.changedDocuments)
+    val docsToProcessCount = docsToProcess.count()
 
-    // Step 5: Chunk changed documents
-    logger.info("Step 5: Chunking changed documents...")
+    logger.info(s"Processing $docsToProcessCount changed documents")
+
+    logger.info("Step 3: Chunking changed documents...")
     val newChunks = chunker.chunkDocuments(docsToProcess)
-    val newChunkCount = newChunks.count()
-    logger.info(s"Created $newChunkCount new chunks")
 
-    // Step 6: Merge with existing chunks
-    logger.info("Step 6: Merging chunks...")
     val existingChunks = storage.loadChunks()
-    val changedDocIds = docsToProcess.select("documentId").rdd.map(_.getString(0)).collect().toSet
-    val allChunks = chunker.mergeChunks(newChunks, existingChunks, changedDocIds)
-    val totalChunks = allChunks.count()
-    logger.info(s"Total chunks after merge: $totalChunks")
+    val changedDocIds = delta.changedDocuments.select("documentId").as[String].collect().toSet
+    val allChangedDocIds = changedDocIds ++
+      delta.newDocuments.select("documentId").as[String].collect().toSet ++
+      delta.deletedDocuments.select("documentId").as[String].collect().toSet
 
-    // Step 7: Generate embeddings for new chunks
-    logger.info("Step 7: Generating embeddings for new chunks...")
-    val existingEmbeddings = storage.loadEmbeddings()
-    val newEmbeddings = embedder.generateEmbeddings(newChunks.as[Chunk], existingEmbeddings.as[Embedding])
-    val newEmbeddingCount = newEmbeddings.count()
-    logger.info(s"Generated $newEmbeddingCount new embeddings")
+    val mergedChunks = chunker.mergeChunks(newChunks, existingChunks, allChangedDocIds)
 
-    // Step 8: Merge embeddings (union is already done in generateEmbeddings)
-    logger.info("Step 8: Merging embeddings...")
-    val allEmbeddings = newEmbeddings  // generateEmbeddings already returns merged result
-    val totalEmbeddings = allEmbeddings.count()
-    logger.info(s"Total embeddings after merge: $totalEmbeddings")
+    // Force materialization to prevent Spark from recomputing incorrectly
+    val materializedChunks = mergedChunks.checkpoint()
 
-    // Step 9: Save updated state
-    logger.info("Step 9: Saving updated state...")
-    storage.saveDocuments(currentDocs.toDF())
-    storage.saveChunks(allChunks)
-    storage.saveEmbeddings(allEmbeddings.toDF())
+    val chunkCount = materializedChunks.count()
+    logger.info(s"Total chunks after merge: $chunkCount")
 
-    logger.info("=" * 80)
-    logger.info("INCREMENTAL RUN COMPLETE")
-    logger.info(s"Processed: $processCount docs | New chunks: $newChunkCount | New embeddings: $newEmbeddingCount")
-    logger.info(f"Efficiency: Skipped ${dedup * 100}%.2f%% of corpus")
-    logger.info("=" * 80)
+    // Verify what documentIds are in mergedChunks
+    logger.info("Document IDs in merged chunks:")
+    materializedChunks.select("documentId").distinct().collect().foreach(row =>
+      logger.info(s"  - ${row.getString(0)}")
+    )
+
+    logger.info("Step 4: Generating embeddings for new chunks...")
+    val existingEmbeddingsDF = storage.loadEmbeddings()
+    val existingEmbeddings = if (existingEmbeddingsDF.isEmpty) {
+      logger.info("No existing embeddings - creating empty dataset")
+      spark.emptyDataset[Embedding]
+    } else {
+      existingEmbeddingsDF.as[Embedding]
+    }
+    val embeddings = embedder.generateEmbeddings(
+      materializedChunks.as[Chunk],
+      existingEmbeddings
+    )
+    val embeddingCount = embeddings.count()
+    logger.info(s"Total embeddings: $embeddingCount")
+
+    logger.info("Step 5: Updating storage...")
+
+    val mergedDocs = existingDocs
+      .filter(!$"documentId".isin(allChangedDocIds.toSeq: _*))
+      .union(docsToProcess)
+
+    // Cache counts before saving
+    val finalDocCount = mergedDocs.count()
+    val finalChunkCount = chunkCount
+    val finalEmbeddingCount = embeddingCount
+
+    storage.saveDocuments(mergedDocs)
+    storage.saveChunks(materializedChunks)
+    storage.saveEmbeddings(embeddings.toDF())
+
+    logger.info("================================================================================")
+    logger.info("INCREMENTAL UPDATE COMPLETE")
+    logger.info(f"Efficiency: Skipped $deduplicationRatio%.2f%% of corpus")
+    logger.info(s"Total: $finalDocCount docs | $finalChunkCount chunks | $finalEmbeddingCount embeddings")
+    logger.info("================================================================================")
   }
 
   def cleanup(): Unit = {
-    if (spark != null) {
+    if (sparkSession != null) {
       logger.info("Stopping Spark session")
-      spark.stop()
+      sparkSession.stop()
     }
   }
-}
 
-object SparkDeltaIndexer {
   def main(args: Array[String]): Unit = {
-    val config = Configuration.loadOrThrow()
-    val indexer = new SparkDeltaIndexer(config)
-
     try {
-      indexer.initialize()
-
-      // Check if this is first run or incremental
-      val storage = new StorageLayer(indexer.spark, config.outputDir)
-      if (storage.loadDocuments().isEmpty) {
-        println("No previous state found. Running first-time indexing...")
-        indexer.runFirstTime()
-      } else {
-        println("Previous state found. Running incremental indexing...")
-        indexer.runIncremental()
-      }
+      initialize()
+      run()
+    } catch {
+      case e: Exception =>
+        logger.error("Fatal error in Spark Delta Indexer", e)
+        sys.exit(1)
     } finally {
-      indexer.cleanup()
+      cleanup()
     }
   }
 }

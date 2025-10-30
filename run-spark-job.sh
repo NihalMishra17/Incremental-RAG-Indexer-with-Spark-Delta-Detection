@@ -1,30 +1,30 @@
 #!/bin/bash
 
-BUCKET_NAME="rag-indexer"
+# Get master's private IP
+MASTER_IP=$(hostname -I | awk '{print $1}')
+echo "==========================================
+Running Spark Job on EMR (Client Mode)
+==========================================
+Master IP: $MASTER_IP
+Bucket: rag-indexer
+"
 
-echo "=========================================="
-echo "Submitting Spark Job to YARN"
-echo "=========================================="
-echo "Bucket: $BUCKET_NAME"
-echo ""
-
+# Run spark-submit in client mode (logs appear in terminal)
 spark-submit \
   --class com.cs441.hw2.SparkDeltaIndexer \
   --master yarn \
-  --deploy-mode cluster \
+  --deploy-mode client \
   --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension \
   --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog \
-  --conf spark.executor.memory=4g \
-  --conf spark.driver.memory=4g \
-  --conf spark.executor.instances=2 \
-  --driver-java-options "-DINPUT_DIR=s3a://${BUCKET_NAME}/input-pdfs -DOUTPUT_DIR=s3a://${BUCKET_NAME}/delta-output -DSPARK_MASTER=yarn -DOLLAMA_HOST=http://localhost:11434 -DCHECKPOINT_DIR=s3a://${BUCKET_NAME}/checkpoints" \
-  s3://${BUCKET_NAME}/jars/hw2-delta-indexer.jar
+  --driver-memory 4g \
+  --executor-memory 4g \
+  --conf "spark.driver.extraJavaOptions=-DINPUT_DIR=s3a://rag-indexer/input-pdfs -DOUTPUT_DIR=s3a://rag-indexer/delta-output -DSPARK_MASTER=yarn -DCHECKPOINT_DIR=s3a://rag-indexer/checkpoints -DOLLAMA_HOST=http://$MASTER_IP:11434" \
+  hw2-delta-indexer.jar 2>&1 | tee spark-job-output.log
 
-echo ""
-echo "=========================================="
-echo "Job submitted to YARN!"
-echo "=========================================="
-echo ""
-echo "Monitor with:"
-echo "  yarn application -list"
-echo "  yarn application -status <application_id>"
+echo "
+==========================================
+Job Complete!
+==========================================
+Check S3 output: aws s3 ls s3://rag-indexer/delta-output/ --recursive
+Full logs saved to: spark-job-output.log
+"

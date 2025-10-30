@@ -104,6 +104,12 @@ class IncrementalChunker(spark: SparkSession, config: Configuration.ChunkingConf
 
     logger.info(s"Keeping $unchangedCount unchanged chunks, adding $newCount new chunks")
 
+    // Handle empty newChunks case (e.g., when documents are only deleted)
+    if (newCount == 0) {
+      logger.info("No new chunks to add - returning unchanged chunks only")
+      return unchangedChunks
+    }
+
     unchangedChunks.union(newChunks)
   }
 

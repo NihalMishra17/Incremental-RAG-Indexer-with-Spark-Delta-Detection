@@ -3,19 +3,19 @@ package com.cs441.hw2
 import com.typesafe.scalalogging.LazyLogging
 import io.delta.tables.DeltaTable
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
+import org.apache.hadoop.fs.{FileSystem, Path}
 
-import java.io.File
-
-/**
- * Manages persistent storage using Delta Lake.
- * Provides versioning and ACID transactions.
- */
 class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLogging {
 
   private val documentsPath = s"$baseOutputDir/documents"
   private val chunksPath = s"$baseOutputDir/chunks"
   private val embeddingsPath = s"$baseOutputDir/embeddings"
   private val indexPath = s"$baseOutputDir/retrieval_index"
+
+  logger.info(s"StorageLayer initialized with base path: $baseOutputDir")
+  logger.info(s"  Documents: $documentsPath")
+  logger.info(s"  Chunks: $chunksPath")
+  logger.info(s"  Embeddings: $embeddingsPath")
 
   def tableExists(path: String): Boolean = {
     try {
@@ -25,26 +25,49 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
     }
   }
 
+  private def verifyS3Write(path: String): Unit = {
+    try {
+      val hadoopPath = new Path(path)
+      val fs = hadoopPath.getFileSystem(spark.sparkContext.hadoopConfiguration)
+
+      if (fs.exists(hadoopPath)) {
+        val status = fs.listStatus(hadoopPath)
+        logger.info(s"✓ Verified write to $path - ${status.length} files/dirs found")
+
+        // Check for _delta_log
+        val deltaLog = new Path(path, "_delta_log")
+        if (fs.exists(deltaLog)) {
+          logger.info(s"✓ Delta log exists at $deltaLog")
+        } else {
+          logger.warn(s"✗ No Delta log found at $deltaLog")
+        }
+      } else {
+        logger.error(s"✗ Path does not exist after write: $path")
+      }
+    } catch {
+      case e: Exception =>
+        logger.error(s"Error verifying S3 write to $path: ${e.getMessage}")
+    }
+  }
+
   // ==================== Documents Table ====================
 
   def saveDocuments(documents: DataFrame): Unit = {
-    logger.info(s"Saving ${documents.count()} documents to Delta table: $documentsPath")
+    val count = documents.count()
+    logger.info(s"Saving $count documents to Delta table: $documentsPath")
 
-    if (tableExists(documentsPath)) {
-      // Append or overwrite existing table
-      documents.write
-        .format("delta")
-        .mode(SaveMode.Overwrite)
-        .save(documentsPath)
-    } else {
-      // Create new Delta table
-      documents.write
-        .format("delta")
-        .mode(SaveMode.Overwrite)
-        .save(documentsPath)
+    if (count == 0) {
+      logger.warn("DataFrame is empty - nothing to save!")
+      return
     }
 
-    logger.info("Documents saved successfully to Delta Lake")
+    documents.write
+      .format("delta")
+      .mode(SaveMode.Overwrite)
+      .save(documentsPath)
+
+    logger.info("Documents write command completed")
+    verifyS3Write(documentsPath)
   }
 
   def loadDocuments(): DataFrame = {
@@ -59,27 +82,45 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
     }
   }
 
-  def getDocumentsVersion(): Long = {
-    if (tableExists(documentsPath)) {
-      val deltaTable = DeltaTable.forPath(spark, documentsPath)
-      deltaTable.history().select("version").first().getLong(0)
-    } else {
-      -1L
-    }
-  }
-
   // ==================== Chunks Table ====================
 
   def saveChunks(chunks: DataFrame): Unit = {
-    logger.info(s"Saving ${chunks.count()} chunks to Delta table: $chunksPath")
+    logger.info(s"saveChunks called with DataFrame")
 
-    chunks.write
-      .format("delta")
-      .mode(SaveMode.Overwrite)
-      .partitionBy("documentId")
-      .save(chunksPath)
+    // Log what's in the DataFrame before counting
+    val distinctDocs = chunks.select("documentId").distinct().collect().map(_.getString(0))
+    logger.info(s"Document IDs in chunks to save: ${distinctDocs.mkString(", ")}")
 
-    logger.info("Chunks saved successfully to Delta Lake")
+    val count = chunks.count()
+    logger.info(s"Saving $count chunks to Delta table: $chunksPath")
+
+    if (count == 0) {
+      logger.warn("DataFrame is empty - nothing to save!")
+      return
+    }
+
+    if (tableExists(chunksPath)) {
+      // Use merge for incremental updates
+      logger.info("Merging chunks into existing table")
+      chunks.write
+        .format("delta")
+        .mode(SaveMode.Overwrite)
+        .option("overwriteSchema", "false")
+        .option("partitionOverwriteMode", "dynamic")  // Only overwrite affected partitions
+        .partitionBy("documentId")
+        .save(chunksPath)
+    } else {
+      // First time - create table
+      logger.info("Creating new chunks table")
+      chunks.write
+        .format("delta")
+        .mode(SaveMode.Overwrite)
+        .partitionBy("documentId")
+        .save(chunksPath)
+    }
+
+    logger.info("Chunks write command completed")
+    verifyS3Write(chunksPath)
   }
 
   def loadChunks(): DataFrame = {
@@ -97,14 +138,21 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
   // ==================== Embeddings Table ====================
 
   def saveEmbeddings(embeddings: DataFrame): Unit = {
-    logger.info(s"Saving ${embeddings.count()} embeddings to Delta table: $embeddingsPath")
+    val count = embeddings.count()
+    logger.info(s"Saving $count embeddings to Delta table: $embeddingsPath")
+
+    if (count == 0) {
+      logger.warn("DataFrame is empty - nothing to save!")
+      return
+    }
 
     embeddings.write
       .format("delta")
       .mode(SaveMode.Overwrite)
       .save(embeddingsPath)
 
-    logger.info("Embeddings saved successfully to Delta Lake")
+    logger.info("Embeddings write command completed")
+    verifyS3Write(embeddingsPath)
   }
 
   def loadEmbeddings(): DataFrame = {
@@ -119,78 +167,17 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
     }
   }
 
-  // ==================== Delta Lake Time Travel ====================
-
-  def loadDocumentsAtVersion(version: Long): DataFrame = {
-    logger.info(s"Loading documents at version $version from Delta table")
-    spark.read
-      .format("delta")
-      .option("versionAsOf", version)
-      .load(documentsPath)
-  }
-
-  def loadChunksAtVersion(version: Long): DataFrame = {
-    logger.info(s"Loading chunks at version $version from Delta table")
-    spark.read
-      .format("delta")
-      .option("versionAsOf", version)
-      .load(chunksPath)
-  }
-
-  def getTableHistory(tablePath: String): DataFrame = {
-    if (tableExists(tablePath)) {
-      val deltaTable = DeltaTable.forPath(spark, tablePath)
-      deltaTable.history()
-    } else {
-      spark.emptyDataFrame
-    }
-  }
-
   // ==================== Index Path ====================
 
   def getIndexPath(): String = indexPath
 
   def indexExists(): Boolean = {
-    new File(indexPath).exists()
-  }
-
-  // ==================== Utility Methods ====================
-
-  def clearAll(): Unit = {
-    logger.warn("Clearing all stored data")
-    List(documentsPath, chunksPath, embeddingsPath, indexPath).foreach { path =>
-      val file = new File(path)
-      if (file.exists()) {
-        logger.info(s"Deleting $path")
-        deleteRecursively(file)
-      }
-    }
-  }
-
-  private def deleteRecursively(file: File): Unit = {
-    if (file.isDirectory) {
-      file.listFiles().foreach(deleteRecursively)
-    }
-    file.delete()
-  }
-
-  // ==================== Delta Lake Optimization ====================
-
-  def optimizeTable(tablePath: String): Unit = {
-    if (tableExists(tablePath)) {
-      logger.info(s"Optimizing Delta table: $tablePath")
-      val deltaTable = DeltaTable.forPath(spark, tablePath)
-      deltaTable.optimize().executeCompaction()
-      logger.info("Table optimization complete")
-    }
-  }
-
-  def vacuumTable(tablePath: String, retentionHours: Int = 168): Unit = {
-    if (tableExists(tablePath)) {
-      logger.info(s"Vacuuming Delta table: $tablePath (retention: $retentionHours hours)")
-      val deltaTable = DeltaTable.forPath(spark, tablePath)
-      deltaTable.vacuum(retentionHours)
-      logger.info("Table vacuum complete")
+    try {
+      val path = new Path(indexPath)
+      val fs = path.getFileSystem(spark.sparkContext.hadoopConfiguration)
+      fs.exists(path)
+    } catch {
+      case _: Exception => false
     }
   }
 }
