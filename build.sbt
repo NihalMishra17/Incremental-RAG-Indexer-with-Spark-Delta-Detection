@@ -2,10 +2,10 @@ name := "hw2-delta-indexer"
 version := "1.0"
 scalaVersion := "2.12.18"
 
+// Spark dependencies - mark as provided to exclude from JAR
 libraryDependencies ++= Seq(
-  // Spark dependencies - mark as provided to exclude from JAR
-  "org.apache.spark" %% "spark-core" % "3.5.0",// % "provided",
-  "org.apache.spark" %% "spark-sql" % "3.5.0",// % "provided",
+  "org.apache.spark" %% "spark-core" % "3.5.0" ,//% "provided",
+  "org.apache.spark" %% "spark-sql" % "3.5.0" ,//% "provided",
   
   // Delta Lake - MUST be included in JAR (no "provided")
   "io.delta" %% "delta-spark" % "3.2.0",
@@ -13,22 +13,19 @@ libraryDependencies ++= Seq(
   // PDF processing
   "org.apache.pdfbox" % "pdfbox" % "2.0.27",
   
-  // Logging
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
-  "ch.qos.logback" % "logback-classic" % "1.4.11",
+  // JSON - Use json4s (already in Spark, no conflicts)
+  "org.json4s" %% "json4s-native" % "3.7.0-M11",
   
-  // Config
+  // Logging
+  "ch.qos.logback" % "logback-classic" % "1.2.11",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4",
+  
+  // Configuration
   "com.typesafe" % "config" % "1.4.2",
   "com.github.pureconfig" %% "pureconfig" % "0.17.4",
   
-  // HTTP client for Ollama
-  "com.softwaremill.sttp.client3" %% "core" % "3.8.15",
-  "com.softwaremill.sttp.client3" %% "circe" % "3.8.15",
-  
-  // JSON
-  "io.circe" %% "circe-core" % "0.14.5",
-  "io.circe" %% "circe-generic" % "0.14.5",
-  "io.circe" %% "circe-parser" % "0.14.5"
+  // Testing
+  "org.scalatest" %% "scalatest" % "3.2.15" % Test
 )
 
 // Assembly settings
@@ -46,3 +43,9 @@ assembly / assemblyMergeStrategy := {
 assembly / assemblyJarName := "hw2-delta-indexer.jar"
 
 fork := true
+
+// JVM options for running locally
+javaOptions ++= Seq(
+  "-Xmx4G",
+  "-XX:+UseG1GC"
+)

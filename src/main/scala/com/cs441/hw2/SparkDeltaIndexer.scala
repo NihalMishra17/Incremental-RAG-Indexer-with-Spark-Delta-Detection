@@ -105,6 +105,7 @@ object SparkDeltaIndexer extends LazyLogging {
   private def runIncrementalUpdate(existingDocs: org.apache.spark.sql.DataFrame): Unit = {
     val spark = sparkSession
     import spark.implicits._
+    import org.apache.spark.sql.functions.col
 
     logger.info("================================================================================")
     logger.info("INCREMENTAL UPDATE: Detecting changes")
@@ -114,44 +115,79 @@ object SparkDeltaIndexer extends LazyLogging {
     val currentDocs = DocumentScanner.scanDocuments(spark, config.inputDir)
 
     logger.info("Step 2: Detecting changes...")
-    val detector = new DeltaDetector(spark)
-    val delta = detector.detectChanges(currentDocs, existingDocs)
+    implicit val sparkImplicit: SparkSession = spark
 
-    logger.info(s"Delta stats: new -> ${delta.newDocuments.count()}, " +
-      s"changed -> ${delta.changedDocuments.count()}, " +
-      s"unchanged -> ${delta.unchangedDocuments.count()}, " +
-      s"deleted -> ${delta.deletedDocuments.count()}")
+    // Convert to Dataset[Document] if not empty, otherwise use empty dataset
+    val currentDocsTyped = if (currentDocs.isEmpty) {
+      spark.emptyDataset[Document]
+    } else {
+      currentDocs.as[Document]
+    }
+
+    val delta = DeltaDetector.detectChanges(currentDocsTyped, existingDocs.as[Document])
+
+    logger.info(s"Delta stats: new -> ${delta.newDocs.count()}, " +
+      s"changed -> ${delta.changedDocs.count()}, " +
+      s"unchanged -> ${delta.unchangedDocs.count()}, " +
+      s"deleted -> ${delta.deletedDocs.count()}")
 
     val deduplicationRatio = if (currentDocs.count() > 0) {
-      (delta.unchangedDocuments.count().toDouble / currentDocs.count()) * 100
+      (delta.unchangedDocs.count().toDouble / currentDocs.count()) * 100
     } else 0.0
 
     logger.info(f"Deduplication ratio: $deduplicationRatio%.2f%%")
 
-    val hasChanges = delta.newDocuments.count() > 0 ||
-      delta.changedDocuments.count() > 0 ||
-      delta.deletedDocuments.count() > 0
+    val hasChanges = delta.newDocs.count() > 0 ||
+      delta.changedDocs.count() > 0 ||
+      delta.deletedDocs.count() > 0
 
     if (!hasChanges) {
       logger.info("No changes detected. Nothing to process.")
       return
     }
 
-    val docsToProcess = delta.newDocuments.union(delta.changedDocuments)
+    val docsToProcess = delta.newDocs.union(delta.changedDocs)
     val docsToProcessCount = docsToProcess.count()
 
     logger.info(s"Processing $docsToProcessCount changed documents")
 
     logger.info("Step 3: Chunking changed documents...")
-    val newChunks = chunker.chunkDocuments(docsToProcess)
+    val newChunks = chunker.chunkDocuments(docsToProcess.toDF())
 
     val existingChunks = storage.loadChunks()
-    val changedDocIds = delta.changedDocuments.select("documentId").as[String].collect().toSet
-    val allChangedDocIds = changedDocIds ++
-      delta.newDocuments.select("documentId").as[String].collect().toSet ++
-      delta.deletedDocuments.select("documentId").as[String].collect().toSet
 
-    val mergedChunks = chunker.mergeChunks(newChunks, existingChunks, allChangedDocIds)
+    // Remove chunks for: changed docs (will be replaced), new docs (in case of ID collision), deleted docs (no longer exist)
+    val changedDocIds = delta.changedDocs.select("documentId").as[String].collect().toSet
+    val newDocIds = delta.newDocs.select("documentId").as[String].collect().toSet
+    val deletedDocIds = delta.deletedDocs.select("documentId").as[String].collect().toSet
+    val docsToRemoveChunks = changedDocIds ++ newDocIds ++ deletedDocIds
+
+    logger.info(s"Removing chunks for ${docsToRemoveChunks.size} changed/new/deleted docs")
+
+    // If all current docs are gone (empty corpus), return empty chunks
+    val unchangedChunks = if (existingChunks.isEmpty || currentDocsTyped.isEmpty) {
+      if (currentDocsTyped.isEmpty) {
+        logger.info("Corpus is empty - removing all chunks")
+        spark.emptyDataFrame
+      } else {
+        existingChunks
+      }
+    } else if (docsToRemoveChunks.isEmpty) {
+      existingChunks
+    } else {
+      existingChunks.filter(!col("documentId").isin(docsToRemoveChunks.toSeq: _*))
+    }
+
+    val unchangedCount = unchangedChunks.count()
+    val newCount = newChunks.count()
+    logger.info(s"Keeping $unchangedCount unchanged chunks, adding $newCount new chunks")
+
+    val mergedChunks = if (newCount == 0) {
+      logger.info("No new chunks - using only unchanged chunks")
+      unchangedChunks
+    } else {
+      unchangedChunks.union(newChunks)
+    }
 
     // Force materialization to prevent Spark from recomputing incorrectly
     val materializedChunks = mergedChunks.checkpoint()
@@ -159,11 +195,15 @@ object SparkDeltaIndexer extends LazyLogging {
     val chunkCount = materializedChunks.count()
     logger.info(s"Total chunks after merge: $chunkCount")
 
-    // Verify what documentIds are in mergedChunks
-    logger.info("Document IDs in merged chunks:")
-    materializedChunks.select("documentId").distinct().collect().foreach(row =>
-      logger.info(s"  - ${row.getString(0)}")
-    )
+    // Verify what documentIds are in mergedChunks (only if not empty)
+    if (chunkCount > 0) {
+      logger.info("Document IDs in merged chunks:")
+      materializedChunks.select("documentId").distinct().collect().foreach(row =>
+        logger.info(s"  - ${row.getString(0)}")
+      )
+    } else {
+      logger.info("No chunks remaining after merge")
+    }
 
     logger.info("Step 4: Generating embeddings for new chunks...")
     val existingEmbeddingsDF = storage.loadEmbeddings()
@@ -173,18 +213,28 @@ object SparkDeltaIndexer extends LazyLogging {
     } else {
       existingEmbeddingsDF.as[Embedding]
     }
-    val embeddings = embedder.generateEmbeddings(
-      materializedChunks.as[Chunk],
-      existingEmbeddings
-    )
+
+    val embeddings = if (chunkCount == 0) {
+      logger.info("No chunks to embed - using empty embeddings dataset")
+      spark.emptyDataset[Embedding]
+    } else {
+      embedder.generateEmbeddings(
+        materializedChunks.as[Chunk],
+        existingEmbeddings
+      )
+    }
+
     val embeddingCount = embeddings.count()
     logger.info(s"Total embeddings: $embeddingCount")
 
     logger.info("Step 5: Updating storage...")
 
+    // Reuse the doc IDs we already collected above
+    val allChangedDocIds = changedDocIds ++ newDocIds ++ deletedDocIds
+
     val mergedDocs = existingDocs
       .filter(!$"documentId".isin(allChangedDocIds.toSeq: _*))
-      .union(docsToProcess)
+      .union(docsToProcess.toDF())
 
     // Cache counts before saving
     val finalDocCount = mergedDocs.count()

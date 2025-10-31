@@ -87,17 +87,17 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
   def saveChunks(chunks: DataFrame): Unit = {
     logger.info(s"saveChunks called with DataFrame")
 
-    // Log what's in the DataFrame before counting
-    val distinctDocs = chunks.select("documentId").distinct().collect().map(_.getString(0))
-    logger.info(s"Document IDs in chunks to save: ${distinctDocs.mkString(", ")}")
-
     val count = chunks.count()
-    logger.info(s"Saving $count chunks to Delta table: $chunksPath")
 
     if (count == 0) {
-      logger.warn("DataFrame is empty - nothing to save!")
+      logger.info("No chunks to save - DataFrame is empty")
       return
     }
+
+    // Log what's in the DataFrame AFTER verifying it's not empty
+    val distinctDocs = chunks.select("documentId").distinct().collect().map(_.getString(0))
+    logger.info(s"Document IDs in chunks to save: ${distinctDocs.mkString(", ")}")
+    logger.info(s"Saving $count chunks to Delta table: $chunksPath")
 
     if (tableExists(chunksPath)) {
       // Use merge for incremental updates
@@ -106,7 +106,7 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
         .format("delta")
         .mode(SaveMode.Overwrite)
         .option("overwriteSchema", "false")
-        .option("partitionOverwriteMode", "dynamic")  // Only overwrite affected partitions
+        .option("partitionOverwriteMode", "dynamic")
         .partitionBy("documentId")
         .save(chunksPath)
     } else {

@@ -2,91 +2,99 @@ package com.cs441.hw2
 
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.spark.sql.{Dataset, SparkSession}
-import org.apache.spark.sql.functions._
+
 import java.sql.Timestamp
 import java.time.Instant
 
-class IncrementalEmbedder(spark: SparkSession, embeddingConfig: Configuration.EmbeddingConfig) extends LazyLogging {
+case class Embedding(
+                      embeddingId: String,
+                      chunkId: String,
+                      documentId: String,
+                      embeddingVector: Seq[Double],
+                      embeddingHash: String,
+                      embeddingTimestamp: Timestamp,
+                      embeddingModel: String
+                    )
+
+class IncrementalEmbedder(spark: SparkSession, config: Configuration.EmbeddingConfig) extends LazyLogging {
+  import spark.implicits._
 
   def generateEmbeddings(
                           chunks: Dataset[Chunk],
                           existingEmbeddings: Dataset[Embedding]
                         ): Dataset[Embedding] = {
-
-    import spark.implicits._
-
     logger.info(s"Generating embeddings for ${chunks.count()} chunks")
 
-    // Get existing chunk IDs that already have embeddings
-    val existingChunkIds = existingEmbeddings
-      .select($"chunkId")
-      .distinct()
-      .as[String]
-      .collect()
-      .toSet
+    // Filter existing embeddings to only keep those whose chunks still exist
+    val validChunkIds = chunks.select("chunkId").as[String].collect().toSet
+    val filteredExistingEmbeddings = existingEmbeddings.filter(emb => validChunkIds.contains(emb.chunkId))
 
-    // Filter to only new chunks
-    val newChunks = chunks.filter(chunk => !existingChunkIds.contains(chunk.chunkId))
-
-    val newChunkCount = newChunks.count()
-    logger.info(s"Generating embeddings for $newChunkCount new chunks (skipping ${existingChunkIds.size} existing)")
-
-    if (newChunkCount == 0) {
-      logger.info("No new chunks to embed")
-      return existingEmbeddings
+    val filteredCount = filteredExistingEmbeddings.count()
+    val removedCount = existingEmbeddings.count() - filteredCount
+    if (removedCount > 0) {
+      logger.info(s"Removed $removedCount embeddings for deleted/changed chunks")
     }
 
-    // Capture only primitives to avoid serialization issues
-    val model = embeddingConfig.model
-    val modelVersion = embeddingConfig.version
-    val ollamaHost = embeddingConfig.ollamaHost
+    val existingChunkIds = filteredExistingEmbeddings.select("chunkId").as[String].collect().toSet
+    val newChunks = chunks.filter(chunk => !existingChunkIds.contains(chunk.chunkId))
 
+    val newChunksCount = newChunks.count()
+    val skippedCount = existingChunkIds.size
+
+    logger.info(s"Generating embeddings for $newChunksCount new chunks (skipping $skippedCount existing)")
+
+    if (newChunksCount == 0) {
+      logger.info("No new chunks to embed - returning existing embeddings")
+      return filteredExistingEmbeddings
+    }
+
+    // Capture only serializable values (not the whole config object)
+    val ollamaHost = sys.env.getOrElse("OLLAMA_HOST", config.ollamaHost)
+    val model = config.model
+
+    // Broadcast values for use in executors
+    val broadcastHost = spark.sparkContext.broadcast(ollamaHost)
+    val broadcastModel = spark.sparkContext.broadcast(model)
+
+    // Generate embeddings in parallel using mapPartitions
     val embeddingsRDD = newChunks.rdd.mapPartitions { partition =>
-      // Create client inside mapPartitions to avoid serialization
-      val client = new OllamaClient(ollamaHost, model)
+      // Get broadcasted values in executor
+      val host = broadcastHost.value
+      val modelName = broadcastModel.value
 
-      partition.flatMap { chunk =>
-        val chunkId = chunk.chunkId
-        val text = chunk.chunkText
+      // Create one OllamaClient per partition (not per chunk)
+      val client = new OllamaClient(host)
 
-        client.generateEmbedding(text) match {
-          case Right(embedding) =>
-            val embeddingId = HashUtils.generateEmbeddingId(chunkId, s"$model-$modelVersion")
-            val embeddingHash = HashUtils.md5(embedding.mkString(","))
+      partition.map { chunk =>
+        try {
+          // Generate embedding - returns Array[Double]
+          val embedding: Array[Double] = client.generateEmbedding(chunk.chunkText, modelName)
 
-            Some(Embedding(
-              embeddingId = embeddingId,
-              chunkId = chunkId,
-              embeddingVector = embedding.toList,
-              modelName = model,
-              modelVersion = modelVersion,
-              embeddingTimestamp = Timestamp.from(Instant.now()),
-              embeddingHash = embeddingHash
-            ))
+          // Create hash and embedding object
+          val embeddingHash = HashUtils.md5(embedding.mkString(","))
+          val embeddingId = s"${chunk.chunkId}_${embeddingHash.take(8)}"
 
-          case Left(error) =>
-            // Can't use logger here as it's not serializable
-            println(s"ERROR: Failed to generate embedding for chunk $chunkId: $error")
-            None
+          Embedding(
+            embeddingId = embeddingId,
+            chunkId = chunk.chunkId,
+            documentId = chunk.documentId,
+            embeddingVector = embedding.toSeq,
+            embeddingHash = embeddingHash,
+            embeddingTimestamp = Timestamp.from(Instant.now()),
+            embeddingModel = modelName
+          )
+        } catch {
+          case e: Exception =>
+            // Can't use logger in executor - print to stderr
+            System.err.println(s"Failed to generate embedding for chunk ${chunk.chunkId}: ${e.getMessage}")
+            throw e
         }
       }
     }
 
-    val newEmbeddings = spark.createDataset(embeddingsRDD.collect().toSeq)
-
+    val newEmbeddings = spark.createDataset(embeddingsRDD)
     logger.info(s"Generated ${newEmbeddings.count()} new embeddings")
 
-    // Combine with existing
-    existingEmbeddings.union(newEmbeddings)
+    filteredExistingEmbeddings.union(newEmbeddings)
   }
 }
-
-case class Embedding(
-                      embeddingId: String,
-                      chunkId: String,
-                      embeddingVector: scala.collection.immutable.Seq[Float],
-                      modelName: String,
-                      modelVersion: String,
-                      embeddingTimestamp: Timestamp,
-                      embeddingHash: String
-                    )
