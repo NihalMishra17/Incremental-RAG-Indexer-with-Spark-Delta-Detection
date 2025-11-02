@@ -1,50 +1,34 @@
 #!/bin/bash
+set -euo pipefail
+set -x
 
-exec > /var/log/bootstrap.log 2>&1
+# 1) Install Ollama
+curl -fsSL https://ollama.com/install.sh | sudo sh
 
-echo "=== EMR Bootstrap Starting ==="
-date
+# 2) Start Ollama (detached) and log to /var/log
+nohup /usr/local/bin/ollama serve > /var/log/ollama.log 2>&1 &
 
-# Kill any existing ollama processes
-sudo pkill -9 ollama 2>/dev/null || true
+# 3) Wait for API
+echo "Waiting for Ollama to start..."
+for i in {1..20}; do
+  if curl -s http://127.0.0.1:11434/api/tags >/dev/null 2>&1; then
+    echo "✅ Ollama is up!"
+    break
+  fi
+  echo "⏳ Not ready... retry $i/20"
+  sleep 5
+done
 
-# Install Ollama
-echo "Installing Ollama..."
-curl -fsSL https://ollama.com/install.sh | sh
+# 4) Pull required model with retries
+MODEL="mxbai-embed-large"
+for i in {1..5}; do
+  if /usr/local/bin/ollama pull "$MODEL"; then
+    echo "✅ Pulled $MODEL"
+    break
+  fi
+  echo "⏳ Pull failed, retry $i/5 ..."
+  sleep 10
+done
 
-# Configure Ollama service
-echo "Configuring Ollama service..."
-sudo tee /etc/systemd/system/ollama.service > /dev/null <<'EOF'
-[Unit]
-Description=Ollama Service
-After=network.target
-
-[Service]
-Type=simple
-User=root
-ExecStart=/usr/bin/env OLLAMA_HOST=0.0.0.0:11434 /usr/local/bin/ollama serve
-Restart=always
-RestartSec=3
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# Start Ollama
-sudo systemctl daemon-reload
-sudo systemctl enable ollama
-sudo systemctl start ollama
-
-sleep 10
-
-# Pull model
-echo "Pulling mxbai-embed-large model..."
-/usr/local/bin/ollama pull mxbai-embed-large
-
-# Verify
-/usr/local/bin/ollama list
-sudo netstat -tlnp | grep 11434
-
-echo "=== Bootstrap Complete ==="
-date
-exit 0
+# 5) Verify
+curl -s http://127.0.0.1:11434/api/tags || echo "⚠️ Ollama API not responding after install."

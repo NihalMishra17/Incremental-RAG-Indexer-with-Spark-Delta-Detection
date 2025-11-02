@@ -88,8 +88,7 @@ MSRCorpus/
 !**/src/main/**/target/
 !**/src/test/**/target/
 EOF
-# Delta Lake output
-delta-output/
+
 
 # Spark checkpoints
 checkpoints/
@@ -97,13 +96,3 @@ checkpoints/
 # Spark event logs (if any)
 spark-warehouse/
 
-# SBT build artifacts (if not already there)
-target/
-project/target/
-project/project/
-
-# IDE files
-.idea/
-*.iml
-.metals/
-.bloop/
