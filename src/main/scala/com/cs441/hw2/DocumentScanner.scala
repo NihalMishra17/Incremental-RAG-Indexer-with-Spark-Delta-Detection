@@ -4,14 +4,27 @@ import com.typesafe.scalalogging.LazyLogging
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import java.security.MessageDigest
 
+/**
+ * Scans directory for PDF documents and extracts text.
+ *
+ * Design rationale:
+ * - Uses Spark's binaryFile format for distributed file reading
+ * - SHA-256 content hashing for change detection
+ * - Handles extraction failures gracefully (logs and skips)
+ */
 object DocumentScanner extends LazyLogging {
 
+  /**
+   * Scan input directory for PDFs and extract text.
+   * Returns DataFrame with documentId, filePath, content, and contentHash.
+   */
   def scanDocuments(spark: SparkSession, inputDir: String): DataFrame = {
     import spark.implicits._
 
     logger.info(s"Scanning directory for PDFs: $inputDir")
 
     try {
+      // Read all PDFs as binary files
       val filesDF = spark.read
         .format("binaryFile")
         .option("pathGlobFilter", "*.pdf")
@@ -25,6 +38,7 @@ object DocumentScanner extends LazyLogging {
         return spark.emptyDataFrame
       }
 
+      // Extract text from each PDF on executors
       val documentsRDD = filesDF.rdd.flatMap { row =>
         val path = row.getAs[String]("path")
         val content = row.getAs[Array[Byte]]("content")
@@ -69,6 +83,9 @@ object DocumentScanner extends LazyLogging {
     }
   }
 
+  /**
+   * Compute SHA-256 hash of content for change detection.
+   */
   def computeHash(content: String): String = {
     val digest = MessageDigest.getInstance("SHA-256")
     val hashBytes = digest.digest(content.getBytes("UTF-8"))
@@ -76,6 +93,9 @@ object DocumentScanner extends LazyLogging {
   }
 }
 
+/**
+ * Represents a scanned document with metadata and content hash.
+ */
 case class Document(
                      documentId: String,
                      filePath: String,

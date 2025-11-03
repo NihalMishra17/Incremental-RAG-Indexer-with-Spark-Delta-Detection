@@ -4,7 +4,12 @@ import pureconfig._
 import pureconfig.generic.auto._
 
 /**
- * Configuration for the delta indexer application.
+ * Configuration for the delta indexer application using PureConfig.
+ *
+ * Design rationale:
+ * - Type-safe configuration from application.conf
+ * - Environment variable overrides supported
+ * - Nested case classes for logical grouping
  */
 object Configuration {
 
@@ -46,12 +51,18 @@ object Configuration {
                                  spark: SparkConfig
                                )
 
+  /**
+   * Load configuration with error handling.
+   */
   def load(): Either[Throwable, DeltaIndexerConfig] = {
     ConfigSource.default.at("delta-indexer").load[DeltaIndexerConfig].left.map { failures =>
       new RuntimeException(s"Failed to load configuration: ${failures.prettyPrint()}")
     }
   }
 
+  /**
+   * Load configuration or throw exception.
+   */
   def loadOrThrow(): DeltaIndexerConfig = {
     load() match {
       case Right(config) => config

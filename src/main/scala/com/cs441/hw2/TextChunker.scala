@@ -3,17 +3,21 @@ package com.cs441.hw2
 import com.typesafe.scalalogging.LazyLogging
 
 /**
- * Text chunking utility with overlap support
- * Design rationale: Uses functional sliding window approach to avoid mutable induction variables
+ * Text chunking utility with overlap support.
+ *
+ * Design rationale:
+ * - Functional approach using Range and map (no mutable state)
+ * - Fixed-size chunks with configurable overlap for context preservation
+ * - Deterministic chunking ensures same text always produces same chunks
  */
 object TextChunker extends LazyLogging {
 
   /**
-   * Chunk text into overlapping segments using functional approach
-   * No var, no while loops - uses Range and sliding for functional iteration
+   * Chunk text into overlapping segments using functional approach.
+   * No var, no while loops - uses Range for functional iteration.
    */
   def chunk(text: String, chunkSize: Int, overlap: Int): Seq[String] = {
-    // Validation
+    // Input validation
     if (chunkSize <= 0) {
       logger.error(s"Invalid chunk size: $chunkSize")
       return Seq.empty
@@ -31,45 +35,39 @@ object TextChunker extends LazyLogging {
 
     val cleanedText = text.trim
 
-    // If text is smaller than chunk size, return as single chunk
+    // If text fits in one chunk, return as-is
     if (cleanedText.length <= chunkSize) {
       return Seq(cleanedText)
     }
 
-    // Functional approach: use Range with step to generate chunk start positions
-    // Then use sliding window to extract chunks
-    // No induction variable, no while loop
+    // Functional approach: use Range to generate start positions
     val step = chunkSize - overlap
 
-    // Generate all start positions for chunks
+    // Generate all chunk start positions
     val startPositions = (0 until cleanedText.length by step).toSeq
 
-    // Map each start position to a chunk
-    // This is a functional map operation, no mutable state
+    // Map each start position to a substring (no mutable state)
     startPositions.map { start =>
       val end = math.min(start + chunkSize, cleanedText.length)
       cleanedText.substring(start, end)
-    }.filter(_.nonEmpty) // Remove any empty chunks at the end
+    }.filter(_.nonEmpty)
 
   }
 
   /**
-   * Chunk text and return with indices
-   * Functional approach using zipWithIndex
+   * Chunk text and return with indices.
+   * Uses functional zipWithIndex.
    */
-  def chunkWithIndex(text: String, chunkSize: Int, overlap: Int): Seq[(String, Int)] = {
-    // Uses functional zipWithIndex instead of manual counter
+  def chunkWithIndex(text: String, chunkSize: Int, overlap: Int): Seq[(Int, String)] = {
     chunk(text, chunkSize, overlap).zipWithIndex.map { case (chunk, idx) =>
-      (chunk, idx)
+      (idx, chunk)  // Return (index, chunk) not (chunk, index)
     }
   }
 
   /**
-   * Alternative implementation using unfold for demonstration
-   * Pure functional recursive-style chunking
+   * Alternative implementation using Stream for lazy evaluation.
    */
   def chunkUnfold(text: String, chunkSize: Int, overlap: Int): Seq[String] = {
-    // Validation
     if (chunkSize <= 0 || overlap < 0 || overlap >= chunkSize) {
       return Seq.empty
     }
@@ -81,8 +79,7 @@ object TextChunker extends LazyLogging {
 
     val step = chunkSize - overlap
 
-    // Use unfold to generate sequence without any mutable state
-    // Unfold is a pure functional approach to sequence generation
+    // Stream for lazy chunk generation
     Stream.iterate(0)(_ + step)
       .takeWhile(_ < cleanedText.length)
       .map { position =>

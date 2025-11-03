@@ -8,7 +8,9 @@ import org.apache.spark.sql.expressions.Window
 import java.sql.Timestamp
 import java.time.Instant
 
-// Define Chunk at package level to avoid serialization issues
+/**
+ * Represents a text chunk with metadata and deterministic ID.
+ */
 case class Chunk(
                   chunkId: String,
                   documentId: String,
@@ -21,10 +23,19 @@ case class Chunk(
 
 /**
  * Handles incremental chunking of documents.
+ *
+ * Design rationale:
+ * - Uses Spark window functions for chunk indexing
+ * - Deterministic chunk IDs include documentId, index, and content hash
+ * - Explode pattern for parallelizing chunk generation
  */
 class IncrementalChunker(spark: SparkSession, config: Configuration.ChunkingConfig) extends LazyLogging {
   import spark.implicits._
 
+  /**
+   * Chunk documents into fixed-size overlapping segments.
+   * Returns DataFrame with deterministic chunk IDs.
+   */
   def chunkDocuments(documents: DataFrame): DataFrame = {
     logger.info(s"Chunking documents with chunk size ${config.chunkSize} and overlap ${config.overlap}")
 
@@ -36,26 +47,28 @@ class IncrementalChunker(spark: SparkSession, config: Configuration.ChunkingConf
 
     logger.info(s"Chunking $documentsCount documents")
 
-    // Capture config values to avoid serializing the entire object
+    // Capture config to avoid serialization issues
     val chunkSize = config.chunkSize
     val overlap = config.overlap
     val version = config.version
 
-    // Create UDF for chunking - capturing only primitives
+    // UDF for chunking text (runs on executors)
     val chunkTextUDF = udf((text: String) => TextChunker.chunk(text, chunkSize, overlap))
 
     val chunksDF = documents
-      .withColumn("chunks", chunkTextUDF(col("content")))  // Use "content" column
+      .withColumn("chunks", chunkTextUDF(col("content")))
       .withColumn("chunk", explode(col("chunks")))
       .select(
         col("documentId"),
         col("filePath"),
         col("chunk").alias("chunkText")
       )
+      // Assign sequential indices within each document
       .withColumn("rowId", monotonically_increasing_id())
       .withColumn("chunkIndex",
         row_number().over(Window.partitionBy("documentId").orderBy("rowId")) - 1
       )
+      // Generate deterministic IDs
       .withColumn("chunkHash", sha2(col("chunkText"), 256))
       .withColumn("chunkId",
         concat(
@@ -84,6 +97,9 @@ class IncrementalChunker(spark: SparkSession, config: Configuration.ChunkingConf
     chunksDF
   }
 
+  /**
+   * Merge new chunks with existing, removing stale chunks.
+   */
   def mergeChunks(
                    newChunks: DataFrame,
                    existingChunks: DataFrame,
@@ -96,6 +112,7 @@ class IncrementalChunker(spark: SparkSession, config: Configuration.ChunkingConf
       return newChunks
     }
 
+    // Keep only chunks for unchanged documents
     val unchangedChunks = existingChunks
       .filter(!col("documentId").isin(changedDocumentIds.toSeq: _*))
 
@@ -104,7 +121,6 @@ class IncrementalChunker(spark: SparkSession, config: Configuration.ChunkingConf
 
     logger.info(s"Keeping $unchangedCount unchanged chunks, adding $newCount new chunks")
 
-    // Handle empty newChunks case (e.g., when documents are only deleted)
     if (newCount == 0) {
       logger.info("No new chunks to add - returning unchanged chunks only")
       return unchangedChunks
@@ -113,6 +129,9 @@ class IncrementalChunker(spark: SparkSession, config: Configuration.ChunkingConf
     unchangedChunks.union(newChunks)
   }
 
+  /**
+   * Delete chunks for specified documents.
+   */
   def deleteChunksForDocuments(allChunks: DataFrame, documentIds: Set[String]): DataFrame = {
     if (documentIds.isEmpty) {
       allChunks

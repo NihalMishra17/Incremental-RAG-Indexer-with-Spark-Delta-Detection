@@ -4,6 +4,9 @@ import com.typesafe.scalalogging.LazyLogging
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.apache.spark.sql.functions._
 
+/**
+ * Represents the delta between current and previous document corpus.
+ */
 case class DocumentDelta(
                           newDocs: Dataset[Document],
                           changedDocs: Dataset[Document],
@@ -11,8 +14,22 @@ case class DocumentDelta(
                           deletedDocs: Dataset[Document]
                         )
 
+/**
+ * Detects changes in document corpus using content hashing.
+ *
+ * Design rationale:
+ * - Uses Spark anti-joins for efficient set operations
+ * - Content hash comparison for change detection (not timestamps)
+ * - Four-way classification: new, changed, unchanged, deleted
+ */
 object DeltaDetector extends LazyLogging {
 
+  /**
+   * Detect what changed between current and previous corpus.
+   * Returns datasets for each category of change.
+   *
+   * Note: Uses documentId (not filePath) for matching to handle path variations.
+   */
   def detectChanges(
                      currentDocs: Dataset[Document],
                      previousDocs: Dataset[Document]
@@ -21,7 +38,7 @@ object DeltaDetector extends LazyLogging {
 
     logger.info("Detecting document changes...")
 
-    // Handle empty corpus edge case
+    // Edge case: empty corpus
     if (currentDocs.isEmpty) {
       logger.warn("Current corpus is empty - all previous documents are deleted")
       return DocumentDelta(
@@ -42,19 +59,19 @@ object DeltaDetector extends LazyLogging {
       )
     }
 
-    // New documents: in current but not in previous (by filePath)
+    // New documents: in current but not in previous (by documentId, not filePath)
     val newDocs = currentDocs
-      .join(previousDocs.select("filePath"), Seq("filePath"), "left_anti")
+      .join(previousDocs.select("documentId"), Seq("documentId"), "left_anti")
       .as[Document]
 
     val newCount = newDocs.count()
     logger.info(s"Found $newCount new documents")
 
-    // Changed documents: same filePath but different contentHash
+    // Changed documents: same documentId but different contentHash
     val changedDocs = currentDocs.as("current")
       .join(
         previousDocs.as("previous"),
-        col("current.filePath") === col("previous.filePath") &&
+        col("current.documentId") === col("previous.documentId") &&
           col("current.contentHash") =!= col("previous.contentHash"),
         "inner"
       )
@@ -64,11 +81,11 @@ object DeltaDetector extends LazyLogging {
     val changedCount = changedDocs.count()
     logger.info(s"Found $changedCount changed documents")
 
-    // Unchanged documents: same filePath and same contentHash
+    // Unchanged documents: same documentId and same contentHash
     val unchangedDocs = currentDocs.as("current")
       .join(
         previousDocs.as("previous"),
-        col("current.filePath") === col("previous.filePath") &&
+        col("current.documentId") === col("previous.documentId") &&
           col("current.contentHash") === col("previous.contentHash"),
         "inner"
       )
@@ -78,15 +95,15 @@ object DeltaDetector extends LazyLogging {
     val unchangedCount = unchangedDocs.count()
     logger.info(s"Found $unchangedCount unchanged documents")
 
-    // Deleted documents: in previous but not in current
+    // Deleted documents: in previous but not in current (by documentId)
     val deletedDocs = previousDocs
-      .join(currentDocs.select("filePath"), Seq("filePath"), "left_anti")
+      .join(currentDocs.select("documentId"), Seq("documentId"), "left_anti")
       .as[Document]
 
     val deletedCount = deletedDocs.count()
     logger.info(s"Found $deletedCount deleted documents")
 
-    // Summary
+    // Summary logging
     logger.info(s"Delta summary: ${previousDocs.count()} previous docs, ${currentDocs.count()} current docs")
     logger.info(s"  New: $newCount, Changed: $changedCount, Unchanged: $unchangedCount, Deleted: $deletedCount")
 

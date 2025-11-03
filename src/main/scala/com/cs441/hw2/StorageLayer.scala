@@ -5,6 +5,15 @@ import io.delta.tables.DeltaTable
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 import org.apache.hadoop.fs.{FileSystem, Path}
 
+/**
+ * Delta Lake storage layer for documents, chunks, and embeddings.
+ *
+ * Design rationale:
+ * - Uses Delta Lake for ACID transactions and versioning
+ * - Separate tables for normalized data model
+ * - Verifies S3 writes for debugging
+ * - Partitions chunks by documentId for efficient updates
+ */
 class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLogging {
 
   private val documentsPath = s"$baseOutputDir/documents"
@@ -17,6 +26,9 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
   logger.info(s"  Chunks: $chunksPath")
   logger.info(s"  Embeddings: $embeddingsPath")
 
+  /**
+   * Check if Delta table exists at path.
+   */
   def tableExists(path: String): Boolean = {
     try {
       DeltaTable.isDeltaTable(spark, path)
@@ -25,6 +37,9 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
     }
   }
 
+  /**
+   * Verify S3 write succeeded by checking filesystem.
+   */
   private def verifyS3Write(path: String): Unit = {
     try {
       val hadoopPath = new Path(path)
@@ -34,7 +49,7 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
         val status = fs.listStatus(hadoopPath)
         logger.info(s"✓ Verified write to $path - ${status.length} files/dirs found")
 
-        // Check for _delta_log
+        // Check for Delta log
         val deltaLog = new Path(path, "_delta_log")
         if (fs.exists(deltaLog)) {
           logger.info(s"✓ Delta log exists at $deltaLog")
@@ -52,6 +67,9 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
 
   // ==================== Documents Table ====================
 
+  /**
+   * Save documents to Delta table (overwrite mode).
+   */
   def saveDocuments(documents: DataFrame): Unit = {
     val count = documents.count()
     logger.info(s"Saving $count documents to Delta table: $documentsPath")
@@ -70,6 +88,9 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
     verifyS3Write(documentsPath)
   }
 
+  /**
+   * Load documents from Delta table.
+   */
   def loadDocuments(): DataFrame = {
     if (tableExists(documentsPath)) {
       logger.info(s"Loading documents from Delta table: $documentsPath")
@@ -84,6 +105,9 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
 
   // ==================== Chunks Table ====================
 
+  /**
+   * Save chunks to Delta table with partitioning by documentId.
+   */
   def saveChunks(chunks: DataFrame): Unit = {
     logger.info(s"saveChunks called with DataFrame")
 
@@ -94,13 +118,12 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
       return
     }
 
-    // Log what's in the DataFrame AFTER verifying it's not empty
     val distinctDocs = chunks.select("documentId").distinct().collect().map(_.getString(0))
     logger.info(s"Document IDs in chunks to save: ${distinctDocs.mkString(", ")}")
     logger.info(s"Saving $count chunks to Delta table: $chunksPath")
 
     if (tableExists(chunksPath)) {
-      // Use merge for incremental updates
+      // Overwrite with dynamic partitioning for incremental updates
       logger.info("Merging chunks into existing table")
       chunks.write
         .format("delta")
@@ -110,7 +133,7 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
         .partitionBy("documentId")
         .save(chunksPath)
     } else {
-      // First time - create table
+      // First time - create partitioned table
       logger.info("Creating new chunks table")
       chunks.write
         .format("delta")
@@ -123,6 +146,9 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
     verifyS3Write(chunksPath)
   }
 
+  /**
+   * Load chunks from Delta table.
+   */
   def loadChunks(): DataFrame = {
     if (tableExists(chunksPath)) {
       logger.info(s"Loading chunks from Delta table: $chunksPath")
@@ -137,6 +163,9 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
 
   // ==================== Embeddings Table ====================
 
+  /**
+   * Save embeddings to Delta table (overwrite mode).
+   */
   def saveEmbeddings(embeddings: DataFrame): Unit = {
     val count = embeddings.count()
     logger.info(s"Saving $count embeddings to Delta table: $embeddingsPath")
@@ -155,6 +184,9 @@ class StorageLayer(spark: SparkSession, baseOutputDir: String) extends LazyLoggi
     verifyS3Write(embeddingsPath)
   }
 
+  /**
+   * Load embeddings from Delta table.
+   */
   def loadEmbeddings(): DataFrame = {
     if (tableExists(embeddingsPath)) {
       logger.info(s"Loading embeddings from Delta table: $embeddingsPath")

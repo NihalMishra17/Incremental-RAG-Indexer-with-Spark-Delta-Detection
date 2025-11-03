@@ -2,18 +2,18 @@ name := "hw2-delta-indexer"
 version := "1.0"
 scalaVersion := "2.12.18"
 
-// Spark dependencies - mark as provided to exclude from JAR
+// Spark dependencies
 libraryDependencies ++= Seq(
-  "org.apache.spark" %% "spark-core" % "3.5.0" % "provided",
-  "org.apache.spark" %% "spark-sql" % "3.5.0" % "provided",
+  "org.apache.spark" %% "spark-core" % "3.5.0",// % "provided",
+  "org.apache.spark" %% "spark-sql" % "3.5.0" ,//% "provided",
   
-  // Delta Lake - MUST be included in JAR (no "provided")
-  "io.delta" %% "delta-spark" % "3.2.0" % "provided",
+  // Delta Lake
+  "io.delta" %% "delta-spark" % "3.2.0",// % "provided",
   
   // PDF processing
   "org.apache.pdfbox" % "pdfbox" % "2.0.27",
   
-  // JSON - Use json4s (already in Spark, no conflicts)
+  // JSON
   "org.json4s" %% "json4s-native" % "3.7.0-M11",
   
   // Logging

@@ -11,31 +11,37 @@ import java.nio.charset.StandardCharsets
 import scala.io.Source
 
 /**
- * Client for interacting with Ollama API using basic HTTP (no Circe/Cats dependencies)
- * Design rationale: Uses functional Iterator pattern to avoid mutable variables and while loops
+ * HTTP client for Ollama embedding API.
+ *
+ * Design rationale:
+ * - Uses basic Java HTTP to avoid heavy dependencies (no Circe/Cats)
+ * - Functional Iterator pattern for response reading (no while loops)
+ * - Lightweight json4s for JSON parsing
+ * - Connection pooling not needed for homework scale
  */
 class OllamaClient(baseUrl: String) extends LazyLogging {
   implicit val formats: DefaultFormats.type = DefaultFormats
 
   private val embedUrl = s"$baseUrl/api/embeddings"
   private val connectionTimeout = 30000 // 30 seconds
-  private val readTimeout = 60000 // 60 seconds
+  private val readTimeout = 60000 // 60 seconds for large text
 
   /**
-   * Generate embedding for a text using Ollama API
+   * Generate embedding vector for text using specified model.
+   * Returns Array[Double] of embedding dimensions (typically 1024).
    */
   def generateEmbedding(text: String, model: String = "nomic-embed-text"): Array[Double] = {
     try {
-      // Create request body
+      // Build JSON request body
       val requestBody = compact(render(
         ("model" -> model) ~
           ("prompt" -> text)
       ))
 
-      // Make HTTP POST request
+      // POST to Ollama API
       val response = makeHttpPost(embedUrl, requestBody)
 
-      // Parse response
+      // Extract embedding array from JSON response
       val json = parse(response)
       val embedding = (json \ "embedding").extract[List[Double]]
 
@@ -50,17 +56,16 @@ class OllamaClient(baseUrl: String) extends LazyLogging {
   }
 
   /**
-   * Make HTTP POST request using basic Java HTTP
-   * Refactored to use functional Iterator pattern instead of while loop
+   * Make HTTP POST request using Java HttpURLConnection.
+   * Uses functional Stream approach for reading response.
    */
   private def makeHttpPost(url: String, body: String): String = {
-    // Use Option to handle null connection safely
-    var connection: HttpURLConnection = null // NOTE: Java interop requires var for connection management
+    var connection: HttpURLConnection = null // Java interop requires var for resource management
     try {
       val urlObj = new URL(url)
       connection = urlObj.openConnection().asInstanceOf[HttpURLConnection]
 
-      // Configure connection
+      // Configure connection parameters
       connection.setRequestMethod("POST")
       connection.setDoOutput(true)
       connection.setConnectTimeout(connectionTimeout)
@@ -78,7 +83,7 @@ class OllamaClient(baseUrl: String) extends LazyLogging {
         if (outputStream != null) outputStream.close()
       }
 
-      // Read response
+      // Check response code
       val responseCode = connection.getResponseCode
       if (responseCode != 200) {
         throw new RuntimeException(s"HTTP error code: $responseCode")
@@ -86,8 +91,7 @@ class OllamaClient(baseUrl: String) extends LazyLogging {
 
       val inputStream = connection.getInputStream
       try {
-        // Functional approach: use Source.fromInputStream which returns Iterator
-        // No var, no while loop - functional line reading
+        // Functional line reading using Source.fromInputStream (returns Iterator)
         Source.fromInputStream(inputStream, StandardCharsets.UTF_8.name())
           .getLines()
           .mkString("\n")
@@ -107,7 +111,7 @@ class OllamaClient(baseUrl: String) extends LazyLogging {
   }
 
   /**
-   * Test connection to Ollama API
+   * Test connectivity to Ollama API.
    */
   def testConnection(): Boolean = {
     try {

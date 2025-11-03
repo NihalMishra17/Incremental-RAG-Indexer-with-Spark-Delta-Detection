@@ -5,19 +5,34 @@ import org.apache.spark.sql.SparkSession
 import java.time.Instant
 import java.time.Duration
 
+/**
+ * Main entry point for incremental RAG indexer with Delta Lake.
+ *
+ * Design rationale:
+ * - Singleton pattern with lazy initialization for Spark components
+ * - Detects first run vs incremental run automatically
+ * - Uses Delta Lake for ACID transactions and versioning
+ * - Generates CSV statistics for each run
+ * - Checkpoints Spark computations to prevent recomputation
+ */
 object SparkDeltaIndexer extends LazyLogging {
 
+  // Singleton components initialized once
   private var sparkSession: SparkSession = _
   private var chunker: IncrementalChunker = _
   private var embedder: IncrementalEmbedder = _
   private var storage: StorageLayer = _
   private var config: Configuration.DeltaIndexerConfig = _
 
+  /**
+   * Initialize Spark session with Delta Lake extensions and all components.
+   */
   def initialize(): Unit = {
     logger.info("Initializing Spark Delta Indexer")
 
     config = Configuration.loadOrThrow()
 
+    // Create Spark session with Delta Lake support
     sparkSession = SparkSession.builder()
       .appName(config.spark.appName)
       .master(config.spark.master)
@@ -25,9 +40,9 @@ object SparkDeltaIndexer extends LazyLogging {
       .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
       .getOrCreate()
 
-    // Set checkpoint directory
     sparkSession.sparkContext.setCheckpointDir("checkpoints")
 
+    // Initialize pipeline components
     chunker = new IncrementalChunker(sparkSession, config.chunking)
     embedder = new IncrementalEmbedder(sparkSession, config.embedding)
     storage = new StorageLayer(sparkSession, config.outputDir)
@@ -35,10 +50,14 @@ object SparkDeltaIndexer extends LazyLogging {
     logger.info("Spark Delta Indexer initialized successfully with Delta Lake")
   }
 
+  /**
+   * Main execution logic - detects first run vs incremental automatically.
+   */
   def run(): Unit = {
     try {
       val existingDocs = storage.loadDocuments()
 
+      // Branch based on whether previous state exists
       if (existingDocs.isEmpty) {
         logger.info("No previous state found. Running first-time indexing...")
         runFirstTimeIndexing()
@@ -54,6 +73,10 @@ object SparkDeltaIndexer extends LazyLogging {
     }
   }
 
+  /**
+   * First run: Process entire corpus from scratch.
+   * Creates baseline state in Delta Lake.
+   */
   private def runFirstTimeIndexing(): Unit = {
     val startTime = Instant.now()
     val spark = sparkSession
@@ -63,6 +86,7 @@ object SparkDeltaIndexer extends LazyLogging {
     logger.info("FIRST RUN: Processing entire corpus")
     logger.info("================================================================================")
 
+    // Step 1: Scan all documents
     logger.info("Step 1: Scanning documents...")
     val currentDocs = DocumentScanner.scanDocuments(spark, config.inputDir)
 
@@ -74,11 +98,13 @@ object SparkDeltaIndexer extends LazyLogging {
 
     logger.info(s"Scanned $docCount documents")
 
+    // Step 2: Chunk all documents
     logger.info("Step 2: Chunking documents...")
     val chunks = chunker.chunkDocuments(currentDocs)
     val chunkCount = chunks.count()
     logger.info(s"Created $chunkCount chunks")
 
+    // Step 3: Generate embeddings for all chunks
     logger.info("Step 3: Generating embeddings...")
     val existingEmbeddingsDF = storage.loadEmbeddings()
     val existingEmbeddings = if (existingEmbeddingsDF.isEmpty) {
@@ -94,6 +120,7 @@ object SparkDeltaIndexer extends LazyLogging {
     val embeddingCount = embeddings.count()
     logger.info(s"Generated $embeddingCount embeddings")
 
+    // Step 4: Save to Delta Lake
     logger.info("Step 4: Saving to storage...")
     storage.saveDocuments(currentDocs)
     storage.saveChunks(chunks)
@@ -107,7 +134,7 @@ object SparkDeltaIndexer extends LazyLogging {
     logger.info(s"Duration: ${duration}s")
     logger.info("================================================================================")
 
-    // Save run statistics
+    // Save metrics
     saveRunStats(
       runType = "first_run",
       totalDocs = docCount,
@@ -118,6 +145,10 @@ object SparkDeltaIndexer extends LazyLogging {
     )
   }
 
+  /**
+   * Incremental run: Process only new/changed documents.
+   * Uses delta detection to minimize work.
+   */
   private def runIncrementalUpdate(existingDocs: org.apache.spark.sql.DataFrame): Unit = {
     val startTime = Instant.now()
     val spark = sparkSession
@@ -128,13 +159,14 @@ object SparkDeltaIndexer extends LazyLogging {
     logger.info("INCREMENTAL UPDATE: Detecting changes")
     logger.info("================================================================================")
 
+    // Step 1: Scan current documents
     logger.info("Step 1: Scanning documents...")
     val currentDocs = DocumentScanner.scanDocuments(spark, config.inputDir)
 
+    // Step 2: Detect what changed using content hashes
     logger.info("Step 2: Detecting changes...")
     implicit val sparkImplicit: SparkSession = spark
 
-    // Convert to Dataset[Document] if not empty, otherwise use empty dataset
     val currentDocsTyped = if (currentDocs.isEmpty) {
       spark.emptyDataset[Document]
     } else {
@@ -153,6 +185,7 @@ object SparkDeltaIndexer extends LazyLogging {
       s"unchanged -> $unchangedDocsCount, " +
       s"deleted -> $deletedDocsCount")
 
+    // Calculate efficiency metric
     val deduplicationRatio = if (currentDocs.count() > 0) {
       (unchangedDocsCount.toDouble / currentDocs.count()) * 100
     } else 0.0
@@ -161,11 +194,11 @@ object SparkDeltaIndexer extends LazyLogging {
 
     val hasChanges = newDocsCount > 0 || changedDocsCount > 0 || deletedDocsCount > 0
 
+    // Fast path: No changes detected
     if (!hasChanges) {
       logger.info("No changes detected. Nothing to process.")
       val duration = Duration.between(startTime, Instant.now()).getSeconds
 
-      // Save stats even for no-op runs
       saveRunStats(
         runType = "incremental_no_changes",
         totalDocs = currentDocs.count(),
@@ -178,17 +211,19 @@ object SparkDeltaIndexer extends LazyLogging {
       return
     }
 
+    // Process only changed documents
     val docsToProcess = delta.newDocs.union(delta.changedDocs)
     val docsToProcessCount = docsToProcess.count()
 
     logger.info(s"Processing $docsToProcessCount changed documents")
 
+    // Step 3: Re-chunk only changed documents
     logger.info("Step 3: Chunking changed documents...")
     val newChunks = chunker.chunkDocuments(docsToProcess.toDF())
 
     val existingChunks = storage.loadChunks()
 
-    // Remove chunks for: changed docs (will be replaced), new docs (in case of ID collision), deleted docs (no longer exist)
+    // Remove chunks for changed/deleted docs (will be replaced)
     val changedDocIds = delta.changedDocs.select("documentId").as[String].collect().toSet
     val newDocIds = delta.newDocs.select("documentId").as[String].collect().toSet
     val deletedDocIds = delta.deletedDocs.select("documentId").as[String].collect().toSet
@@ -196,7 +231,6 @@ object SparkDeltaIndexer extends LazyLogging {
 
     logger.info(s"Removing chunks for ${docsToRemoveChunks.size} changed/new/deleted docs")
 
-    // If all current docs are gone (empty corpus), return empty chunks
     val unchangedChunks = if (existingChunks.isEmpty || currentDocsTyped.isEmpty) {
       if (currentDocsTyped.isEmpty) {
         logger.info("Corpus is empty - removing all chunks")
@@ -214,6 +248,7 @@ object SparkDeltaIndexer extends LazyLogging {
     val newCount = newChunks.count()
     logger.info(s"Keeping $unchangedCount unchanged chunks, adding $newCount new chunks")
 
+    // Merge unchanged and new chunks
     val mergedChunks = if (newCount == 0) {
       logger.info("No new chunks - using only unchanged chunks")
       unchangedChunks
@@ -221,13 +256,12 @@ object SparkDeltaIndexer extends LazyLogging {
       unchangedChunks.union(newChunks)
     }
 
-    // Force materialization to prevent Spark from recomputing incorrectly
+    // Checkpoint to prevent Spark from recomputing incorrectly
     val materializedChunks = mergedChunks.checkpoint()
 
     val chunkCount = materializedChunks.count()
     logger.info(s"Total chunks after merge: $chunkCount")
 
-    // Verify what documentIds are in mergedChunks (only if not empty)
     if (chunkCount > 0) {
       logger.info("Document IDs in merged chunks:")
       materializedChunks.select("documentId").distinct().collect().foreach(row =>
@@ -237,6 +271,7 @@ object SparkDeltaIndexer extends LazyLogging {
       logger.info("No chunks remaining after merge")
     }
 
+    // Step 4: Generate embeddings only for new chunks
     logger.info("Step 4: Generating embeddings for new chunks...")
     val existingEmbeddingsDF = storage.loadEmbeddings()
     val existingEmbeddings = if (existingEmbeddingsDF.isEmpty) {
@@ -259,16 +294,15 @@ object SparkDeltaIndexer extends LazyLogging {
     val embeddingCount = embeddings.count()
     logger.info(s"Total embeddings: $embeddingCount")
 
+    // Step 5: Atomic update of Delta Lake tables
     logger.info("Step 5: Updating storage...")
 
-    // Reuse the doc IDs we already collected above
     val allChangedDocIds = changedDocIds ++ newDocIds ++ deletedDocIds
 
     val mergedDocs = existingDocs
       .filter(!$"documentId".isin(allChangedDocIds.toSeq: _*))
       .union(docsToProcess.toDF())
 
-    // Cache counts before saving
     val finalDocCount = mergedDocs.count()
     val finalChunkCount = chunkCount
     val finalEmbeddingCount = embeddingCount
@@ -286,7 +320,7 @@ object SparkDeltaIndexer extends LazyLogging {
     logger.info(s"Duration: ${duration}s")
     logger.info("================================================================================")
 
-    // Save run statistics
+    // Save metrics
     saveRunStats(
       runType = "incremental_update",
       totalDocs = finalDocCount,
@@ -301,8 +335,10 @@ object SparkDeltaIndexer extends LazyLogging {
     )
   }
 
-  // Just the saveRunStats method - replace in your file
-
+  /**
+   * Save run statistics to CSV for tracking efficiency and cost.
+   * Uses vertical format (metrics as rows) for readability.
+   */
   private def saveRunStats(
                             runType: String,
                             totalDocs: Long,
@@ -322,7 +358,7 @@ object SparkDeltaIndexer extends LazyLogging {
       val timestamp = Instant.now().toString.replace(":", "-").replace(".", "-")
       val statsPath = s"${config.outputDir}/run-stats-$timestamp.csv"
 
-      // Vertical format: metric, value
+      // Vertical CSV format: metric, value
       val statsData = Seq(
         ("metric", "value"),
         ("timestamp", timestamp),
@@ -344,7 +380,7 @@ object SparkDeltaIndexer extends LazyLogging {
         ("duration_seconds", durationSec.toString)
       )
 
-      // Create DataFrame and write directly (Spark handles S3A correctly)
+      // Write directly to S3A (Spark handles filesystem correctly)
       val df = statsData.toDF("metric", "value")
 
       df.coalesce(1)
@@ -362,6 +398,9 @@ object SparkDeltaIndexer extends LazyLogging {
     }
   }
 
+  /**
+   * Clean shutdown of Spark session.
+   */
   def cleanup(): Unit = {
     if (sparkSession != null) {
       logger.info("Stopping Spark session")
@@ -369,6 +408,9 @@ object SparkDeltaIndexer extends LazyLogging {
     }
   }
 
+  /**
+   * Main entry point.
+   */
   def main(args: Array[String]): Unit = {
     try {
       initialize()
