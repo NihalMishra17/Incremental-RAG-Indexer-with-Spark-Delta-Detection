@@ -2,6 +2,8 @@ package com.cs441.hw2
 
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.spark.sql.SparkSession
+import java.time.Instant
+import java.time.Duration
 
 object SparkDeltaIndexer extends LazyLogging {
 
@@ -53,6 +55,7 @@ object SparkDeltaIndexer extends LazyLogging {
   }
 
   private def runFirstTimeIndexing(): Unit = {
+    val startTime = Instant.now()
     val spark = sparkSession
     import spark.implicits._
 
@@ -96,13 +99,27 @@ object SparkDeltaIndexer extends LazyLogging {
     storage.saveChunks(chunks)
     storage.saveEmbeddings(embeddings.toDF())
 
+    val duration = Duration.between(startTime, Instant.now()).getSeconds
+
     logger.info("================================================================================")
     logger.info("FIRST RUN COMPLETE")
     logger.info(s"Documents: $docCount | Chunks: $chunkCount | Embeddings: $embeddingCount")
+    logger.info(s"Duration: ${duration}s")
     logger.info("================================================================================")
+
+    // Save run statistics
+    saveRunStats(
+      runType = "first_run",
+      totalDocs = docCount,
+      totalChunks = chunkCount,
+      totalEmbeddings = embeddingCount,
+      newDocs = docCount,
+      durationSec = duration
+    )
   }
 
   private def runIncrementalUpdate(existingDocs: org.apache.spark.sql.DataFrame): Unit = {
+    val startTime = Instant.now()
     val spark = sparkSession
     import spark.implicits._
     import org.apache.spark.sql.functions.col
@@ -126,23 +143,38 @@ object SparkDeltaIndexer extends LazyLogging {
 
     val delta = DeltaDetector.detectChanges(currentDocsTyped, existingDocs.as[Document])
 
-    logger.info(s"Delta stats: new -> ${delta.newDocs.count()}, " +
-      s"changed -> ${delta.changedDocs.count()}, " +
-      s"unchanged -> ${delta.unchangedDocs.count()}, " +
-      s"deleted -> ${delta.deletedDocs.count()}")
+    val newDocsCount = delta.newDocs.count()
+    val changedDocsCount = delta.changedDocs.count()
+    val unchangedDocsCount = delta.unchangedDocs.count()
+    val deletedDocsCount = delta.deletedDocs.count()
+
+    logger.info(s"Delta stats: new -> $newDocsCount, " +
+      s"changed -> $changedDocsCount, " +
+      s"unchanged -> $unchangedDocsCount, " +
+      s"deleted -> $deletedDocsCount")
 
     val deduplicationRatio = if (currentDocs.count() > 0) {
-      (delta.unchangedDocs.count().toDouble / currentDocs.count()) * 100
+      (unchangedDocsCount.toDouble / currentDocs.count()) * 100
     } else 0.0
 
     logger.info(f"Deduplication ratio: $deduplicationRatio%.2f%%")
 
-    val hasChanges = delta.newDocs.count() > 0 ||
-      delta.changedDocs.count() > 0 ||
-      delta.deletedDocs.count() > 0
+    val hasChanges = newDocsCount > 0 || changedDocsCount > 0 || deletedDocsCount > 0
 
     if (!hasChanges) {
       logger.info("No changes detected. Nothing to process.")
+      val duration = Duration.between(startTime, Instant.now()).getSeconds
+
+      // Save stats even for no-op runs
+      saveRunStats(
+        runType = "incremental_no_changes",
+        totalDocs = currentDocs.count(),
+        totalChunks = storage.loadChunks().count(),
+        totalEmbeddings = storage.loadEmbeddings().count(),
+        unchangedDocs = unchangedDocsCount,
+        efficiencyPct = 100.0,
+        durationSec = duration
+      )
       return
     }
 
@@ -245,11 +277,89 @@ object SparkDeltaIndexer extends LazyLogging {
     storage.saveChunks(materializedChunks)
     storage.saveEmbeddings(embeddings.toDF())
 
+    val duration = Duration.between(startTime, Instant.now()).getSeconds
+
     logger.info("================================================================================")
     logger.info("INCREMENTAL UPDATE COMPLETE")
     logger.info(f"Efficiency: Skipped $deduplicationRatio%.2f%% of corpus")
     logger.info(s"Total: $finalDocCount docs | $finalChunkCount chunks | $finalEmbeddingCount embeddings")
+    logger.info(s"Duration: ${duration}s")
     logger.info("================================================================================")
+
+    // Save run statistics
+    saveRunStats(
+      runType = "incremental_update",
+      totalDocs = finalDocCount,
+      totalChunks = finalChunkCount,
+      totalEmbeddings = finalEmbeddingCount,
+      newDocs = newDocsCount,
+      changedDocs = changedDocsCount,
+      unchangedDocs = unchangedDocsCount,
+      deletedDocs = deletedDocsCount,
+      efficiencyPct = deduplicationRatio,
+      durationSec = duration
+    )
+  }
+
+  // Just the saveRunStats method - replace in your file
+
+  private def saveRunStats(
+                            runType: String,
+                            totalDocs: Long,
+                            totalChunks: Long,
+                            totalEmbeddings: Long,
+                            newDocs: Long = 0,
+                            changedDocs: Long = 0,
+                            unchangedDocs: Long = 0,
+                            deletedDocs: Long = 0,
+                            efficiencyPct: Double = 0.0,
+                            durationSec: Long
+                          ): Unit = {
+    try {
+      val spark = sparkSession
+      import spark.implicits._
+
+      val timestamp = Instant.now().toString.replace(":", "-").replace(".", "-")
+      val statsPath = s"${config.outputDir}/run-stats-$timestamp.csv"
+
+      // Vertical format: metric, value
+      val statsData = Seq(
+        ("metric", "value"),
+        ("timestamp", timestamp),
+        ("run_type", runType),
+        ("environment", config.spark.master),
+        ("input_dir", config.inputDir),
+        ("output_dir", config.outputDir),
+        ("model", s"${config.embedding.model}-${config.embedding.version}"),
+        ("chunk_size", config.chunking.chunkSize.toString),
+        ("chunk_overlap", config.chunking.overlap.toString),
+        ("total_documents", totalDocs.toString),
+        ("total_chunks", totalChunks.toString),
+        ("total_embeddings", totalEmbeddings.toString),
+        ("new_documents", newDocs.toString),
+        ("changed_documents", changedDocs.toString),
+        ("unchanged_documents", unchangedDocs.toString),
+        ("deleted_documents", deletedDocs.toString),
+        ("efficiency_pct", f"$efficiencyPct%.2f"),
+        ("duration_seconds", durationSec.toString)
+      )
+
+      // Create DataFrame and write directly (Spark handles S3A correctly)
+      val df = statsData.toDF("metric", "value")
+
+      df.coalesce(1)
+        .write
+        .mode("overwrite")
+        .option("header", "true")
+        .csv(statsPath)
+
+      logger.info(s"✓ Run statistics saved to: $statsPath")
+
+    } catch {
+      case e: Exception =>
+        logger.error(s"Failed to save run statistics: ${e.getMessage}", e)
+      // Don't fail the job if stats saving fails
+    }
   }
 
   def cleanup(): Unit = {

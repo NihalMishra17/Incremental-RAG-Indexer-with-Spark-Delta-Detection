@@ -1,34 +1,26 @@
 #!/bin/bash
-set -euo pipefail
-set -x
 
-# 1) Install Ollama
-curl -fsSL https://ollama.com/install.sh | sudo sh
+# Install Ollama
+curl -fsSL https://ollama.com/install.sh | sh
 
-# 2) Start Ollama (detached) and log to /var/log
-nohup /usr/local/bin/ollama serve > /var/log/ollama.log 2>&1 &
+# Configure systemd to listen on all interfaces
+sudo mkdir -p /etc/systemd/system/ollama.service.d
+sudo tee /etc/systemd/system/ollama.service.d/override.conf << 'EOF'
+[Service]
+Environment="OLLAMA_HOST=0.0.0.0:11434"
+EOF
 
-# 3) Wait for API
-echo "Waiting for Ollama to start..."
-for i in {1..20}; do
-  if curl -s http://127.0.0.1:11434/api/tags >/dev/null 2>&1; then
-    echo "✅ Ollama is up!"
-    break
-  fi
-  echo "⏳ Not ready... retry $i/20"
-  sleep 5
-done
+# Start Ollama service
+sudo systemctl daemon-reload
+sudo systemctl enable ollama
+sudo systemctl start ollama
 
-# 4) Pull required model with retries
-MODEL="mxbai-embed-large"
-for i in {1..5}; do
-  if /usr/local/bin/ollama pull "$MODEL"; then
-    echo "✅ Pulled $MODEL"
-    break
-  fi
-  echo "⏳ Pull failed, retry $i/5 ..."
-  sleep 10
-done
+# Wait for service to be ready
+sleep 10
 
-# 5) Verify
-curl -s http://127.0.0.1:11434/api/tags || echo "⚠️ Ollama API not responding after install."
+# Pull model
+ollama pull mxbai-embed-large
+
+# Verify
+netstat -tlnp | grep 11434
+ollama list

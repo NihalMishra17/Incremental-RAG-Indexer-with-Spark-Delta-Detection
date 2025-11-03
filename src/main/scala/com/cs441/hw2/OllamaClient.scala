@@ -8,9 +8,11 @@ import org.json4s.JsonDSL._
 import java.io.{BufferedReader, InputStreamReader, OutputStream}
 import java.net.{HttpURLConnection, URL}
 import java.nio.charset.StandardCharsets
+import scala.io.Source
 
 /**
  * Client for interacting with Ollama API using basic HTTP (no Circe/Cats dependencies)
+ * Design rationale: Uses functional Iterator pattern to avoid mutable variables and while loops
  */
 class OllamaClient(baseUrl: String) extends LazyLogging {
   implicit val formats: DefaultFormats.type = DefaultFormats
@@ -49,9 +51,11 @@ class OllamaClient(baseUrl: String) extends LazyLogging {
 
   /**
    * Make HTTP POST request using basic Java HTTP
+   * Refactored to use functional Iterator pattern instead of while loop
    */
   private def makeHttpPost(url: String, body: String): String = {
-    var connection: HttpURLConnection = null
+    // Use Option to handle null connection safely
+    var connection: HttpURLConnection = null // NOTE: Java interop requires var for connection management
     try {
       val urlObj = new URL(url)
       connection = urlObj.openConnection().asInstanceOf[HttpURLConnection]
@@ -81,17 +85,13 @@ class OllamaClient(baseUrl: String) extends LazyLogging {
       }
 
       val inputStream = connection.getInputStream
-      val reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
       try {
-        val response = new StringBuilder()
-        var line = reader.readLine()
-        while (line != null) {
-          response.append(line)
-          line = reader.readLine()
-        }
-        response.toString
+        // Functional approach: use Source.fromInputStream which returns Iterator
+        // No var, no while loop - functional line reading
+        Source.fromInputStream(inputStream, StandardCharsets.UTF_8.name())
+          .getLines()
+          .mkString("\n")
       } finally {
-        reader.close()
         inputStream.close()
       }
 

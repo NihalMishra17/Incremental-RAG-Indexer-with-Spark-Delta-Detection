@@ -1,541 +1,603 @@
-# HW2: Incremental RAG Indexer with Delta Lake
+# CS441 Homework 2: Incremental RAG Indexer with Spark and Delta Lake
 
-## Overview
+**Author:** Nihal Niraj Mishra  
+**Email:** nmish@uic.edu
 
-This project implements a production-grade incremental indexing system for Retrieval-Augmented Generation (RAG) using Apache Spark and Delta Lake. The system efficiently processes PDF documents by detecting changes and only reprocessing modified content, achieving up to 80-100% deduplication efficiency.
+## Video Demonstration
+[Link to YouTube video demonstration]
 
-## Key Features
+---
 
-### Core Functionality
-- **Incremental Processing**: Only processes new or changed documents using anti-join operations
-- **Delta Lake Integration**: ACID transactions with versioned transaction logs
-- **Change Detection**: Identifies 4 types of changes (new, modified, unchanged, deleted)
-- **Deduplication**: 80-100% efficiency by skipping unchanged documents
-- **PDF Processing**: Extracts and chunks text from PDF documents
-- **Vector Embeddings**: Generates embeddings using Ollama's mxbai-embed-large model
-- **Distributed Computing**: Leverages Apache Spark for scalable processing
+## Table of Contents
+1. [Project Overview](#project-overview)
+2. [Architecture & Design](#architecture--design)
+3. [Prerequisites](#prerequisites)
+4. [Installation](#installation)
+5. [Configuration](#configuration)
+6. [Running Locally](#running-locally)
+7. [AWS EMR Deployment](#aws-emr-deployment)
+8. [Testing](#testing)
+9. [Results & Metrics](#results--metrics)
+10. [Design Rationale](#design-rationale)
+11. [Limitations](#limitations)
 
-### Technical Stack
-- **Apache Spark 3.3.2**: Distributed data processing
-- **Delta Lake 2.3.0**: ACID transactions and versioning
-- **Scala 2.13.8**: Primary programming language
-- **Apache PDFBox**: PDF text extraction
-- **Ollama**: Local embedding generation (mxbai-embed-large)
-- **Lucene 9.7.0**: Vector indexing and retrieval
+---
 
-## Architecture
+## Project Overview
 
-### Component Overview
+This project implements an **incremental delta indexer** for Retrieval Augmented Generation (RAG) systems using Apache Spark and Delta Lake. Unlike traditional batch indexers that reprocess entire corpora, this system intelligently detects and processes only changed documents, significantly reducing computation time and cost.
+
+### Key Features
+
+**Delta Detection** - Only processes new/changed documents using content hash comparison  
+**Deterministic Chunking** - Stable chunk IDs based on document ID, position, and content  
+**Incremental Embeddings** - Generates vectors only for new chunks  
+**ACID Transactions** - Delta Lake ensures atomic updates and consistency  
+**Versioned Storage** - Separate tables for documents, chunks, and embeddings  
+**Idempotent Operations** - Safe retries without data duplication  
+**Scalable Deployment** - Runs on AWS EMR with YARN  
+**Comprehensive Logging** - LazyLogging throughout for observability  
+**Configuration Management** - Typesafe Config for all parameters
+
+### Technology Stack
+
+- **Language:** Scala 2.12
+- **Framework:** Apache Spark 3.5.0
+- **Storage:** Delta Lake 3.2.0
+- **Embedding Model:** Ollama mxbai-embed-large
+- **Cloud Platform:** AWS EMR
+- **Build Tool:** SBT 1.9.7
+- **Testing:** ScalaTest
+
+---
+
+## Architecture & Design
+
+### System Architecture
+
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    SparkDeltaIndexer                        │
-│                   (Main Orchestrator)                       │
-└─────────────────────────────────────────────────────────────┘
-                              │
-          ┌───────────────────┼───────────────────┐
-          │                   │                   │
-          ▼                   ▼                   ▼
-┌──────────────────┐ ┌──────────────┐ ┌──────────────────┐
-│ DocumentScanner  │ │DeltaDetector │ │  StorageLayer    │
-│  (PDF Reading)   │ │(Anti-Joins)  │ │  (Delta Lake)    │
-└──────────────────┘ └──────────────┘ └──────────────────┘
-          │                   │                   │
-          ▼                   ▼                   ▼
-┌──────────────────┐ ┌──────────────┐ ┌──────────────────┐
-│IncrementalChunker│ │   Embedder   │ │ Vector Indexer   │
-│ (Text Splitting) │ │   (Ollama)   │ │    (Lucene)      │
-└──────────────────┘ └──────────────┘ └──────────────────┘
+┌─────────────────┐
+│  Input PDFs     │
+│  (MSR Corpus)   │
+└────────┬────────┘
+         │
+         v
+┌─────────────────────────────────────────────────────────┐
+│               Document Scanner                          │
+│  - Reads PDF files from S3/local                        │
+│  - Extracts text with Apache PDFBox                     │
+│  - Generates stable document IDs (hash of filepath)     │
+└────────┬────────────────────────────────────────────────┘
+         │
+         v
+┌─────────────────────────────────────────────────────────┐
+│               Delta Detector                            │
+│  - Computes content hash (MD5) of normalized text       │
+│  - Anti-join with existing documents table              │
+│  - Identifies new/changed/unchanged/deleted docs        │
+└────────┬────────────────────────────────────────────────┘
+         │
+         v
+┌─────────────────────────────────────────────────────────┐
+│            Incremental Chunker                          │
+│  - Chunks only changed documents                        │
+│  - Fixed-size chunks with configurable overlap          │
+│  - Generates deterministic chunk IDs                    │
+└────────┬────────────────────────────────────────────────┘
+         │
+         v
+┌─────────────────────────────────────────────────────────┐
+│          Incremental Embedder                           │
+│  - Identifies chunks without embeddings                 │
+│  - Calls Ollama API on driver (driver-only pattern)     │
+│  - Generates 1024-dim vectors with mxbai-embed-large    │
+└────────┬────────────────────────────────────────────────┘
+         │
+         v
+┌─────────────────────────────────────────────────────────┐
+│              Storage Layer (Delta Lake)                 │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐   │
+│  │  Documents   │  │    Chunks    │  │  Embeddings  │   │
+│  │   Table      │  │    Table     │  │    Table     │   │
+│  └──────────────┘  └──────────────┘  └──────────────┘   │
+│  - ACID transactions                                    │
+│  - Time travel & versioning                             │
+│  - Schema evolution                                     │
+└─────────────────────────────────────────────────────────┘
 ```
-
-### Delta Detection Algorithm
-
-The system uses Spark anti-joins to efficiently detect four types of document changes:
-
-1. **New Documents**: `current.anti_join(previous, "documentId")`
-2. **Changed Documents**: `current.join(previous, "documentId").filter(contentHash differs)`
-3. **Unchanged Documents**: `current.join(previous, ["documentId", "contentHash"])`
-4. **Deleted Documents**: `previous.anti_join(current, "documentId")`
 
 ### Data Flow
+
 ```
-PDF Files → Document Scanning → Delta Detection → Incremental Chunking
-                                       ↓
-                              Only Changed Docs
-                                       ↓
-                    ┌──────────────────┴──────────────────┐
-                    ↓                                      ↓
-          Embedding Generation                    Vector Indexing
-                    ↓                                      ↓
-              Delta Lake Storage                   Lucene Index
-         (ACID Transactions + Versioning)
+First Run (Cold Start):
+Documents → Scan → Chunk → Embed → Store All
+- Processes entire corpus from scratch
+- Generates all chunks and embeddings
+- Establishes baseline state in Delta Lake
+
+Incremental Run (No Changes):
+Documents → Delta Detection → Skip All → Zero Work
+- Content hashes match existing state
+- No chunking or embedding performed
+- Near-instant completion with minimal resource usage
+
+Incremental Run (With Changes):
+Documents → Delta Detection → Process Changed Only → Merge
+- Only new/modified documents are chunked
+- Only new chunks receive embeddings
+- Existing data preserved, new data merged atomically
+- Processing time proportional to change volume
 ```
+
+### Delta Lake Schema
+
+**documents table:**
+```
+documentId: String (PK)
+filepath: String
+filename: String
+documentText: String
+contentHash: String
+documentTimestamp: Timestamp
+```
+
+**chunks table:**
+```
+chunkId: String (PK)
+documentId: String (FK)
+chunkIndex: Int
+chunkText: String
+startPos: Int
+endPos: Int
+contentHash: String
+chunkTimestamp: Timestamp
+```
+
+**embeddings table:**
+```
+embeddingId: String (PK)
+chunkId: String (FK)
+documentId: String
+embeddingVector: Array[Double]
+embeddingModel: String
+embeddingHash: String
+embeddingTimestamp: Timestamp
+```
+
+---
 
 ## Prerequisites
 
-### Required Software
-- **Java 11** (required for module compatibility)
-- **Scala 2.13.8**
+### Local Development
+
+- **JDK 11** or higher
+- **Scala 2.12.x**
 - **SBT 1.9.7+**
-- **Apache Spark 3.3.2**
-- **Ollama** with mxbai-embed-large model
+- **Ollama** (for embedding generation)
+- **Git**
 
-### Install Ollama and Model
+### AWS EMR Deployment
+
+- **AWS Account** with EMR access
+- **AWS CLI** configured with credentials
+- **S3 Bucket** for data and artifacts
+- **EC2 Key Pair** for SSH access
+- **EMR 7.10.0** with Spark 3.5.6
+
+---
+
+## Installation
+
+### 1. Clone Repository
+
 ```bash
-# Install Ollama
-brew install ollama
+git clone https://github.com/NihalMishra17/Incremental-RAG-Indexer-with-Spark-Delta-Detection
+cd hw2-delta-indexer
+```
 
-# Start Ollama service
-ollama serve
+### 2. Install Dependencies
 
-# Pull the embedding model (in another terminal)
+```bash
+sbt compile
+```
+
+### 3. Install Ollama (Local Development)
+
+```bash
+# macOS/Linux
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Pull embedding model
 ollama pull mxbai-embed-large
+
+# Verify installation
+ollama list
 ```
 
-### Set Java 11
-```bash
-# Check available Java versions
-/usr/libexec/java_home -V
-
-# Set Java 11
-export JAVA_HOME=$(/usr/libexec/java_home -v 11)
-
-# Verify
-java -version
-# Should show: openjdk version "11.x.x"
-
-# Make permanent (add to ~/.zshrc)
-echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 11)' >> ~/.zshrc
-```
-
-## Project Structure
-```
-hw2-delta-indexer/
-├── src/
-│   ├── main/
-│   │   ├── scala/com/cs441/hw2/
-│   │   │   ├── SparkDeltaIndexer.scala    # Main orchestrator
-│   │   │   ├── DocumentScanner.scala       # PDF processing
-│   │   │   ├── DeltaDetector.scala         # Change detection
-│   │   │   ├── IncrementalChunker.scala    # Text chunking
-│   │   │   ├── IncrementalEmbedder.scala   # Embedding generation
-│   │   │   ├── StorageLayer.scala          # Delta Lake interface
-│   │   │   ├── VectorIndexer.scala         # Lucene indexing
-│   │   │   └── OllamaClient.scala          # Ollama API client
-│   │   └── resources/
-│   │       ├── application.conf             # Configuration
-│   │       ├── logback.xml                  # Logging config (sbt)
-│   │       └── log4j2.properties            # Logging config (spark)
-│   └── test/
-│       └── scala/com/cs441/hw2/
-│           └── [Unit Tests]
-├── test-corpus/                             # Input PDF directory
-├── delta-output/                            # Delta Lake tables
-│   ├── documents/
-│   │   └── _delta_log/                     # Transaction logs
-│   ├── chunks/
-│   │   └── _delta_log/
-│   └── embeddings/
-│       └── _delta_log/
-├── build.sbt                                # Build configuration
-└── README.md
-```
+---
 
 ## Configuration
 
-### application.conf
+All configuration is managed through `src/main/resources/application.conf` using Typesafe Config.
+
+### Key Configuration Parameters
+
 ```hocon
-app {
-  corpus-dir = "test-corpus"
+delta-indexer {
+  # Input/Output paths (overridable via environment variables)
+  input-dir = "test-corpus"
+  input-dir = ${?INPUT_DIR}
+  
   output-dir = "delta-output"
-  
-  spark {
-    app-name = "DeltaIndexer"
-    master = "local[*]"
-  }
-  
+  output-dir = ${?OUTPUT_DIR}
+
+  # Chunking configuration
   chunking {
-    chunk-size = 512
-    chunk-overlap = 50
+    chunk-size = 1000      # Characters per chunk
+    overlap = 100          # Overlap between chunks
+    version = "v1"
   }
-  
+
+  # Embedding configuration
   embedding {
     model = "mxbai-embed-large"
-    ollama-url = "http://localhost:11434"
-    batch-size = 32
+    version = "v1"
+    dimension = 1024
+    ollama-host = "http://localhost:11434"
+    ollama-host = ${?OLLAMA_HOST}
   }
-  
-  retrieval {
-    top-k = 5
+
+  # Spark configuration
+  spark {
+    app-name = "HW2-Delta-Indexer"
+    master = "local[*]"
+    master = ${?SPARK_MASTER}
   }
 }
 ```
 
-## Building the Project
+### Environment Variables (EMR Override)
+
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd hw2-delta-indexer
-
-# Clean build
-sbt clean
-
-# Compile
-sbt compile
-
-# Run tests
-sbt test
-
-# Build fat JAR
-sbt assembly
+export INPUT_DIR="s3a://rag-indexer/input-pdfs"
+export OUTPUT_DIR="s3a://rag-indexer/delta-output"
+export SPARK_MASTER="yarn"
+export OLLAMA_HOST="http://$(hostname -I | awk '{print $1}'):11434"
 ```
 
-## Running the Application
+---
 
-### Development Mode (SBT)
+## Running Locally
+
+### 1. Prepare Test Corpus
+
 ```bash
-# Ensure Ollama is running
-ollama serve
+# Create test directory
+mkdir -p test-corpus
 
-# Run with SBT (shows detailed INFO logs)
+# Copy PDF files
+cp ~/path/to/MSRCorpus/*.pdf test-corpus/
+```
+
+### 2. Start Ollama Service
+
+```bash
+# Start Ollama
+ollama serve &
+
+# Verify it's running
+curl http://localhost:11434/api/tags
+```
+
+### 3. Run the Indexer
+
+```bash
+# First run (processes all documents)
+sbt run
+
+# Subsequent run (incremental - skips unchanged)
 sbt run
 ```
 
-### Production Mode (spark-submit)
-```bash
-# Build the JAR
-sbt assembly
+### 4. Check Results
 
-# Run with spark-submit (with detailed logging)
-spark-submit \
-  --class com.cs441.hw2.SparkDeltaIndexer \
-  --master "local[*]" \
-  --driver-java-options "-Dlog4j.configurationFile=file:src/main/resources/log4j2.properties" \
-  target/scala-2.13/hw2-delta-indexer.jar
+```bash
+# View Delta tables
+ls -la delta-output/
+
+# Check statistics CSV
+cat delta-output/run-stats-*.csv
 ```
 
-**Note:** The `--driver-java-options` flag enables detailed INFO logging. Without it, only WARN/ERROR messages are shown.
+---
 
-### Alternative: Run without detailed logs
+## AWS EMR Deployment
+
+### Step 1: Prepare S3 Bucket
+
 ```bash
-spark-submit \
-  --class com.cs441.hw2.SparkDeltaIndexer \
-  --master "local[*]" \
-  target/scala-2.13/hw2-delta-indexer.jar
+# Create bucket
+aws s3 mb s3://rag-indexer
+
+# Upload PDF corpus
+aws s3 cp test-corpus/ s3://rag-indexer/input-pdfs/ --recursive
+
+# Create directories
+aws s3api put-object --bucket rag-indexer --key delta-output/
+aws s3api put-object --bucket rag-indexer --key jars/
+aws s3api put-object --bucket rag-indexer --key scripts/
 ```
 
-## Usage Examples
+### Step 2: Build and Upload JAR
 
-### First Run (Full Indexing)
 ```bash
-# Place PDF files in test-corpus/
-cp /path/to/pdfs/*.pdf test-corpus/
+# Build assembly JAR
+sbt clean assembly
 
-# Run the indexer
-sbt run
-
-# Expected output:
-# No previous state found. Running first-time indexing...
-# ================================================================================
-# FIRST RUN: Processing entire corpus
-# ================================================================================
-# Documents: 5 | Chunks: 145 | Embeddings: 145
+# Upload to S3
+aws s3 cp target/scala-2.12/hw2-delta-indexer.jar s3://rag-indexer/jars/
 ```
 
-### Incremental Run (After Adding Files)
+### Step 3: Upload Bootstrap Script
+
 ```bash
-# Add new PDF
-cp /path/to/new.pdf test-corpus/
-
-# Run again
-sbt run
-
-# Expected output:
-# Previous state found. Running incremental indexing...
-# ================================================================================
-# INCREMENTAL RUN: Processing changes only
-# ================================================================================
-# Previous state: 5 documents
-# Current corpus: 6 documents
-# Delta stats: new -> 1, changed -> 0, unchanged -> 5
-# Deduplication ratio: 83.33%
-# Processed: 1 docs | New chunks: 31 | New embeddings: 31
-# Efficiency: Skipped 83.33% of corpus
+aws s3 cp bootstrap-ollama.sh s3://rag-indexer/scripts/
 ```
 
-### No Changes Run
-```bash
-# Run without changes
-sbt run
+### Step 4: Create EMR Cluster
 
-# Expected output:
-# Deduplication ratio: 100.00%
-# No changes detected. Nothing to process.
+```bash
+aws emr create-cluster \
+  --name "RAG-Indexer-Cluster" \
+  --release-label emr-7.10.0 \
+  --applications Name=Spark Name=Hadoop \
+  --instance-type m5.xlarge \
+  --instance-count 3 \
+  --bootstrap-actions \
+    Path=s3://rag-indexer/scripts/bootstrap-ollama.sh \
+  --ec2-attributes KeyName=your-key-pair \
+  --use-default-roles \
+  --region us-east-2 \
+  --log-uri s3://rag-indexer/logs/
 ```
 
-## Performance Results
+### Step 5: Upload Run Script
 
-### Test Corpus: 5 PDF Documents
-
-#### First Run (Baseline)
-- **Documents processed**: 5
-- **Chunks created**: 145
-- **Embeddings generated**: 145
-- **Processing mode**: Full corpus
-- **Execution time**: ~76 seconds
-
-#### Incremental Run (1 New Document)
-- **Previous documents**: 5
-- **Current documents**: 6
-- **New documents**: 1
-- **Changed documents**: 0
-- **Unchanged documents**: 5
-- **Deduplication ratio**: 83.33%
-- **New chunks**: 31
-- **Total chunks**: 176
-- **Efficiency gain**: Skipped 83.33% of corpus
-- **Execution time**: ~20 seconds
-
-#### No Changes Run
-- **Deduplication ratio**: 100.00%
-- **Documents processed**: 0
-- **Processing time**: ~15 seconds (detection only)
-
-## Delta Lake Verification
-
-### Check Transaction Logs
 ```bash
-# View all transaction log files
-find delta-output -name "*.json" -type f
-
-# Expected output:
-# delta-output/documents/_delta_log/00000000000000000000.json  (version 0)
-# delta-output/documents/_delta_log/00000000000000000001.json  (version 1)
-# delta-output/chunks/_delta_log/00000000000000000000.json
-# delta-output/chunks/_delta_log/00000000000000000001.json
-# delta-output/embeddings/_delta_log/00000000000000000000.json
-# delta-output/embeddings/_delta_log/00000000000000000001.json
+aws s3 cp run-spark-emr.sh s3://rag-indexer/scripts/
 ```
 
-### Inspect Transaction History
-```bash
-# View transaction metadata for documents table
-cat delta-output/documents/_delta_log/00000000000000000000.json | jq .
+### Step 6: SSH to Master and Run
 
-# Check version count
-ls delta-output/documents/_delta_log/*.json | wc -l
+```bash
+# Get cluster ID
+aws emr list-clusters --active
+
+# Get master public DNS
+aws emr describe-cluster --cluster-id j-XXXXX --query 'Cluster.MasterPublicDnsName'
+
+# SSH to master
+ssh -i your-key-pair.pem hadoop@ec2-xxx.compute.amazonaws.com
+
+# On master node:
+aws s3 cp s3://rag-indexer/jars/hw2-delta-indexer.jar .
+aws s3 cp s3://rag-indexer/scripts/run-spark-emr.sh .
+chmod +x run-spark-emr.sh
+./run-spark-emr.sh
 ```
+
+### Step 7: Retrieve Results
+
+```bash
+# Download output
+aws s3 cp s3://rag-indexer/delta-output/ ./results/ --recursive
+
+# View statistics
+cat results/run-stats-*.csv
+
+# Check logs
+aws s3 cp s3://rag-indexer/logs/ ./logs/ --recursive
+```
+
+---
 
 ## Testing
 
 ### Run All Tests
+
 ```bash
 sbt test
 ```
 
 ### Test Coverage
 
-The project includes comprehensive unit tests:
+The project includes **11 unit tests** covering:
 
-- **DocumentScannerTest**: PDF scanning and hashing
-- **DeltaDetectorTest**: Change detection with anti-joins
-- **IncrementalChunkerTest**: Text chunking logic
-- **IncrementalEmbedderTest**: Embedding generation (mocked)
-- **StorageLayerTest**: Delta Lake operations
-- **VectorIndexerTest**: Lucene indexing
+**TextChunkerTest (6 tests):**
+- Empty text handling
+- Text smaller than chunk size
+- Overlapping chunk creation
+- Deterministic chunking
+- Invalid parameter handling
+- Indexed chunk generation
 
-### Test Output Example
+**HashUtilsTest (5 tests):**
+- SHA-256 consistency
+- Hash uniqueness
+- Deterministic chunk ID generation
+- Document ID normalization
+- MD5 hash format
+
+### Sample Test Output
+
 ```
-[info] DocumentScannerTest:
-[info] - should scan and hash PDF documents
-[info] - should handle empty directories
-[info] DeltaDetectorTest:
-[info] - should detect new documents
-[info] - should detect changed documents
-[info] - should detect unchanged documents
-[info] - should calculate deduplication ratio
-[info] All tests passed
-```
-
-## Troubleshooting
-
-### Common Issues
-
-#### 1. Java Version Mismatch
-```bash
-# Error: Illegal reflective access operation
-# Solution: Switch to Java 11
-export JAVA_HOME=$(/usr/libexec/java_home -v 11)
-```
-
-#### 2. Ollama Connection Failed
-```bash
-# Error: Connection refused to localhost:11434
-# Solution: Start Ollama service
-ollama serve
-
-# Verify it's running
-curl http://localhost:11434/api/tags
+[info] TextChunkerTest:
+[info] - chunk should handle empty text
+[info] - chunk should handle text smaller than chunk size
+[info] - chunk should create overlapping chunks
+[info] - chunk should be deterministic
+[info] - chunk should handle invalid parameters gracefully
+[info] - chunkWithIndex should return indexed chunks
+[info] HashUtilsTest:
+[info] - sha256 should produce consistent hashes
+[info] - sha256 should produce different hashes for different content
+[info] - generateChunkId should be deterministic
+[info] - generateDocumentId should normalize path separators
+[info] - md5 should produce 32 character hash
+[info] Run completed in 707 milliseconds.
+[info] Total number of tests run: 11
+[info] Suites: completed 2, aborted 0
+[info] Tests: succeeded 11, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
 ```
 
-#### 3. No INFO Logs in spark-submit
-```bash
-# Use the --driver-java-options flag:
-spark-submit \
-  --class com.cs441.hw2.SparkDeltaIndexer \
-  --master "local[*]" \
-  --driver-java-options "-Dlog4j.configurationFile=file:src/main/resources/log4j2.properties" \
-  target/scala-2.13/hw2-delta-indexer.jar
+---
+
+
+
+### Sample Statistics CSV
+
+```csv
+metric,value
+timestamp,2025-11-02T05-51-48
+run_type,first_run
+environment,yarn
+total_documents,5
+total_chunks,167
+total_embeddings,167
+new_documents,5
+efficiency_pct,0.00
+duration_seconds,180
 ```
 
-#### 4. SBT Cleanup Error
-```bash
-# Harmless error at end of sbt run about hadoop-client-api
-# This occurs AFTER successful completion
-# All data is saved before this message appears
-# Can be ignored or suppressed with fork := true in build.sbt
-```
 
-#### 5. Delta Lake Table Not Found
-```bash
-# First run will create new tables
-# Subsequent runs will load existing tables
-# To reset: rm -rf delta-output/
-```
+---
 
-## Technical Details
+## Design Rationale
 
-### Content-Based Hashing
+### 1. Why Delta Lake?
 
-Documents are identified by SHA-256 hash of their content:
+**ACID Transactions:** Ensures consistency during concurrent writes and failures. If a Spark job fails mid-way, Delta Lake prevents partial writes.
+
+**Time Travel:** Can roll back to previous versions if needed:
 ```scala
-def computeHash(content: String): String = {
-  MessageDigest.getInstance("SHA-256")
-    .digest(content.getBytes)
-    .map("%02x".format(_))
-    .mkString
+spark.read.format("delta")
+  .option("versionAsOf", 0)
+  .load("delta-output/documents")
+```
+
+**Schema Evolution:** Allows adding new columns without breaking existing code:
+```scala
+spark.sql("ALTER TABLE documents ADD COLUMN author STRING")
+```
+
+**Performance:** Optimized file layout and Z-ordering for fast queries:
+```scala
+deltaTable.optimize().executeZOrderBy("documentId")
+```
+
+### 2. Why Driver-Only Embeddings?
+
+**Network Isolation:** Worker nodes can't access master's Ollama service by default due to security groups and localhost binding.
+
+**Simplicity:** Avoids complex networking setup and ensures deterministic execution.
+
+**Acceptable for Homework Scale:** With 167 chunks, serial processing on driver completes in ~3 minutes.
+
+**Production Alternative:** Would use distributed embedding service (SageMaker, Bedrock) or install Ollama on all nodes.
+
+### 3. Why Content Hashing?
+
+**Change Detection:** MD5 hash of normalized text detects actual content changes, not just metadata updates.
+
+**Idempotency:** Same content → same hash → skip processing. Retries don't duplicate work.
+
+**Deterministic IDs:** Chunk IDs derived from document ID + position + content hash ensure stability across runs.
+
+### 4. Why Typesafe Config?
+
+**Environment Flexibility:** Same code runs locally (local[*]) and on EMR (yarn) by changing config.
+
+**Security:** Credentials and paths stay out of source code.
+
+**Testability:** Easy to swap configs for unit tests vs integration tests.
+
+### 5. Functional Programming Choices
+
+**No Mutable State:** Uses `val`, functional transformations (map, filter, flatMap) instead of `var` and loops.
+
+**Rationale:** Easier reasoning about parallel Spark operations, safer for distributed execution.
+
+**Example:**
+```scala
+// Functional approach (used)
+val startPositions = (0 until text.length by step).toSeq
+startPositions.map { start => text.substring(start, end) }
+
+// Imperative approach (avoided)
+var i = 0
+while (i < text.length) {
+  chunks += text.substring(i, end)
+  i += step
 }
 ```
 
-This ensures:
-- Identical files are deduplicated
-- Content changes are detected
-- File renames don't trigger reprocessing
+### 6. Logging Strategy
 
-### Anti-Join Operations
+**LazyLogging:** Doesn't evaluate log messages unless level is enabled (performance).
 
-Change detection uses Spark's optimized anti-joins:
-```scala
-// New documents
-val newDocs = currentDocs.join(
-  previousDocs,
-  currentDocs("documentId") === previousDocs("documentId"),
-  "left_anti"
-)
+**Structured Levels:**
+- **INFO:** Pipeline progress, statistics
+- **WARN:** Skipped/empty data
+- **ERROR:** Failures that don't crash job
+- **DEBUG:** Detailed chunk/embedding info
 
-// Changed documents
-val changedDocs = currentDocs.join(
-  previousDocs,
-  currentDocs("documentId") === previousDocs("documentId")
-).filter(
-  currentDocs("contentHash") =!= previousDocs("contentHash")
-)
-```
+**Observable:** Logs capture every decision for debugging and audit.
 
-### Delta Lake ACID Guarantees
+---
 
-Each write creates a new transaction log entry:
-```scala
-documents.write
-  .format("delta")
-  .mode(SaveMode.Overwrite)
-  .save(documentsPath)
-```
+## Limitations
 
-Transaction logs provide:
-- **Atomicity**: All-or-nothing commits
-- **Consistency**: Schema enforcement
-- **Isolation**: Concurrent read/write safety
-- **Durability**: Crash recovery
-- **Time Travel**: Query historical versions
+### 1. Scalability Constraints
 
-## Known Behavior
+**Driver-Only Embeddings:** Current implementation generates embeddings serially on driver. For large corpora (10K+ documents), this becomes a bottleneck.
 
-### Harmless Warnings
+**Solution:** Implement distributed embedding with HTTP-based service (SageMaker, Bedrock) or install Ollama on all workers.
 
-1. **Hostname Resolution Warning**:
-```
-   WARN Utils: Your hostname resolves to a loopback address
-```
-- Normal for local development
-- Does not affect functionality
+### 2. Chunking Strategy
 
-2. **Native Hadoop Library Warning**:
-```
-   WARN NativeCodeLoader: Unable to load native-hadoop library
-```
-- Falls back to Java implementation
-- No performance impact for local mode
+**Fixed-Size Chunks:** Uses simple character-based chunking with overlap. Doesn't respect semantic boundaries (sentences, paragraphs).
 
-3. **PDF Font Warnings**:
-```
-   WARN PDSimpleFont: No Unicode mapping for circlecopyrt
-```
-- Missing font mappings in PDFs
-- Text extraction still works
+**Better Approach:** Semantic chunking using sentence boundaries, section headers, or sliding window with sentence tokenization.
 
-4. **SBT Cleanup Error** (only with `sbt run`):
-```
-   NoSuchFileException: hadoop-client-api-3.3.2.jar
-```
-- Occurs AFTER successful completion
-- All data is saved before this message
-- Fixed by using `fork := true` in build.sbt
+### 3. Embedding Model
 
-## Dependencies
+**Single Model:** Only supports mxbai-embed-large. No multi-model versioning.
 
-### Core Dependencies
-```scala
-// Spark & Delta Lake
-"org.apache.spark" %% "spark-core" % "3.3.2"
-"org.apache.spark" %% "spark-sql" % "3.3.2"
-"io.delta" %% "delta-core" % "2.3.0"
+**Enhancement:** Add model version management, support for multiple embedders, A/B testing framework.
 
-// PDF Processing
-"org.apache.pdfbox" % "pdfbox" % "2.0.31"
+### 4. Error Handling
 
-// HTTP Client for Ollama
-"com.softwaremill.sttp.client3" %% "core" % "3.8.15"
-"com.softwaremill.sttp.client3" %% "circe" % "3.8.15"
+**Fail-Fast:** If Ollama crashes or model unavailable, entire job fails.
 
-// JSON Processing
-"io.circe" %% "circe-core" % "0.14.5"
-"io.circe" %% "circe-generic" % "0.14.5"
-"io.circe" %% "circe-parser" % "0.14.5"
+**Improvement:** Implement retry logic, circuit breakers, fallback to cached embeddings.
 
-// Lucene
-"org.apache.lucene" % "lucene-core" % "9.7.0"
-"org.apache.lucene" % "lucene-queryparser" % "9.7.0"
+### 5. Query Interface
 
-// Logging & Config
-"ch.qos.logback" % "logback-classic" % "1.4.11"
-"com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
-"com.github.pureconfig" %% "pureconfig" % "0.17.4"
-```
+**No Retrieval API:** Builds index but doesn't provide query endpoint.
 
+**Next Step:** Add FAISS/Annoy for vector similarity search, REST API for queries.
 
-## Future Enhancements
+### 6. Cost Optimization
 
-1. **Distributed Ollama**: Support for distributed embedding generation
-2. **S3 Integration**: Store Delta Lake tables on S3
-3. **Query Interface**: REST API for semantic search
-4. **Web UI**: Dashboard for monitoring and visualization
-5. **Multiple Models**: Support for different embedding models
-6. **Batch Scheduling**: Automated incremental updates
-7. **Performance Metrics**: Detailed profiling and optimization
-8. **Multi-format Support**: Word, HTML, Markdown processing
+**Always-On Ollama:** Runs Ollama even when no work needed.
 
+**Optimization:** Use AWS Lambda for on-demand embedding, or ECS Fargate with auto-scaling.
 
-## Author
+### 7. Schema Evolution
 
-**Nihal** - University of Illinois Chicago
+**No Version Migration:** Changing schema requires manual data migration.
+
+**Solution:** Implement Delta Lake schema evolution with backward compatibility checks.
+
 
